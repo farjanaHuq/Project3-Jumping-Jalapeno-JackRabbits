@@ -9,10 +9,10 @@ class Navbar extends Component {
          return (
             <ul className="navbar-nav">
                <li className="nav-item">
-                  <Link to={"/search"} className="nav-link disabled">Search</Link>
+                  <Link to={"/search"} className="nav-link disabled">Page 1</Link>
                </li>
                <li className="nav-item">
-                  <Link to={"/saved"} className="nav-link active">Saved</Link>
+                  <Link to={"/saved"} className="nav-link active">Page 2</Link>
                </li>
             </ul>
          );
@@ -20,10 +20,10 @@ class Navbar extends Component {
          return (
             <ul className="navbar-nav">
                <li className="nav-item">
-                  <Link to={"/search"} className="nav-link active">Search</Link>
+                  <Link to={"/search"} className="nav-link active">Page 1</Link>
                </li>
                <li className="nav-item">
-                  <Link to={"/saved"} className="nav-link disabled">Saved</Link>
+                  <Link to={"/saved"} className="nav-link disabled">Page 2</Link>
                </li>
             </ul>
          );
@@ -33,7 +33,7 @@ class Navbar extends Component {
    render() {
       return (
          <nav className="navbar navbar-expand-md bg-dark navbar-dark">
-            <span className="navbar-brand">Google Books</span>
+            <span className="navbar-brand">Project 3</span>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                <span className="navbar-toggler-icon"></span>
             </button>

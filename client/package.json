@@ -1,0 +1,24 @@
+{
+  "name": "mern",
+  "version": "0.1.0",
+  "description": "Mern Demo",
+  "private": true,
+  "proxy": {
+    "/api/*": {
+      "target": "http://localhost:3001",
+      "secure": false
+    }
+  },
+  "dependencies": {
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-scripts": "1.0.14"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "seed": "node scripts/seedDB.js"
+  }
+}

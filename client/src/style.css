@@ -1,0 +1,60 @@
+html,body {
+   display: flex;
+   flex-direction: column;
+   flex-grow: 1;
+   min-height: 100vh;
+}
+
+.container {
+   margin-bottom: 40px;
+}
+
+.jumbotron {
+   text-align: center;
+   color: white;
+   background: url('./images/books-banner.png');
+   background-size: cover;
+   background-position: center;
+   background-repeat: no-repeat;
+   text-shadow: 
+     1px  1px 0 #000,
+    -1px  1px 0 #000,
+     1px -1px 0 #000,
+    -1px -1px 0 #000,
+     0px  1px 0 #000,
+     0px -1px 0 #000,
+    -1px  0px 0 #000,
+     1px  0px 0 #000,
+     2px  2px 0 #000,
+    -2px  2px 0 #000,
+     2px -2px 0 #000,
+    -2px -2px 0 #000,
+     0px  2px 0 #000,
+     0px -2px 0 #000,
+    -2px  0px 0 #000,
+     2px  0px 0 #000,
+     1px  2px 0 #000,
+    -1px  2px 0 #000,
+     1px -2px 0 #000,
+    -1px -2px 0 #000,
+     2px  1px 0 #000,
+    -2px  1px 0 #000,
+     2px -1px 0 #000,
+    -2px -1px 0 #000;
+}
+
+.book-div {
+   margin-top: 50px;
+}
+
+.book-image {
+   max-height: 200px;
+}
+
+.view-btn {
+   margin-right: 15px;
+}
+
+.first-book-row {
+   margin-bottom: 10px;
+}

@@ -3,6 +3,8 @@ import Navbar from '../components/Navbar';
 import Jumbotron from '../components/Jumbotron';
 import Form from '../components/Form';
 import BookList from '../components/BookList';
+import LoginModal from '../components/LoginModal';
+import SignupModal from '../components/SignupModal';
 import axios from "axios";
 
 class Search extends Component {
@@ -25,6 +27,8 @@ class Search extends Component {
             {console.log('state.books:', this.state.books)}
             <Navbar page={'Search'} />
             <Jumbotron />
+            <LoginModal />
+            <SignupModal />
             <div className="container">
                <Form
                   populateBooks={this.populateBooks}

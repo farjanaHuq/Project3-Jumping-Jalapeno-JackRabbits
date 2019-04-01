@@ -11,10 +11,19 @@ class App extends Component {
       <Router>
         <div>
           <Switch>
-            <Route exact path='/' component={Search} />
-            <Route exact path='/search' component={Search} />
+            <Route
+              exact path='/'
+              component={Search}
+            />
+            <Route
+              exact path='/search'
+              component={Search}
+            />
           </Switch>
-          <Route exact path='/saved' component={Saved} />
+          <Route
+            exact path='/saved'
+            component={Saved}
+          />
         </div>
       </Router>
     );

@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require("express");
 const jwt = require('express-jwt');
 const auth = jwt({
-  secret: process.env.JWT_SECRET,
+  secret: process.env.REACT_APP_JWT_SECRET,
   userProperty: 'payload'
 });
 const path = require("path");

@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Navbar from '../components/Navbar';
 import Jumbotron from '../components/Jumbotron';
 import BookList from '../components/BookList';
+import LoginModal from '../components/LoginModal';
+import SignupModal from '../components/SignupModal';
 import axios from "axios";
 
 class Saved extends Component {
@@ -31,6 +33,8 @@ class Saved extends Component {
             {console.log(this.state.books)}
             <Navbar page={'Saved'} />
             <Jumbotron />
+            <LoginModal />
+            <SignupModal />
             <div className="container">
                <BookList
                   page={'Saved'}

@@ -1,43 +1,48 @@
 import React, { Component } from "react";
-import Navbar from '../components/Navbar';
+import NavbarComponent from '../components/Navbar';
 import Jumbotron from '../components/Jumbotron';
-import BookList from '../components/BookList';
-import axios from "axios";
+import LoginModal from '../components/LoginModal';
+import SignupModal from '../components/SignupModal';
+// import axios from "axios";
 
 class Saved extends Component {
    constructor(props) {
       super(props);
       this.state = {
-         books: []
+         userData: null
       };
    }
 
    componentDidMount() {
-      // get savesArr from localStorage
-      var savesArr = JSON.parse(localStorage.getItem('saves'));
-      console.log('savesArr:', savesArr);
-      if (savesArr) this.populateSaves(savesArr);
+      this.handleLogin();
    }
 
-   populateSaves = savesArr => {
-      axios.get('/api/savedbooks/' + savesArr)
-         .then(res => this.setState({ books: res.data }))
-         .catch(err => console.log(err));
+   handleLoginData = () => {
+      // grab the token from local storage and set the user's data to state
+      const token = localStorage.getItem('token');
+      if (token) var tokenData = JSON.parse(window.atob(token.split('.')[1]));
+      this.setState({
+         userData: tokenData
+      });
+   }
+
+   handleLogout = () => {
+      localStorage.removeItem('token');
+      this.setState({ userData: null });
    }
 
    render() {
       return (
          <div>
-            {console.log(this.state.books)}
-            <Navbar page={'Saved'} />
+            <NavbarComponent
+               page={'Saved'}
+               userData={this.state.userData}
+               handleLoginData={this.handleLoginData}
+               handleLogout={this.handleLogout}
+            />
             <Jumbotron />
-            <div className="container">
-               <BookList
-                  page={'Saved'}
-                  books={this.state.books}
-                  populateSaves={this.populateSaves}
-               />
-            </div>
+            <LoginModal />
+            <SignupModal />
          </div>
       );
    }

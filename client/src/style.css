@@ -58,3 +58,16 @@ html,body {
 .first-book-row {
    margin-bottom: 10px;
 }
+
+.nav-link {
+   cursor: pointer;
+}
+
+#logged-in-msg {
+   cursor: auto;
+}
+
+#email-error-message {
+   visibility: hidden;
+   color: red !important;
+}

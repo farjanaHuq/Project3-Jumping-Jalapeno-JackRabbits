@@ -1,43 +1,54 @@
 import React, { Component } from "react";
-import Navbar from '../components/Navbar';
+import NavbarComponent from '../components/Navbar';
 import Jumbotron from '../components/Jumbotron';
-import Form from '../components/Form';
-import BookList from '../components/BookList';
 import LoginModal from '../components/LoginModal';
 import SignupModal from '../components/SignupModal';
-import axios from "axios";
+// import axios from "axios";
 
 class Search extends Component {
    constructor(props) {
       super(props);
       this.state = {
-         books: []
+         userData: null
       };
    }
 
-   populateBooks = searchTerm => {
-      axios.get('/api/books/' + searchTerm)
-         .then(res => this.setState({ books: res.data }))
-         .catch(err => console.log(err));
+   componentDidMount() {
+      // grab the token from local storage and set the user's data to state
+      const token = localStorage.getItem('token');
+      // console.log('token:', token);
+      if (token) var tokenData = JSON.parse(window.atob(token.split('.')[1]));
+      // console.log('token data:', tokenData);
+      this.setState({
+         userData: tokenData
+      });
+   }
+
+   handleLoginData = () => {
+      const token = localStorage.getItem('token');
+      if (token) var tokenData = JSON.parse(window.atob(token.split('.')[1]));
+      this.setState({
+         userData: tokenData
+      });
+   }
+
+   handleLogout = () => {
+      localStorage.removeItem('token');
+      this.setState({ userData: null });
    }
 
    render() {
       return (
          <div>
-            {console.log('state.books:', this.state.books)}
-            <Navbar page={'Search'} />
+            <NavbarComponent
+               page={'Search'}
+               userData={this.state.userData}
+               handleLoginData={this.handleLoginData}
+               handleLogout={this.handleLogout}
+            />
             <Jumbotron />
             <LoginModal />
             <SignupModal />
-            <div className="container">
-               <Form
-                  populateBooks={this.populateBooks}
-               />
-               <BookList
-                  page={'Search'}
-                  books={this.state.books}
-               />
-            </div>
          </div>
       );
    }

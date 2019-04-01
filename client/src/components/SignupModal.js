@@ -9,49 +9,33 @@ class LoginModal extends Component {
    constructor(props, context) {
       super(props, context);
 
-      this.handleShow = this.handleShow.bind(this);
-      this.handleClose = this.handleClose.bind(this);
-      this.handleSubmit = this.handleSubmit.bind(this);
-
       this.state = {
-         show: false,
       };
    }
 
-   handleClose() {
-      this.setState({ show: false });
-   }
-
-   handleShow() {
-      this.setState({ show: true });
-   }
-
-   handleSubmit(event) {
+   handleSubmit = event => {
       event.preventDefault();
-      const email = document.getElementById('emailField').value;
-      console.log('email:', email);
-      const displayName = document.getElementById('displayNameField').value;
-      console.log('displayName:', displayName);
-      const password = document.getElementById('passwordField').value;
-      console.log('password:', password);
+      // get input field data
+      const signupData = {
+         email: document.getElementById('emailField').value,
+         displayName: document.getElementById('displayNameField').value,
+         password: document.getElementById('passwordField').value
+      }
+      console.log('signupData:', signupData);
 
-      axios.post('/auth/register', {
-         email: email,
-         displayName: displayName,
-         password: password
-      })
-         .then(res => console.log('register res.data:', res.data))
+      // post it to api
+      axios.post('/api/auth/register', signupData)
+         .then(res => {
+            console.log('register res.data:', res.data)
+            this.props.handleClose();
+         })
          .catch(err => console.log(err));
    }
 
    render() {
       return (
          <div>
-            <Button variant="primary" onClick={this.handleShow}>
-               Placeholder Signup Button
-            </Button>
-
-            <Modal show={this.state.show} onHide={this.handleClose}>
+            <Modal show={this.props.show} onHide={this.props.handleClose}>
                <Modal.Header closeButton>
                   <Modal.Title>Signup</Modal.Title>
                </Modal.Header>

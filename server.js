@@ -23,7 +23,7 @@ if (process.env.NODE_ENV === "production") {
 
 // Unprotected Routes
 app.use('/api', apiRoutes);
-app.use('/auth', authRoutes);
+app.use('/api/auth', authRoutes);
 // Auth middleware
 app.use(auth);
 // Protected routes

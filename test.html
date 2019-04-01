@@ -1,14 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
    <title>Document</title>
+   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
+
 <body>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+   <script type="text/javascript">
+      // This is our API key. Add your own API key between the ""
+      var APIkey = '3d1183f69d960536bde5c2cd99db30a3';
+
+      // Here we are building the URL we need to query the database
+      // var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=Bujumbura,Burundi&appid=" + APIKey;
+
+      // We then created an AJAX call
+      $.ajax({
+         url: 'http://www.opensecrets.org/api/?method=candSummary&output=json&cid=N00007360&cycle=2018&apikey=' + APIkey,
+         method: "GET"
+      }).then(function (response) {
+
+         // Create CODE HERE to Log the queryURL
+         // console.log(queryURL);
+         // Create CODE HERE to log the resulting object
+         console.log(response);
+         
+      });
+   </script>
+   <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
    <script>
-      console.log(Boolean({}))
-      </script>
+      const APIkey = '3d1183f69d960536bde5c2cd99db30a3';
+      axios.get({
+         url: 'http://www.opensecrets.org/api/?method=candSummary&cid=N00007360&cycle=2018&apikey=' + APIkey
+      }).then(resp => {
+         console.log('resp:', resp);
+      })
+   </script> -->
 </body>
+
 </html>

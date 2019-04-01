@@ -46,7 +46,7 @@ router.post('/login', (req, res) => {
                   displayName: resp.displayName,
                   email: resp.email,
                   date: resp.date,
-               }, process.env.JWT_SECRET)
+               }, process.env.REACT_APP_JWT_SECRET)
             });
          } else {
             throw new Error('Incorrect password.');

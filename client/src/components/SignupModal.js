@@ -13,8 +13,18 @@ class SignUpModal extends Component {
       };
    }
 
+   handleClose = () => {
+      this.setState({ show: false });
+   }
+
+   handleShow = () => {
+      this.setState({ show: true });   
+   }
+
+  
    handleSubmit = event => {
       event.preventDefault();
+    
       // get input field data
       const signupData = {
          email: document.getElementById('emailField').value,
@@ -22,21 +32,27 @@ class SignUpModal extends Component {
          password: document.getElementById('passwordField').value,
          confirmPassword: document.getElementById('confirmPasswordField').value
       }
-      console.log('signupData:', signupData);
-      
-      //match password
-      if (signupData.password === signupData.confirmPassword) {
-         // post it to api
-         axios.post('/api/auth/register', signupData)
-            .then(res => {
-               console.log('register res.data:', res.data)
-               this.props.handleClose();
-            })
-            .catch(err => console.log(err));
-      }
-      else {
-         alert("password does not match.");
-      }
+      console.log('signupData:', signupData);     
+        
+      document.onclick('confirmPasswordField', function(e){
+         e.preventDefault();
+        
+         if(signupData.password !== signupData.confirmPassword){
+               document.getElementById('email-error-message').style.visibility = 'visible';
+         }
+         else{
+            // post it to api
+            axios.post('/api/auth/register', signupData)
+               .then(res => {
+                  console.log('register res.data:', res.data);
+               })
+               .catch(err => {
+                  console.log(err);
+
+               });
+            ;
+         }
+      })
    }
 
    render() {
@@ -58,11 +74,14 @@ class SignUpModal extends Component {
                      </Form.Group>
                      <Form.Group>
                         <Form.Label>Password</Form.Label>
-                        <Form.Control id="passwordField" type="password" placeholder="Password" />
+                        <Form.Control id="passwordField" type="password" placeholder="Password" />                               
                      </Form.Group>
                      <Form.Group>
                         <Form.Label>Confirm Password</Form.Label>
                         <Form.Control id="confirmPasswordField" type="confirmPassword" placeholder="confirmPassword" />
+                        <Form.Text className="text-muted error-message" id="password-error-message">
+                           Password does not match.
+                        </Form.Text>
                      </Form.Group>
                   </Modal.Body>
                   <Modal.Footer>

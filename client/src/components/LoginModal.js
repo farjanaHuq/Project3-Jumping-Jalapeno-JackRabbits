@@ -20,6 +20,7 @@ class LoginModal extends Component {
    handleShow = () => {
       this.setState({ show: true });
    }
+   
 
    handleSubmit = event => {
       event.preventDefault();

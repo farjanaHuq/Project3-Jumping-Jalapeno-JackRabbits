@@ -5,7 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import axios from "axios";
 
-class LoginModal extends Component {
+class SignUpModal extends Component {
    constructor(props, context) {
       super(props, context);
 
@@ -19,17 +19,24 @@ class LoginModal extends Component {
       const signupData = {
          email: document.getElementById('emailField').value,
          displayName: document.getElementById('displayNameField').value,
-         password: document.getElementById('passwordField').value
+         password: document.getElementById('passwordField').value,
+         confirmPassword: document.getElementById('confirmPasswordField').value
       }
       console.log('signupData:', signupData);
-
-      // post it to api
-      axios.post('/api/auth/register', signupData)
-         .then(res => {
-            console.log('register res.data:', res.data)
-            this.props.handleClose();
-         })
-         .catch(err => console.log(err));
+      
+      //match password
+      if (signupData.password === signupData.confirmPassword) {
+         // post it to api
+         axios.post('/api/auth/register', signupData)
+            .then(res => {
+               console.log('register res.data:', res.data)
+               this.props.handleClose();
+            })
+            .catch(err => console.log(err));
+      }
+      else {
+         alert("password does not match.");
+      }
    }
 
    render() {
@@ -53,6 +60,10 @@ class LoginModal extends Component {
                         <Form.Label>Password</Form.Label>
                         <Form.Control id="passwordField" type="password" placeholder="Password" />
                      </Form.Group>
+                     <Form.Group>
+                        <Form.Label>Confirm Password</Form.Label>
+                        <Form.Control id="confirmPasswordField" type="confirmPassword" placeholder="confirmPassword" />
+                     </Form.Group>
                   </Modal.Body>
                   <Modal.Footer>
                      <Button onClick={this.handleSubmit} variant="primary" type="submit">
@@ -66,4 +77,5 @@ class LoginModal extends Component {
    }
 }
 
-export default LoginModal;
+
+export default SignUpModal;

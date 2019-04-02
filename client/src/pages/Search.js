@@ -14,12 +14,12 @@ class Search extends Component {
    }
 
    openSecretsApiTest = () => {
-      // const APIkey = '3d1183f69d960536bde5c2cd99db30a3';
+      const APIkey = '3d1183f69d960536bde5c2cd99db30a3';
       // getlegistlators: http://www.opensecrets.org/api/?method=getLegislators&id=NJ&output=json&apikey=
       // specificlegislator: http://www.opensecrets.org/api/?method=candSummary&cid=N00026427&cycle=2018&output=json&apikey=
-      console.log(process.env)
-      console.log(process.env.REACT_APP_SECRET_CODE)
-      axios.get('http://www.opensecrets.org/api/?method=candSummary&cid=N00026427&cycle=2018&output=json&apikey=' + process.env.REACT_APP_OPEN_SECRETS_API_KEY)
+      console.log('process.env:\n', process.env);
+      console.log(process.env.REACT_APP_SECRET_CODE);
+      axios.get('http://www.opensecrets.org/api/?method=candSummary&cid=N00026427&cycle=2018&output=json&apikey=' + APIkey)
          .then(resp => {
             console.log('resp:', resp);
          })

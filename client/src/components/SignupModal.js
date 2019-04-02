@@ -32,19 +32,21 @@ class SignUpModal extends Component {
          password: document.getElementById('passwordField').value,
          confirmPassword: document.getElementById('confirmPasswordField').value
       }
+      
       console.log('signupData:', signupData);     
-        
-      document.onclick('confirmPasswordField', function(e){
-         e.preventDefault();
-        
+              
          if(signupData.password !== signupData.confirmPassword){
-               document.getElementById('email-error-message').style.visibility = 'visible';
+               document.getElementById('password-error-message').textContent = " Password does not match.";             
          }
          else{
+            signupData.password = signupData.confirmPassword;
+            delete signupData.confirmPassword;
+            console.log("Signup data confirm password", signupData);
             // post it to api
             axios.post('/api/auth/register', signupData)
                .then(res => {
                   console.log('register res.data:', res.data);
+                  localStorage.setItem('token', res.data.token);
                })
                .catch(err => {
                   console.log(err);
@@ -52,7 +54,7 @@ class SignUpModal extends Component {
                });
             ;
          }
-      })
+      
    }
 
    render() {
@@ -80,7 +82,7 @@ class SignUpModal extends Component {
                         <Form.Label>Confirm Password</Form.Label>
                         <Form.Control id="confirmPasswordField" type="confirmPassword" placeholder="confirmPassword" />
                         <Form.Text className="text-muted error-message" id="password-error-message">
-                           Password does not match.
+                          
                         </Form.Text>
                      </Form.Group>
                   </Modal.Body>

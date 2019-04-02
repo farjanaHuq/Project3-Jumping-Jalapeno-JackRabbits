@@ -41,7 +41,8 @@ app.get("*", (req, res) => {
 });
 
 // Connect to the Mongo DB
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/project3");
+// mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/project3");
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:3001/project3", { useNewUrlParser: true });
 
 app.listen(PORT, () => {
   console.log(`🌎 ==> API server now on port ${PORT}!`);

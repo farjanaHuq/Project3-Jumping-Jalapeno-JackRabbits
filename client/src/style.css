@@ -71,3 +71,11 @@ html,body {
    visibility: hidden;
    color: red !important;
 }
+
+.navbar {
+   display: flex;
+}
+
+.navbar-toggler {
+   margin-left: auto;
+}

@@ -24,8 +24,8 @@ class Representatives extends Component {
       const USStateParam = 'CA';
       axios.get('/api/opensecrets/repsbystate/' + USStateParam, {
       })
-         .then(res => {
-            console.log('reps by state:', res.data);
+         .then(data => {
+            console.log('reps by state:', data);
          })
          .catch(err => {
             console.log(err);

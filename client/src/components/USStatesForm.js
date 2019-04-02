@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import '../style.css';
-import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
 
 class USStatesForm extends Component {

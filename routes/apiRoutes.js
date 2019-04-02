@@ -2,14 +2,6 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models');
 
-router.get('/opensecrets', (req, res) => {
-   console.log(process.env.REACT_APP_OPEN_SECRETS_API_KEY)
-   // axios.get('http://www.opensecrets.org/api/?method=candSummary&cid=N00026427&cycle=2018&output=json&apikey=' + APIkey)
-   //    .then(resp => {
-   //       console.log('resp:', resp);
-   //    })
-   res.end();
-});
 
 // get all books
 router.get('/books', (req, res) => {

@@ -8,6 +8,8 @@ const auth = jwt({
 const path = require("path");
 const mongoose = require('mongoose');
 const apiRoutes = require("./routes/apiRoutes");
+const openSecretsRoutes = require("./routes/openSecretsRoutes");
+const proPublicaRoutes = require("./routes/proPublicaRoutes");
 const authRoutes = require("./routes/authRoutes");
 const protectedApiRoutes = require("./routes/protectedApiRoutes");
 const app = express();
@@ -24,8 +26,11 @@ if (process.env.NODE_ENV === "production") {
 // Unprotected Routes
 app.use('/api', apiRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/opensecrets', openSecretsRoutes);
+app.use('/api/propublica', proPublicaRoutes);
+
 // Auth middleware
-app.use(auth);
+// app.use(auth);
 // Protected routes
 app.use('/protectedapi', protectedApiRoutes);
 

@@ -26,20 +26,16 @@ class Home extends Component {
    }
 
    componentDidMount() {
+      this.handleLoginData();
+      this.openSecretsApiTest();
+   }
+
+   handleLoginData = () => {
       // grab the token from local storage and set the user's data to state
       const token = localStorage.getItem('token');
       // console.log('token:', token);
       if (token) var tokenData = JSON.parse(window.atob(token.split('.')[1]));
       // console.log('token data:', tokenData);
-      this.setState({
-         userData: tokenData
-      });
-      this.openSecretsApiTest();
-   }
-
-   handleLoginData = () => {
-      const token = localStorage.getItem('token');
-      if (token) var tokenData = JSON.parse(window.atob(token.split('.')[1]));
       this.setState({
          userData: tokenData
       });

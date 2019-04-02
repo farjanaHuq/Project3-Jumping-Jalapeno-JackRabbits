@@ -5,7 +5,7 @@ import LoginModal from '../components/LoginModal';
 import SignupModal from '../components/SignupModal';
 import axios from "axios";
 
-class Search extends Component {
+class Home extends Component {
    constructor(props) {
       super(props);
       this.state = {
@@ -54,7 +54,7 @@ class Search extends Component {
       return (
          <div>
             <NavbarComponent
-               page={'Search'}
+               page={'Home'}
                userData={this.state.userData}
                handleLoginData={this.handleLoginData}
                handleLogout={this.handleLogout}
@@ -67,4 +67,4 @@ class Search extends Component {
    }
 }
 
-export default Search;
+export default Home;

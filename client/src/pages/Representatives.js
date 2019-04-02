@@ -5,7 +5,7 @@ import LoginModal from '../components/LoginModal';
 import SignupModal from '../components/SignupModal';
 // import axios from "axios";
 
-class Saved extends Component {
+class Representatives extends Component {
    constructor(props) {
       super(props);
       this.state = {
@@ -14,7 +14,7 @@ class Saved extends Component {
    }
 
    componentDidMount() {
-      this.handleLogin();
+      this.handleLoginData();
    }
 
    handleLoginData = () => {
@@ -35,7 +35,7 @@ class Saved extends Component {
       return (
          <div>
             <NavbarComponent
-               page={'Saved'}
+               page={'Representatives'}
                userData={this.state.userData}
                handleLoginData={this.handleLoginData}
                handleLogout={this.handleLogout}
@@ -48,4 +48,4 @@ class Saved extends Component {
    }
 }
 
-export default Saved;
+export default Representatives;

@@ -27,9 +27,9 @@ class BookDiv extends Component {
    }
 
    renderStorageBtn = () => {
-      if (this.props.page === 'Search') {
+      if (this.props.page === 'Home') {
          return <button onClick={this.saveBook} className="btn btn-primary save-btn" id={this.props.book._id}>Save</button>
-      } else if (this.props.page === 'Saved') {
+      } else if (this.props.page === 'Representatives') {
          return <button onClick={this.deleteBook} className="btn btn-primary delete-btn" id={this.props.book._id}>Delete</button>
       }
    }

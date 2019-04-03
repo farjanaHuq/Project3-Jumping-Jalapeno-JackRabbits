@@ -22,7 +22,7 @@ class LoginModal extends Component {
          password: document.getElementById('passwordField').value
       }
       console.log('signupData:', signupData);
-
+   
       // post it to api
       axios.post('/api/auth/register', signupData)
          .then(res => {

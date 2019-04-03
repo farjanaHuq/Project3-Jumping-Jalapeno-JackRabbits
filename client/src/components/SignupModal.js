@@ -22,15 +22,31 @@ class LoginModal extends Component {
          displayName: document.getElementById('displayNameField').value,
          password: document.getElementById('passwordField').value
       }
-      console.log('signupData:', signupData);
 
+      const regex = /\S+@\S+\.\S+/;
+      const isValid = regex.test(signupData.email);
+      console.log("Email validation", isValid);
+
+      console.log('signupData:', signupData);
+     
+      if(isValid===true){
+         document.getElementById('emailValidation-error-message').textContent = "Invalid Email";
+      }
+      
+      if(signupData.password !== document.getElementById('confirmPasswordField').value ){
+         document.getElementById('password-error-message').textContent = "Password does not match";
+      }
+      else{
       // post it to api
       axios.post('/api/auth/register', signupData)
-         .then(res => {
-            console.log('register res.data:', res.data)
-            this.props.handleClose();
-         })
-         .catch(err => console.log(err));
+      .then(res => {
+         console.log('register res.data:', res.data)
+         this.props.handleClose();
+      })
+      .catch(err => console.log(err));
+      }
+
+     
    }
 
    render() {
@@ -45,6 +61,7 @@ class LoginModal extends Component {
                      <Form.Group>
                         <Form.Label>Email address</Form.Label>
                         <Form.Control id="emailField" type="email" placeholder="Enter email" />
+                        <Form.Text className="text-danger error-message" id="emailValidation-error-message"> </Form.Text>
                      </Form.Group>
                      <Form.Group>
                         <Form.Label>Display Name</Form.Label>
@@ -53,6 +70,11 @@ class LoginModal extends Component {
                      <Form.Group>
                         <Form.Label>Password</Form.Label>
                         <Form.Control id="passwordField" type="password" placeholder="Password" />
+                     </Form.Group>
+                     <Form.Group>
+                        <Form.Label>ConfirmPassword</Form.Label>
+                        <Form.Control id="confirmPasswordField" type="confirmPassword" placeholder="confirmPassword" />
+                        <Form.Text className="text-danger error-message" id="password-error-message"> </Form.Text>
                      </Form.Group>
                   </Modal.Body>
                   <Modal.Footer>

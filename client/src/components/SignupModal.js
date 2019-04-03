@@ -23,17 +23,18 @@ class LoginModal extends Component {
          password: document.getElementById('passwordField').value
       }
 
-      const regex = /\S+@\S+\.\S+/;
+      const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      //  /\S+@\S+\.\S+/;
       const isValid = regex.test(signupData.email);
       console.log("Email validation", isValid);
 
       console.log('signupData:', signupData);
      
-      if(isValid===true){
+      if(!isValid){
          document.getElementById('emailValidation-error-message').textContent = "Invalid Email";
-      }
+      }        
       
-      if(signupData.password !== document.getElementById('confirmPasswordField').value ){
+      else if(signupData.password !== document.getElementById('confirmPasswordField').value ){
          document.getElementById('password-error-message').textContent = "Password does not match";
       }
       else{

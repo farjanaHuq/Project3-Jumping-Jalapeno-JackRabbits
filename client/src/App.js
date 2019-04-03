@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Search from "./pages/Search";
-import Saved from "./pages/Saved";
+import Home from "./pages/Home";
+import Representatives from "./pages/Representatives";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 class App extends Component {
@@ -13,16 +13,16 @@ class App extends Component {
           <Switch>
             <Route
               exact path='/'
-              component={Search}
+              component={Home}
             />
             <Route
-              exact path='/search'
-              component={Search}
+              exact path='/Home'
+              component={Home}
             />
           </Switch>
           <Route
-            exact path='/saved'
-            component={Saved}
+            exact path='/Representatives'
+            component={Representatives}
           />
         </div>
       </Router>

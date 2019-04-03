@@ -3,9 +3,11 @@ import NavbarComponent from '../components/Navbar';
 import Jumbotron from '../components/Jumbotron';
 import LoginModal from '../components/LoginModal';
 import SignupModal from '../components/SignupModal';
+import USStatesForm from '../components/USStatesForm';
+import axios from 'axios';
 // import axios from "axios";
 
-class Saved extends Component {
+class Representatives extends Component {
    constructor(props) {
       super(props);
       this.state = {
@@ -14,7 +16,21 @@ class Saved extends Component {
    }
 
    componentDidMount() {
-      this.handleLogin();
+      this.handleLoginData();
+      this.openSecretsGetRepsByState();
+   }
+
+   openSecretsGetRepsByState = () => {
+      const USStateParam = 'CA';
+      axios.get('/api/opensecrets/repsbystate/' + USStateParam, {
+      })
+         .then(data => {
+            console.log('reps by state:', data);
+         })
+         .catch(err => {
+            console.log(err);
+         });
+      ;
    }
 
    handleLoginData = () => {
@@ -35,12 +51,13 @@ class Saved extends Component {
       return (
          <div>
             <NavbarComponent
-               page={'Saved'}
+               page={'Representatives'}
                userData={this.state.userData}
                handleLoginData={this.handleLoginData}
                handleLogout={this.handleLogout}
             />
             <Jumbotron />
+            <USStatesForm />
             <LoginModal />
             <SignupModal />
          </div>
@@ -48,4 +65,4 @@ class Saved extends Component {
    }
 }
 
-export default Saved;
+export default Representatives;

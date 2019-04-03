@@ -34,18 +34,18 @@ class NavbarComponent extends Component {
 
    // conditional rendering
    renderNavLinks = () => {
-      if (this.props.page === "Search") {
+      if (this.props.page === "Home") {
          return (
             <Nav className="mr-auto">
-               <Link to={"/search"} className="nav-link disabled">Search</Link>
-               <Link to={"/saved"} className="nav-link active">Saved</Link>
+               <Link to={"/Home"} className="nav-link disabled">Home</Link>
+               <Link to={"/Representatives"} className="nav-link active">Representatives</Link>
             </Nav>
          )
-      } else if (this.props.page === "Saved") {
+      } else if (this.props.page === "Representatives") {
          return (
             <Nav className="mr-auto">
-               <Link to={"/search"} className="nav-link active">Search</Link>
-               <Link to={"/saved"} className="nav-link disabled">Saved</Link>
+               <Link to={"/Home"} className="nav-link active">Home</Link>
+               <Link to={"/Representatives"} className="nav-link disabled">Representatives</Link>
             </Nav>
          )
       }

@@ -5,7 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import axios from "axios";
 
-class LoginModal extends Component {
+class SignupModal extends Component {
    constructor(props, context) {
       super(props, context);
 
@@ -66,4 +66,4 @@ class LoginModal extends Component {
    }
 }
 
-export default LoginModal;
+export default SignupModal;

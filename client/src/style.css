@@ -43,21 +43,13 @@ html,body {
     -2px -1px 0 #000;
 }
 
-.book-div {
-   margin-top: 50px;
-}
 
-.book-image {
-   max-height: 200px;
-}
 
 .view-btn {
    margin-right: 15px;
 }
 
-.first-book-row {
-   margin-bottom: 10px;
-}
+
 
 .nav-link {
    cursor: pointer;

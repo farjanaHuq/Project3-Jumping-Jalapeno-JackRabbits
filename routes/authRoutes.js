@@ -15,7 +15,6 @@ router.post('/register', (req, res) => {
    const user = {
       displayName: req.body.displayName,
       email: req.body.email,
-      date: req.body.date,
       salt: helpers.getSalt()
    }
    user.hash = helpers.getHash(user.salt, req.body.password);

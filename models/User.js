@@ -27,7 +27,11 @@ const userSchema = new Schema({
    emailValidated: {
       type: Boolean,
       default: false
-   }
+   },
+   emailConfirmKey: [{
+      type: Schema.Types.ObjectId,
+      ref: "EmailConfirmKey"
+    }]
 });
 
 const User = mongoose.model('User', userSchema);

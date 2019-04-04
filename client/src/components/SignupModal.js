@@ -1,4 +1,3 @@
-
 import React, { Component } from "react";
 import '../style.css';
 import Button from 'react-bootstrap/Button';
@@ -72,7 +71,7 @@ class LoginModal extends Component {
                         <Form.Control id="passwordField" type="password" placeholder="Password" />
                      </Form.Group>
                      <Form.Group>
-                        <Form.Label>ConfirmPassword</Form.Label>
+                        <Form.Label>Confirm Password</Form.Label>
                         <Form.Control id="confirmPasswordField" type="confirmPassword" placeholder="confirmPassword" />
                         <Form.Text className="text-danger error-message" id="password-error-message"> </Form.Text>
                      </Form.Group>

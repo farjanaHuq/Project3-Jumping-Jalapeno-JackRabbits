@@ -5,6 +5,7 @@ const auth = jwt({
   secret: process.env.REACT_APP_JWT_SECRET,
   userProperty: 'payload'
 });
+
 const path = require("path");
 const mongoose = require('mongoose');
 const apiRoutes = require("./routes/apiRoutes");
@@ -13,6 +14,7 @@ const openSecretsApiRoutes = require("./routes/openSecretsRoutes");
 const proPublicaApiRoutes = require("./routes/proPublicaRoutes");
 const protectedApiRoutes = require("./routes/protectedApiRoutes");
 const app = express();
+
 const PORT = process.env.PORT || 3001;
 
 // Define middleware here

@@ -8,7 +8,6 @@ const jwt = require('jsonwebtoken');
 
 // register
 router.post('/register', (req, res) => {
-   console.log("auth resister hit");
    if (!req.body.displayName || !req.body.password || !req.body.email) {
       return res.status(400).json({ msg: new Error('Please put all data on body.') });
    }

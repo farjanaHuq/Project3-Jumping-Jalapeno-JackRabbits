@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "./pages/Home";
 import Representatives from "./pages/Representatives";
+import RepInfo from "./pages/RepInfo";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 class App extends Component {
@@ -23,6 +24,10 @@ class App extends Component {
           <Route
             exact path='/Representatives'
             component={Representatives}
+          />
+          <Route
+            exact path='/RepInfo'
+            component={RepInfo}
           />
         </div>
       </Router>

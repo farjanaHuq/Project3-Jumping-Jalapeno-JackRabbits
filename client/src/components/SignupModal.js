@@ -53,6 +53,10 @@ class LoginModal extends Component {
                         <Form.Label>Password</Form.Label>
                         <Form.Control id="passwordField" type="password" placeholder="Password" />
                      </Form.Group>
+                     <Form.Group>
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control id="passwordField" type="password" placeholder="Password" />
+                     </Form.Group>
                   </Modal.Body>
                   <Modal.Footer>
                      <Button onClick={this.handleSubmit} variant="primary" type="submit">

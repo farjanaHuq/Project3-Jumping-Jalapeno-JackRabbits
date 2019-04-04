@@ -4,6 +4,7 @@ const db = require('../models');
 const crypto = require('crypto');
 const helpers = require('./helpers/authHelpers');
 const jwt = require('jsonwebtoken');
+const emailHelper = require('./helpers/emailHash');
 
 
 // register
@@ -15,7 +16,7 @@ router.post('/register', (req, res) => {
       displayName: req.body.displayName,
       email: req.body.email,
       salt: helpers.getSalt(),
-      emailConfirmKey: 
+      emailConfirmKey: emailHelper.emailHashGenerator(email)
       
    }
    user.hash = helpers.getHash(user.salt, req.body.password);

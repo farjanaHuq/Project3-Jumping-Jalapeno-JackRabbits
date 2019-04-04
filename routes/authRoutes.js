@@ -14,11 +14,17 @@ router.post('/register', (req, res) => {
    const user = {
       displayName: req.body.displayName,
       email: req.body.email,
-      salt: helpers.getSalt()
+      salt: helpers.getSalt(),
+      emailConfirmKey: 
+      
    }
    user.hash = helpers.getHash(user.salt, req.body.password);
    db.User.create(user)
-      .then(resp => res.status(201).json({ msg: 'User Created' }))
+      .then(resp => {
+         res.status(201).json({ msg: 'User Created' });
+         console.log(resp);
+      })
+       
       .catch(err => res.status(400).json({ msg: err.toString() }));
 });
 

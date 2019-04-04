@@ -27,7 +27,10 @@ const userSchema = new Schema({
    emailValidated: {
       type: Boolean,
       default: false
-   }
+   },
+   emailConfirmKey: {
+      type: String
+    }
 });
 
 const User = mongoose.model('User', userSchema);

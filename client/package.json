@@ -3,16 +3,7 @@
   "version": "0.1.0",
   "description": "Mern Demo",
   "private": true,
-  "proxy": {
-    "/api/*": {
-      "target": "http://localhost:3001",
-      "secure": false
-    },
-    "/auth/*": {
-      "target": "http://localhost:3001",
-      "secure": false
-    }
-  },
+  "proxy": "http://localhost:3001",
   "dependencies": {
     "react": "^16.0.0",
     "react-dom": "^16.0.0",

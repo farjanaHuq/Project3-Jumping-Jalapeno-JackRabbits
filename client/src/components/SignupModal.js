@@ -5,7 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import axios from "axios";
 
-class LoginModal extends Component {
+class SignUpModal extends Component {
    constructor(props, context) {
       super(props, context);
 
@@ -13,23 +13,39 @@ class LoginModal extends Component {
       };
    }
 
+   handleClose = () => {
+      this.setState({ show: false });
+   }
+
+   handleShow = () => {
+      this.setState({ show: true });
+   }
+
+
    handleSubmit = event => {
       event.preventDefault();
+
       // get input field data
       const signupData = {
          email: document.getElementById('emailField').value,
          displayName: document.getElementById('displayNameField').value,
          password: document.getElementById('passwordField').value
       }
+
       console.log('signupData:', signupData);
 
+      console.log("Signup data confirm password", signupData);
       // post it to api
       axios.post('/api/auth/register', signupData)
          .then(res => {
-            console.log('register res.data:', res.data)
-            this.props.handleClose();
+            console.log('register res.data:', res.data);
          })
-         .catch(err => console.log(err));
+         .catch(err => {
+            console.log(err);
+
+         });
+      ;
+
    }
 
    render() {
@@ -53,10 +69,6 @@ class LoginModal extends Component {
                         <Form.Label>Password</Form.Label>
                         <Form.Control id="passwordField" type="password" placeholder="Password" />
                      </Form.Group>
-                     <Form.Group>
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control id="passwordField" type="password" placeholder="Password" />
-                     </Form.Group>
                   </Modal.Body>
                   <Modal.Footer>
                      <Button onClick={this.handleSubmit} variant="primary" type="submit">
@@ -70,4 +82,5 @@ class LoginModal extends Component {
    }
 }
 
-export default LoginModal;
+
+export default SignUpModal;

@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import NavbarComponent from '../components/Navbar';
-import Jumbotron from '../components/Jumbotron';
 import LoginModal from '../components/LoginModal';
 import SignupModal from '../components/SignupModal';
 import USStatesForm from '../components/USStatesForm';
+import RepresentativesForm from '../components/RepresentativesForm';
 import axios from 'axios';
 // import axios from "axios";
 
@@ -11,26 +11,27 @@ class Representatives extends Component {
    constructor(props) {
       super(props);
       this.state = {
-         userData: null
+         userData: null,
+         representatives: []
       };
    }
 
    componentDidMount() {
       this.handleLoginData();
-      this.openSecretsGetRepsByState();
    }
 
-   openSecretsGetRepsByState = () => {
-      const USStateParam = 'CA';
-      axios.get('/api/opensecrets/repsbystate/' + USStateParam, {
-      })
-         .then(data => {
-            console.log('reps by state:', data);
+   handleStateSubmit = event => {
+      event.preventDefault();
+      const selectedState = document.getElementById('USStateSelect').value;
+      axios.get('/api/opensecrets/repsbystate/' + selectedState)
+         .then(resp => {
+            console.log('legislators:', resp.data.response.legislator)
+            this.setState({ representatives: resp.data.response.legislator });
+            console.log('reps by state:', this.state.representatives);
          })
          .catch(err => {
             console.log(err);
          });
-      ;
    }
 
    handleLoginData = () => {
@@ -56,8 +57,12 @@ class Representatives extends Component {
                handleLoginData={this.handleLoginData}
                handleLogout={this.handleLogout}
             />
-            <Jumbotron />
-            <USStatesForm />
+            <USStatesForm
+               handleStateSubmit={this.handleStateSubmit}
+            />
+            <RepresentativesForm
+               representatives={this.state.representatives}
+            />
             <LoginModal />
             <SignupModal />
          </div>

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import NavbarComponent from '../components/Navbar';
 import Jumbotron from '../components/Jumbotron';
 import LoginModal from '../components/LoginModal';
-import SignupModal from '../components/SignupModal';
+import SignupModal from '../components/SignupModal(Farjana)';
 import axios from "axios";
 
 class Home extends Component {

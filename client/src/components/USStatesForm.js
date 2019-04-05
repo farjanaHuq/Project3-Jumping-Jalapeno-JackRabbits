@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import '../style.css';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import axios from "axios";
 
 class USStatesForm extends Component {
    constructor(props) {
@@ -19,7 +18,7 @@ class USStatesForm extends Component {
             <Form onSubmit={this.props.handleStateSubmit} id="USStateForm">
                <FormGroup>
                   <Label for="exampleSelect">Select State</Label>
-                  <Input type="select" name="select" id="USStateSelect">
+                  <Input onChange={this.props.handleStateSubmit} type="select" name="select" id="USStateSelect">
                      <option value="AL">Alabama</option>
                      <option value="AK">Alaska</option>
                      <option value="AZ">Arizona</option>

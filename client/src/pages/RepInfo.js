@@ -14,6 +14,29 @@ class RepInfo extends Component {
 
    componentDidMount() {
       this.handleLoginData();
+      // get represntative's cid from url parameter
+      const url_string = window.location.href;
+      const url = new URL(url_string);
+      const cid = url.searchParams.get("cid");
+      console.log(cid);
+
+      // get rep summary
+      axios.get('/api/opensecrets/repsummary/' + cid)
+         .then(resp => {
+            console.log('repsummary:', resp.data.response.summary["@attributes"]);
+         })
+         .catch(err => {
+            console.log(err);
+         });
+
+      // get rep industries
+      axios.get('/api/opensecrets/repindustries/' + cid)
+         .then(resp => {
+            console.log('repindustries:', resp.data.response.industries.industry);
+         })
+         .catch(err => {
+            console.log(err);
+         });
    }
 
    handleLoginData = () => {
@@ -32,7 +55,7 @@ class RepInfo extends Component {
       this.setState({ userData: null });
    }
 
-   
+
 
    render() {
       return (

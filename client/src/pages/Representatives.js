@@ -5,7 +5,6 @@ import SignupModal from '../components/SignupModal';
 import USStatesForm from '../components/USStatesForm';
 import RepresentativesForm from '../components/RepresentativesForm';
 import axios from 'axios';
-// import axios from "axios";
 
 class Representatives extends Component {
    constructor(props) {
@@ -18,20 +17,29 @@ class Representatives extends Component {
 
    componentDidMount() {
       this.handleLoginData();
+      this.repsByStateRequest('AL');
    }
 
    handleStateSubmit = event => {
       event.preventDefault();
       const selectedState = document.getElementById('USStateSelect').value;
+      this.repsByStateRequest(selectedState);
+   }
+
+   repsByStateRequest = selectedState => {
       axios.get('/api/opensecrets/repsbystate/' + selectedState)
          .then(resp => {
-            console.log('legislators:', resp.data.response.legislator)
             this.setState({ representatives: resp.data.response.legislator });
             console.log('reps by state:', this.state.representatives);
          })
          .catch(err => {
             console.log(err);
          });
+   }
+
+   handleRepSubmit = event => {
+      event.preventDefault();
+
    }
 
    handleLoginData = () => {

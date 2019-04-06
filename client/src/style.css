@@ -71,3 +71,95 @@ html,body {
 .navbar-toggler {
    margin-left: auto;
 }
+
+/* rep info page */
+
+.generalInfoDiv {
+   margin-top: 35px;
+   text-align: center;
+}
+
+.headshotHolder {
+   height: 175px;
+   width: 175px;
+   border-radius: 50%;
+   overflow: hidden;
+}
+
+.generalInfoYear {
+   font-style: italic;
+   color: rgb(0, 97, 189);
+}
+
+/* source of funds */
+
+.sourceOfFundsDiv {
+   margin-top: 35px;
+}
+
+.contributionsTable td:first-child {
+   position: relative;
+}
+
+.contributionsTable td:first-child::before {
+   content: "";
+   display: inline-block;
+   height: 20px;
+   left: 5px;
+   top: 17px;
+   position: absolute;
+   width: 20px;
+}
+
+.contributionsTable tr:nth-child(1) td:first-child::before {
+   background-color: rgb(0, 8, 51);
+}
+.contributionsTable tr:nth-child(2) td:first-child::before {
+   background-color: rgb(0, 41, 117);
+}
+.contributionsTable tr:nth-child(3) td:first-child::before {
+   background-color: rgb(0, 86, 199);
+}
+.contributionsTable tr:nth-child(4) td:first-child::before {
+   background-color: rgb(0, 107, 207);
+}
+.contributionsTable tr:nth-child(5) td:first-child::before {
+   background-color: rgb(0, 153, 255);
+}
+
+.contributionsTable td {
+   border-bottom: 1px solid grey;
+   border-top: 1px solid grey;
+   padding: 15px 30px 15px 30px;
+}
+
+.contributionsTable td:not(:first-child) {
+   padding: 15px 30px 15px 0px;
+}
+
+/* funds graph */
+
+.fundsGraph {
+   margin-top: 20px;
+   margin-bottom: 20px;
+}
+
+.fundsGraph td {
+   height: 50px;
+}
+
+.fundsGraph td:nth-child(1) {
+   background-color: rgb(0, 8, 51);
+}
+.fundsGraph td:nth-child(2) {
+   background-color: rgb(0, 41, 117);
+}
+.fundsGraph td:nth-child(3) {
+   background-color: rgb(0, 86, 199);
+}
+.fundsGraph td:nth-child(4) {
+   background-color: rgb(0, 107, 207);
+}
+.fundsGraph td:nth-child(5) {
+   background-color: rgb(0, 153, 255);
+}

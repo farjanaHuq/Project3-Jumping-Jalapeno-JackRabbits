@@ -3,12 +3,18 @@ import NavbarComponent from '../components/Navbar';
 import LoginModal from '../components/LoginModal';
 import SignupModal from '../components/SignupModal';
 import axios from "axios";
+import RepGeneralInfo from "../components/RepGeneralInfo";
+import SourceOfFunds from "../components/SourceOfFunds";
+import { Container, Row, Col } from 'reactstrap';
 
 class RepInfo extends Component {
    constructor(props) {
       super(props);
       this.state = {
-         userData: null
+         userData: null,
+         repSummary: {},
+         repIndustries: {},
+         scrapeSummary: {}
       };
    }
 
@@ -23,7 +29,9 @@ class RepInfo extends Component {
       // get rep summary
       axios.get('/api/opensecrets/repsummary/' + cid)
          .then(resp => {
-            console.log('repsummary:', resp.data.response.summary["@attributes"]);
+            const repSummary = resp.data.response.summary["@attributes"];
+            console.log('repsummary:', repSummary);
+            this.setState({ repSummary: repSummary });
          })
          .catch(err => {
             console.log(err);
@@ -32,7 +40,20 @@ class RepInfo extends Component {
       // get rep industries
       axios.get('/api/opensecrets/repindustries/' + cid)
          .then(resp => {
-            console.log('repindustries:', resp.data.response.industries.industry);
+            const repIndustries = resp.data.response.industries.industry;
+            console.log('repindustries:', repIndustries);
+            this.setState({ repIndustries: repIndustries });
+         })
+         .catch(err => {
+            console.log(err);
+         });
+
+      // scrape summary data
+      axios.get('/api/opensecrets/scrapesummary/' + cid)
+         .then(resp => {
+            const scrapeSummary = resp.data;
+            console.log('scrapesummary data:', scrapeSummary);
+            this.setState({ scrapeSummary: scrapeSummary });
          })
          .catch(err => {
             console.log(err);
@@ -60,6 +81,9 @@ class RepInfo extends Component {
    render() {
       return (
          <div>
+            {console.log('repSummary:', this.state.repSummary)}
+            {console.log('repIndustries:', this.state.repIndustries)}
+            {console.log('scrapeSummary:', this.state.scrapeSummary)}
             <NavbarComponent
                page={'Home'}
                userData={this.state.userData}
@@ -68,6 +92,26 @@ class RepInfo extends Component {
             />
             <LoginModal />
             <SignupModal />
+            <Container>
+
+               <Row>
+                  <Col className="generalInfoCol d-flex align-items-center flex-column">
+                     <RepGeneralInfo
+                        repSummary={this.state.repSummary}
+                        scrapeSummary={this.state.scrapeSummary}
+                     />
+                  </Col>
+               </Row>
+
+               <Row>
+                  <Col md="6">
+                     <SourceOfFunds
+                        scrapeSummary={this.state.scrapeSummary}
+                     />
+                  </Col>
+               </Row>
+
+            </Container>
          </div>
       );
    }

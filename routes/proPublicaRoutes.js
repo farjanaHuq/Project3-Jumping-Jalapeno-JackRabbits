@@ -19,31 +19,38 @@ router.get('/all-members/:congress/:chamber', (req, res) => {
         }})
         .then(resp => {
            console.log('get votes by type data', resp.data);
-           var result = resp.data;
-           var memberData = [{}];
-    
-        //    for(var i=1;i<5; i++){
-        //            console.log(`memberId: ${result.results[i].members[i].id},
-        //                  title:${result.results[i].members[i].title},
-        //                  api_uri: ${result.results[i].members[i].api_uri},
-        //                  first_name: ${result.results[i].members[i].first_name},
-        //                  last_name: ${result.results[i].members[i].last_name}`)
-        //     }
-            //    memberData.push({
-            //       memberId:result[i].id,
-            //       title:result[i].title,
-            //       api_uri: result[i].api_uri,
-            //       first_name: result[i].first_name,
-            //       last_name: result[i].last_name  
-            //    })
+           console.log('after 1st log')
+           var respData = resp.data;
+           var memberData = [];
            
-        //console.log(memberData);
-           //res.json(memberData);
-        res.json(result.results[0].members[0]);
+           //res.json(respData);
+    
+          
+            for(var j=0; j<6; j++){
+               // console.log(`
+               //    memberId: ${respData.results[0].members[j].id},
+               //    title:${respData.results[0].members[j].title},
+               //    api_uri: ${respData.results[0].members[j].api_uri},
+               //    first_name: ${respData.results[0].members[j].first_name},
+               //    last_name: ${respData.results[0].members[j].last_name}`
+               // );
+
+               memberData.push({
+                  memberId:respData.results[0].members[j].id,
+                  title:respData.results[0].members[j].title,
+                  api_uri: respData.results[0].members[j].api_uri,
+                  first_name: respData.results[0].members[j].first_name,
+                  last_name: respData.results[0].members[j].last_name 
+               })
+            }
+              
+            res.json(memberData);
+           //console.log(memberData);
+            
         })
-        .catch(err => {
+      .catch(err => {
            console.log(err);
-        });
+      });
 });
 //==========================================================Specific Member==============================================================
 //https://api.propublica.org/congress/v1/members/{member-id}.json

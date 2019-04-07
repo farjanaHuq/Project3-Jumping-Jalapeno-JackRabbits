@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import '../style.css';
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Form, FormGroup, Label, Input } from 'reactstrap';
 
 class USStatesForm extends Component {
    constructor(props) {
@@ -15,7 +15,7 @@ class USStatesForm extends Component {
    render() {
       return (
          <div className="container">
-            <Form onSubmit={this.props.handleStateSubmit} id="USStateForm">
+            <Form id="USStateForm">
                <FormGroup>
                   <Label for="exampleSelect">Select State</Label>
                   <Input onChange={this.props.handleStateSubmit} type="select" name="select" id="USStateSelect">
@@ -71,7 +71,6 @@ class USStatesForm extends Component {
                      <option value="WY">Wyoming</option>
                   </Input>
                </FormGroup>
-               <Button>Submit</Button>
             </Form>
          </div>
       );

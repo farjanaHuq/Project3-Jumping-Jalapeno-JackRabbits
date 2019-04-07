@@ -3,6 +3,33 @@ html,body {
    flex-direction: column;
    flex-grow: 1;
    min-height: 100vh;
+   background-color: #212529 !important;
+   color: white !important;
+}
+
+.modal-header, .modal-body, .modal-footer, input, select {
+   background-color: #212529 !important;
+   color: white !important;
+}
+
+input::placeholder {
+   color: rgb(199, 199, 199) !important;
+}
+
+.modal-header {
+   border-bottom: 1px solid rgb(83, 83, 83) !important;
+}
+
+.modal-footer {
+   border-top: 1px solid rgb(90, 90, 90) !important;
+}
+
+input, select {
+   border: 1px solid rgb(100, 100, 100) !important;
+}
+
+.industryFundsDiv a {
+   color: rgb(0, 174, 255) !important;
 }
 
 .container {
@@ -127,13 +154,13 @@ html,body {
    background-color: rgb(0, 153, 255);
 }
 
-.contributionsTable td {
-   border-bottom: 1px solid grey;
-   border-top: 1px solid grey;
+.contributionsTable td, .industriesTable td {
+   border-bottom: 1px solid rgb(87, 87, 87);
+   border-top: 1px solid rgb(87, 87, 87);
    padding: 15px 30px 15px 30px;
 }
 
-.contributionsTable td:not(:first-child) {
+.contributionsTable td:not(:first-child), .industriesTable td {
    padding: 15px 30px 15px 0px;
 }
 
@@ -162,4 +189,24 @@ html,body {
 }
 .fundsGraph td:nth-child(5) {
    background-color: rgb(0, 153, 255);
+}
+
+/* industry funds */
+
+.industryFundsDiv {
+   margin-top: 35px;
+}
+
+.div-header {
+   margin-bottom: 20px;
+   background: #648880;
+   background: linear-gradient(to right, #004985, #64888000 100%, #293f5000);
+   color: white;
+   padding: 5px;
+   /* text-align: center; */
+}
+
+.industry-btn {
+   text-align: start !important;
+   padding: 5px !important;
 }

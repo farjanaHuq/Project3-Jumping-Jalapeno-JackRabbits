@@ -5,6 +5,7 @@ import SignupModal from '../components/SignupModal';
 import axios from "axios";
 import RepGeneralInfo from "../components/RepGeneralInfo";
 import SourceOfFunds from "../components/SourceOfFunds";
+import IndustryFunds from "../components/IndustryFunds";
 import { Container, Row, Col } from 'reactstrap';
 
 class RepInfo extends Component {
@@ -107,6 +108,9 @@ class RepInfo extends Component {
                   <Col md="6">
                      <SourceOfFunds
                         scrapeSummary={this.state.scrapeSummary}
+                     />
+                     <IndustryFunds
+                        repIndustries={this.state.repIndustries}
                      />
                   </Col>
                </Row>

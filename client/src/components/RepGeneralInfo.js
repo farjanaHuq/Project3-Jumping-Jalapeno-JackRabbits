@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import '../style.css';
-import { Container, Row, Col } from 'reactstrap';
-import { Badge } from 'reactstrap';
 // import axios from "axios";
 
 class RepGeneralInfo extends Component {
@@ -31,6 +29,7 @@ class RepGeneralInfo extends Component {
                <img
                   className="repHeadshot"
                   src={this.props.scrapeSummary.headshot}
+                  alt="Rep Headshot"
                />
             </div>
             <h2>{this.props.repSummary.cand_name}</h2>

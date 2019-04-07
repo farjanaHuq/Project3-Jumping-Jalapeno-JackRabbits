@@ -17,8 +17,7 @@ class SourceOfFunds extends Component {
    render() {
       return (
          <div className="sourceOfFundsDiv">
-            <h2>Source of Funds</h2>
-
+            <h2 className="div-header">Source of Funds</h2>
 
             <table className="fundsGraph">
                <tbody>

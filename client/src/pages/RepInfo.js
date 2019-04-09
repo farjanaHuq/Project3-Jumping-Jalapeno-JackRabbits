@@ -6,6 +6,7 @@ import axios from "axios";
 import RepGeneralInfo from "../components/RepGeneralInfo";
 import SourceOfFunds from "../components/SourceOfFunds";
 import IndustryFunds from "../components/IndustryFunds";
+import Legislation from "../components/Legislation";
 import { Container, Row, Col } from 'reactstrap';
 
 class RepInfo extends Component {
@@ -15,7 +16,8 @@ class RepInfo extends Component {
          userData: null,
          repSummary: {},
          repIndustries: {},
-         scrapeSummary: {}
+         scrapeSummary: {},
+         legislationData: {}
       };
    }
 
@@ -59,6 +61,27 @@ class RepInfo extends Component {
          .catch(err => {
             console.log(err);
          });
+
+
+   }
+
+   getCongressMembers = chamberLetter => {
+      console.log('chamberLetter:', chamberLetter)
+      if (chamberLetter === 'H') {
+         var chamber = 'house';
+      } else if (chamberLetter === 'S') {
+         var chamber = 'senate';
+      }
+      console.log('chamber:', chamber)
+      axios.get(`/api/propublica/all-members/${chamber}`)
+         .then(resp => {
+            console.log('congress members:', resp);
+            this.setState({ legislationData: resp })
+         })
+         .catch(err => {
+            console.log(err);
+         });
+      ;
    }
 
    handleLoginData = () => {
@@ -82,6 +105,8 @@ class RepInfo extends Component {
    render() {
       return (
          <div>
+            {this.getCongressMembers(this.state.repSummary.chamber)}
+            {console.log('this.state.repSummary.chamber:', this.state.repSummary.chamber)}
             {console.log('repSummary:', this.state.repSummary)}
             {console.log('repIndustries:', this.state.repIndustries)}
             {console.log('scrapeSummary:', this.state.scrapeSummary)}
@@ -102,18 +127,30 @@ class RepInfo extends Component {
                         scrapeSummary={this.state.scrapeSummary}
                      />
                   </Col>
+
                </Row>
 
                <Row>
+
                   <Col md="6">
-                     <SourceOfFunds
-                        scrapeSummary={this.state.scrapeSummary}
-                     />
                      <IndustryFunds
                         repIndustries={this.state.repIndustries}
                      />
+                     <SourceOfFunds
+                        scrapeSummary={this.state.scrapeSummary}
+                     />
                   </Col>
+
+                  <Col md="6">
+                     <Legislation
+                        legislationData={this.state.legislationData}
+                     />
+                  </Col>
+
                </Row>
+
+
+
 
             </Container>
          </div>

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 // import { Button } from 'reactstrap';
 import '../style.css';
-// import axios from "axios";
+import axios from "axios";
 
 class IndustryFunds extends Component {
    constructor(props) {
@@ -21,6 +21,7 @@ class IndustryFunds extends Component {
    selectIndustry = event => {
       event.preventDefault();
       
+
    }
 
    render() {

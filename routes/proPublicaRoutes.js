@@ -154,17 +154,23 @@ router.get('/chamber-house/:votesByType', (req, res) => {
 });
 
 // get all recent bills(to get subjects)
-router.get('/all-bills/:type', (req, res) => {
+router.get('/all-bills/:congress/:type', (req, res) => {
+   // congress: 105-115
    // type: introduced, updated, active, passed, enacted or vetoed
    axios.get(
-      `https://api.propublica.org/congress/v1/115/both/bills/${req.params.type}.json`,
+      `https://api.propublica.org/congress/v1/${req.params.congress}/both/bills/${req.params.type}.json`,
       {
          headers: {
             'X-API-Key': `${apiKey}`
          }
       })
       .then(resp => {
-         res.json(resp.data);
+         const subjectsArr = [];
+         resp.data.results[0].bills.forEach(elem => {
+            subjectsArr.push(elem.primary_subject);
+         });
+         console.log(subjectsArr);
+         res.json(subjectsArr);
       })
       .catch(err => {
          console.log(err);

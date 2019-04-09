@@ -1,5 +1,5 @@
-
 import React, { Component } from "react";
+import { Form, FormGroup, Label, Input, FormFeedback, FormText } from 'reactstrap';
 import '../style.css';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
@@ -62,6 +62,7 @@ class SignupModal extends Component {
                      <Form.Group>
                         <Form.Label>Email address</Form.Label>
                         <Form.Control id="emailField" type="email" placeholder="Enter email" />
+                        <FormFeedback valid>Sweet! that name is available</FormFeedback>
                         <Form.Text className="text-danger error-message" id="emailValidation-error-message"> </Form.Text>
                      </Form.Group>
                      <Form.Group>

@@ -10,8 +10,8 @@ const apiKey = process.env.REACT_APP_PRO_PUBLICA_API_KEY;
 
 //get all members
 router.get('/all-members/:congress/:chamber', (req, res) => {  
-    const congress = req.params.congress;
-    const chamber = req.params.chamber;
+    const congress = req.params.congress;        // congress 80-115 for Senate, congress 102-115 for House
+    const chamber = req.params.chamber;          //'house', 'senate'
     axios.get(    
         `https://api.propublica.org/congress/v1/${congress}/${chamber}/members.json`,
         { headers: {
@@ -125,7 +125,7 @@ router.get('/chamber-house/:votesByType', (req, res) => {
     const chamber = 'house';
     const votesByType = req.params.votesByType;    // missed, party, loneno or perfect
 
-   for(var congressHouse=102; congressHouse<=115; congressHouse++){     // congress 80-115 for Senate
+   for(var congressHouse=102; congressHouse<=115; congressHouse++){     // congress 102-115 for House
     axios.get(
         
         `https://api.propublica.org/congress/v1/${congressHouse}/${chamber}/votes/${votesByType}`,

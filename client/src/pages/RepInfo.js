@@ -16,8 +16,7 @@ class RepInfo extends Component {
          userData: null,
          repSummary: {},
          repIndustries: {},
-         scrapeSummary: {},
-         legislationData: {}
+         scrapeSummary: {}
       };
    }
 
@@ -62,7 +61,6 @@ class RepInfo extends Component {
             console.log(err);
          });
 
-
    }
 
    getCongressMembers = chamberLetter => {
@@ -76,7 +74,26 @@ class RepInfo extends Component {
       axios.get(`/api/propublica/all-members/${chamber}`)
          .then(resp => {
             console.log('congress members:', resp);
-            this.setState({ legislationData: resp })
+            if (!this.state.allCongressMembers) {
+               this.setState({ allCongressMembers: resp.data });
+               console.log('this.state.allCongressMembers:', this.state.allCongressMembers);
+               // splitCandName(this.state.repSummary.cand_name)
+               const i = this.state.allCongressMembers.findIndex(
+                  (elem => elem.first_name === this.splitCandName(this.state.repSummary.cand_name)[1]) &&
+                  (elem => elem.last_name === this.splitCandName(this.state.repSummary.cand_name)[0])
+               );
+               console.log('i:', i);
+               const memberID = this.state.allCongressMembers[i].memberId;
+               axios.get('api/propublica/specific-member/' + memberID)
+                  .then(resp => {
+                     console.log('votes by specific member data:', resp);
+                     this.setState({ specificMemberVotes: resp });
+                  })
+                  .catch(err => {
+                     console.log(err);
+                  });
+               ;
+            }
          })
          .catch(err => {
             console.log(err);
@@ -100,7 +117,20 @@ class RepInfo extends Component {
       this.setState({ userData: null });
    }
 
+   splitCandName = candName => {
+      return candName.split(', ');
+   }
 
+   getIndustryData = industry => {
+      axios.get('api/propublica/recent-Bills/' + industry)
+         .then(resp => {
+            console.log('bills of specific industry:', resp);
+         })
+         .catch(err => {
+            console.log(err);
+         });
+      ;
+   }
 
    render() {
       return (
@@ -135,6 +165,7 @@ class RepInfo extends Component {
                   <Col md="6">
                      <IndustryFunds
                         repIndustries={this.state.repIndustries}
+                        getIndustryData={this.getIndustryData}
                      />
                      <SourceOfFunds
                         scrapeSummary={this.state.scrapeSummary}
@@ -143,14 +174,11 @@ class RepInfo extends Component {
 
                   <Col md="6">
                      <Legislation
-                        legislationData={this.state.legislationData}
+                        specificMemberVotes={this.state.specificMemberVotes}
                      />
                   </Col>
 
                </Row>
-
-
-
 
             </Container>
          </div>

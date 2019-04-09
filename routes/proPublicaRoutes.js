@@ -57,17 +57,18 @@ router.get('/all-members/:chamber', (req, res) => {
 //https://api.propublica.org/congress/v1/members/{member-id}.json
 
 //get a specific member
-router.get('/specific-member', (req, res) => {
-   const memberId = 'Boehner';
+router.get('/specific-member/:memberId', (req, res) => {
+   console.log('memberId:', req.params.memberId);
+   const memberId = req.params.memberId;
    axios.get(
-      `https://api.propublica.org/congress/v1/members/${memberId}.json`,
+      `https://api.propublica.org/congress/v1/members/${memberId}/votes.json`,
       {
          headers: {
             'X-API-Key': `${apiKey}`
          }
       })
       .then(resp => {
-         console.log('get votes by type data', resp.data);
+         console.log('specific members votes:', resp.data);
          res.json(resp.data);
       })
       .catch(err => {
@@ -79,8 +80,8 @@ router.get('/specific-member', (req, res) => {
 //   -H "X-API-Key: PROPUBLICA_API_KEY"
 
 //get recent Bills by a specific subject
-router.get('/recent-Bills', (req, res) => {
-   const subject = 'meat';
+router.get('/recent-Bills/:subject', (req, res) => {
+   const subject = req.params.subject;
    axios.get(
       `https://api.propublica.org/congress/v1/bills/subjects/${subject}.json`,
       {
@@ -150,9 +151,26 @@ router.get('/chamber-house/:votesByType', (req, res) => {
          });
 
    }
-
 });
 
+// get all recent bills(to get subjects)
+router.get('/all-bills/:type', (req, res) => {
+   // type: introduced, updated, active, passed, enacted or vetoed
+   axios.get(
+      `https://api.propublica.org/congress/v1/115/both/bills/${req.params.type}.json`,
+      {
+         headers: {
+            'X-API-Key': `${apiKey}`
+         }
+      })
+      .then(resp => {
+         res.json(resp.data);
+      })
+      .catch(err => {
+         console.log(err);
+      });
+   ;
+});
 
 
 

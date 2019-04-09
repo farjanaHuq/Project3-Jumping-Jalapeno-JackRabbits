@@ -27,7 +27,7 @@ if (process.env.NODE_ENV === "production") {
 app.use('/api', apiRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/opensecrets', openSecretsApiRoutes);
-app.use('/api/propublic', proPublicaApiRoutes);
+app.use('/api/propublica', proPublicaApiRoutes);
 // Auth middleware
 app.use(auth);
 // Protected routes

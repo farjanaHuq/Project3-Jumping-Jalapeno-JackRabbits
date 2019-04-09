@@ -11,12 +11,14 @@ class Legislation extends Component {
    }
 
    componentDidMount() {
-      // console.log('this.props.legislationData:', this.props.legislationData);
+
    }
 
    render() {
       return (
          <div className="legislationDiv">
+            {/* {console.log('this.props.legislationData:', this.props.legislationData)} */}
+
          </div>
       );
    }

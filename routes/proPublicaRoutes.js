@@ -1,28 +1,39 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
-const listOfIndustries = require('../listOfIndustries.json');
+const listOfIndustries = require('../listOfIndustries');
 
-var newIndustry = [];
+var newList = [];
+compare = (arr1,arr2) => {
+
+   const matchingArr = []
+   arr1.map(elem1 =>arr2.map(elem2 =>
+     {
+       if(elem1 !== elem2){
+         arr2.push(elem1);
+       }
+     }))
+     const newArr = [];
+     arr2.forEach(function(item) {
+         if(newArr.indexOf(item) < 0)  {
+             newArr.push(item);
+         }  
+     })
+    return  newArr;
+ }
+ 
 
 removeDuplicateElement = (arr) => {
+   var newIndustry = [];
    arr.forEach(function(item) {
       if(newIndustry.indexOf(item) < 0 && item !== '')  {
           newIndustry.push(item);
       }   
   })
-  console.log("New Industry", newIndustry);
+  //console.log("New Industry", newIndustry);
   return newIndustry;
 }
 
-CompareBtnArrElem = (array1, array2) => {
-   for(var i in array2){
-      if(array1.indexOf(array2[i])>-1){
-         array2.push(array1);
-         console.log('list of industries',array2 )
-         }
-  }
-} 
 
 
 //console.log(process.env.REACT_APP_PRO_PUBLICA_API_KEY)
@@ -47,13 +58,14 @@ router.get('/all-bills/:congress/:type', (req, res) => {
          // res.json(subjectsArr);
          const newSubArr = removeDuplicateElement(subjectsArr);
          res.json(newSubArr);
-         CompareBtnArrElem(newSubArr, listOfIndustries);
-         
+         newList = compare(newSubArr, listOfIndustries);  
+         console.log(newList);
       })
       .catch(err => {
          console.log(err);
       });
-   ;
+      listOfIndustries.push(newList);
+      console.log("List of Industries", listOfIndustries);
 });
 
 //============================================================ All Members ============================================================

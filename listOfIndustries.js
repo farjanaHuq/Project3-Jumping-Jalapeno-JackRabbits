@@ -44,7 +44,15 @@ var listOfIndustries = [
     'Government operations and politics',
     'Public lands and natural resources',
     'Housing and community development',
-    'Emergency management'
+    'Emergency management',
+    'Private legislation',
+    'Civil rights and liberties, minority issues',
+    'Labor and employment',
+    'Finance and financial sector',
+    'Science, technology, communications',
+    'Energy',
+    'Economics and Public Finance',
+    'Emergency Management'
 
 ]
 

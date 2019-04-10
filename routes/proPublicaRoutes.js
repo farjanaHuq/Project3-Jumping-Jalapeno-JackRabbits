@@ -34,6 +34,8 @@ removeDuplicateElement = (arr) => {
   return newIndustry;
 }
 
+var updatedListOfIndustries = removeDuplicateElement(listOfIndustries);
+console.log("list of updated industries", updatedListOfIndustries);
 
 
 //console.log(process.env.REACT_APP_PRO_PUBLICA_API_KEY)
@@ -59,13 +61,13 @@ router.get('/all-bills/:congress/:type', (req, res) => {
          const newSubArr = removeDuplicateElement(subjectsArr);
          res.json(newSubArr);
          newList = compare(newSubArr, listOfIndustries);  
-         console.log(newList);
+         console.log("newList", newList);
+         res.json(newList);
       })
       .catch(err => {
          console.log(err);
       });
-      listOfIndustries.push(newList);
-      console.log("List of Industries", listOfIndustries);
+      
 });
 
 //============================================================ All Members ============================================================

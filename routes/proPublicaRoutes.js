@@ -164,7 +164,13 @@ router.get('/all-bills/:type', (req, res) => {
          }
       })
       .then(resp => {
-         res.json(resp.data);
+         const subjectArr = [];
+         resp.data.results[0].bills.map(elem => {
+            elem = elem.primary_subject;
+            subjectArr.push(elem);
+         })
+         //res.json(resp.data.results[0].bills);
+         res.json(subjectArr);
       })
       .catch(err => {
          console.log(err);

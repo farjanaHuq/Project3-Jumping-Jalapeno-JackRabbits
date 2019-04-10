@@ -1,9 +1,60 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
+const listOfIndustries = require('../listOfIndustries.json');
+
+var newIndustry = [];
+
+removeDuplicateElement = (arr) => {
+   arr.forEach(function(item) {
+      if(newIndustry.indexOf(item) < 0 && item !== '')  {
+          newIndustry.push(item);
+      }   
+  })
+  console.log("New Industry", newIndustry);
+  return newIndustry;
+}
+
+CompareBtnArrElem = (array1, array2) => {
+   for(var i in array2){
+      if(array1.indexOf(array2[i])>-1){
+         array2.push(array1);
+         console.log('list of industries',array2 )
+         }
+  }
+} 
+
 
 //console.log(process.env.REACT_APP_PRO_PUBLICA_API_KEY)
 const apiKey = process.env.REACT_APP_PRO_PUBLICA_API_KEY;
+
+// get all recent bills(to get subjects)
+router.get('/all-bills/:congress/:type', (req, res) => {
+   // congress: 105-115
+   // type: introduced, updated, active, passed, enacted or vetoed
+   axios.get(
+      `https://api.propublica.org/congress/v1/${req.params.congress}/both/bills/${req.params.type}.json`,
+      {
+         headers: {
+            'X-API-Key': `${apiKey}`
+         }
+      })
+      .then(resp => {    
+         var subjectsArr = [];
+         resp.data.results[0].bills.forEach(elem => {
+            subjectsArr.push(elem.primary_subject);
+         });
+         // res.json(subjectsArr);
+         const newSubArr = removeDuplicateElement(subjectsArr);
+         res.json(newSubArr);
+         CompareBtnArrElem(newSubArr, listOfIndustries);
+         
+      })
+      .catch(err => {
+         console.log(err);
+      });
+   ;
+});
 
 //============================================================ All Members ============================================================
 //https://api.propublica.org/congress/v1/{congress}/{chamber}/members.json
@@ -28,13 +79,6 @@ router.get('/all-members/:chamber', (req, res) => {
 
 
          for (var j = 0; j < respData.results[0].members.length; j++) {
-            // console.log(`
-            //    memberId: ${respData.results[0].members[j].id},
-            //    title:${respData.results[0].members[j].title},
-            //    api_uri: ${respData.results[0].members[j].api_uri},
-            //    first_name: ${respData.results[0].members[j].first_name},
-            //    last_name: ${respData.results[0].members[j].last_name}`
-            // );
 
             memberData.push({
                memberId: respData.results[0].members[j].id,
@@ -153,30 +197,7 @@ router.get('/chamber-house/:votesByType', (req, res) => {
    }
 });
 
-// get all recent bills(to get subjects)
-router.get('/all-bills/:congress/:type', (req, res) => {
-   // congress: 105-115
-   // type: introduced, updated, active, passed, enacted or vetoed
-   axios.get(
-      `https://api.propublica.org/congress/v1/${req.params.congress}/both/bills/${req.params.type}.json`,
-      {
-         headers: {
-            'X-API-Key': `${apiKey}`
-         }
-      })
-      .then(resp => {
-         const subjectsArr = [];
-         resp.data.results[0].bills.forEach(elem => {
-            subjectsArr.push(elem.primary_subject);
-         });
-         console.log(subjectsArr);
-         res.json(subjectsArr);
-      })
-      .catch(err => {
-         console.log(err);
-      });
-   ;
-});
+
 
 
 

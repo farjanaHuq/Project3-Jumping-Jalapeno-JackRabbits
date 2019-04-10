@@ -7,7 +7,7 @@ const auth = jwt({
 });
 const path = require("path");
 const mongoose = require('mongoose');
-const apiRoutes = require("./routes/apiRoutes");
+const commentAndRatingRoutes = require("./routes/commentAndRatingRoutes");
 const authRoutes = require("./routes/authRoutes");
 const openSecretsApiRoutes = require("./routes/openSecretsRoutes");
 const proPublicaApiRoutes = require("./routes/proPublicaRoutes");
@@ -24,7 +24,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 // Unprotected Routes
-app.use('/api', apiRoutes);
+app.use('/api/commentAndRating', commentAndRatingRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/opensecrets', openSecretsApiRoutes);
 app.use('/api/propublica', proPublicaApiRoutes);

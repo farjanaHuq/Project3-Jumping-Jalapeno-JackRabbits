@@ -4,6 +4,7 @@ import LoginModal from '../components/LoginModal';
 import SignupModal from '../components/SignupModal(Farjana)';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class NavbarComponent extends Component {
    constructor(props) {
@@ -54,17 +55,17 @@ class NavbarComponent extends Component {
       if (!this.props.userData) {
          return (
             <Nav>
-               <Navbar.Text onClick={this.handleLoginShow} className="nav-link active">Log In</Navbar.Text>
-               <Navbar.Text onClick={this.handleSignupShow} className="nav-link active">Sign Up</Navbar.Text>
+               <Navbar.Text onClick={this.handleLoginShow} className="nav-link active"><FontAwesomeIcon icon="sign-in-alt" /> Log In</Navbar.Text>
+               <Navbar.Text onClick={this.handleSignupShow} className="nav-link active"><FontAwesomeIcon icon="user-plus" /> Sign Up</Navbar.Text>
             </Nav>
          );
       } else {
          return (
             <Nav>
                <Navbar.Text className="nav-link active" id="logged-in-msg">
-                  Logged in as: {this.props.userData.displayName}
+                  <FontAwesomeIcon icon="user" /> {this.props.userData.displayName}
                </Navbar.Text>
-               <Navbar.Text onClick={this.props.handleLogout} className="nav-link active">Log Out</Navbar.Text>
+               <Navbar.Text onClick={this.props.handleLogout} className="nav-link active"><FontAwesomeIcon icon="sign-out-alt" /> Log Out</Navbar.Text>
             </Nav>
          )
       }

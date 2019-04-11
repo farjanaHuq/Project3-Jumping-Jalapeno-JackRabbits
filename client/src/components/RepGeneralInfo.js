@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import '../style.css';
-// import axios from "axios";
 
 class RepGeneralInfo extends Component {
    constructor(props) {
@@ -25,6 +24,8 @@ class RepGeneralInfo extends Component {
    render() {
       return (
          <div className="generalInfoDiv d-flex flex-column align-items-center">
+            {/* <FontAwesomeIcon icon="thumbs-up" />
+            <FontAwesomeIcon icon="thumbs-down" /> */}
             <div className="headshotHolder">
                <img
                   className="repHeadshot"

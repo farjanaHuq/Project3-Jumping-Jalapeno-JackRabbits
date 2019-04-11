@@ -14,40 +14,29 @@ router.post('/comment/', (req, res) => {
       .then(function (data) {
          console.log('data id:', data._id);
          return db.Representative.update(
-            {
-               repCid: req.body.repCid
-            },
-            {
-               $push: { comments: data._id }
-            });
-         ;
+            { repCid: req.body.repCid },
+            { $push: { comments: data._id } }
+         );
       })
-      .then(function (data) {
-         res.json(data);
-      })
-      .catch(function (err) {
-         res.json(err);
-      });
+      .then(data => res.json(data))
+      .catch(err => res.json(err));
    ;
 });
 
 // get a rep's rating and comments
 router.get('/representative/:repCid', (req, res) => {
    // search the database to see if an index for this representative has already been created
-   db.Representative.findOne({
-      repCid: req.params.repCid
-   })
+   db.Representative.findOne(
+      { repCid: req.params.repCid })
       .populate("comments")
-      .then(function (data) {
+      .then(data => {
          // if it hasn't been created yet, create it now
          if (!data) {
-            db.Representative.create({
+            return db.Representative.create({
                repCid: req.params.repCid,
                repName: req.body.repName
             })
-               .then(createdData => {
-                  res.json(createdData);
-               });
+               .then(createdData => res.json(createdData));
             ;
          } else {
             res.json(data);
@@ -60,7 +49,7 @@ router.get('/representative/:repCid', (req, res) => {
 });
 
 // upvote/downvote a representative
-router.put('/representative/:repCid/:voteType', (req, res) => {
+router.put('/raterepresentative/:repCid/:voteType', (req, res) => {
    if (req.params.voteType === 'upvote') {
       db.Representative.updateOne(
          { repCid: req.params.repCid },
@@ -81,7 +70,7 @@ router.put('/representative/:repCid/:voteType', (req, res) => {
 });
 
 // upvote/downvote a comment
-router.put("/comment/:commentID/:voteType", (req, res) => {
+router.put("/ratecomment/:commentID/:voteType", (req, res) => {
    if (req.params.voteType === 'upvote') {
       db.Comment.updateOne(
          { _id: req.params.commentID },

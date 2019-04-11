@@ -25,16 +25,16 @@ class LoginModal extends Component {
       event.preventDefault();
       document.getElementById('email-error-message').style.visibility = 'hidden';
       const email = document.getElementById('emailField').value;
-      console.log('email:', email);
+      // console.log('email:', email);
       const password = document.getElementById('passwordField').value;
-      console.log('password:', password);
+      // console.log('password:', password);
 
       axios.post('/api/auth/login', {
          email: email,
          password: password
       })
          .then(res => {
-            console.log('login res.data:', res.data);
+            // console.log('login res.data:', res.data);
             localStorage.setItem('token', res.data.token);
             this.props.handleLoginData();
             this.props.handleClose();

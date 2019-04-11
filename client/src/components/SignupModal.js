@@ -32,13 +32,13 @@ class SignUpModal extends Component {
          password: document.getElementById('passwordField').value
       }
 
-      console.log('signupData:', signupData);
+      // console.log('signupData:', signupData);
 
-      console.log("Signup data confirm password", signupData);
+      // console.log("Signup data confirm password", signupData);
       // post it to api
       axios.post('/api/auth/register', signupData)
          .then(res => {
-            console.log('register res.data:', res.data);
+            // console.log('register res.data:', res.data);
          })
          .catch(err => {
             console.log(err);

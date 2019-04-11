@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 // import { Button } from 'reactstrap';
 import '../style.css';
-import axios from "axios";
+// import axios from "axios";
 
 class IndustryFunds extends Component {
    constructor(props) {
@@ -27,7 +27,7 @@ class IndustryFunds extends Component {
    render() {
       return (
          <div className="industryFundsDiv">
-            {console.log(this.props.repIndustries)}
+            {/* {console.log(this.props.repIndustries)} */}
             <h2 className="div-header">Industries</h2>
 
             <table className="industriesTable">

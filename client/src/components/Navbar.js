@@ -74,7 +74,7 @@ class NavbarComponent extends Component {
    render() {
       return (
          <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-            {console.log(this.props.userData)}
+            {/* {console.log(this.props.userData)} */}
             <Navbar.Brand>React-Bootstrap</Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">

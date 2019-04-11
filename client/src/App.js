@@ -4,6 +4,11 @@ import Home from "./pages/Home";
 import Representatives from "./pages/Representatives";
 import RepInfo from "./pages/RepInfo";
 import 'bootstrap/dist/css/bootstrap.min.css';
+// font awesome
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faThumbsUp, faThumbsDown, faUser, faSignInAlt, faSignOutAlt, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faThumbsUp, faThumbsDown, faUser, faSignInAlt, faSignOutAlt, faUserPlus);
 
 class App extends Component {
 

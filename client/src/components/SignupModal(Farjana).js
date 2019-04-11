@@ -26,9 +26,9 @@ class SignupModal extends Component {
 
       const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       const isValid = regex.test(signupData.email);
-      console.log("Email validation", isValid);
+      // console.log("Email validation", isValid);
 
-      console.log('signupData:', signupData);
+      // console.log('signupData:', signupData);
      
       if(!isValid){
          document.getElementById('emailValidation-error-message').textContent = "Invalid Email";
@@ -41,7 +41,7 @@ class SignupModal extends Component {
       // post it to api
       axios.post('/api/auth/register', signupData)
       .then(res => {
-         console.log('register res.data:', res.data);
+         // console.log('register res.data:', res.data);
          this.props.handleClose();
       })
       .catch(err => console.log(err));

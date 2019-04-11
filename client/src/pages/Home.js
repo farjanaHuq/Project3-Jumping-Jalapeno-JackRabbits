@@ -17,11 +17,11 @@ class Home extends Component {
       const APIkey = '3d1183f69d960536bde5c2cd99db30a3';
       // getlegistlators: http://www.opensecrets.org/api/?method=getLegislators&id=NJ&output=json&apikey=
       // specificlegislator: http://www.opensecrets.org/api/?method=candSummary&cid=N00026427&cycle=2018&output=json&apikey=
-      console.log('process.env:\n', process.env);
-      console.log(process.env.REACT_APP_SECRET_CODE);
+      // console.log('process.env:\n', process.env);
+      // console.log(process.env.REACT_APP_SECRET_CODE);
       axios.get('http://www.opensecrets.org/api/?method=candSummary&cid=N00026427&cycle=2018&output=json&apikey=' + APIkey)
          .then(resp => {
-            console.log('resp:', resp);
+            // console.log('resp:', resp);
          })
    }
 

@@ -210,3 +210,26 @@ input, select {
    text-align: start !important;
    padding: 5px !important;
 }
+
+/* rep rating div */
+
+.rep-rating-div {
+   font-size: 30px;
+   text-align: center;
+}
+
+.rep-rating-div .card-header {
+   background-color: #000e1a;
+}
+
+.rep-rating-div .card-body {
+   background-color: #001627;
+}
+
+.rep-rating-div .card {
+   border: 1px solid rgb(54, 54, 54) !important;
+}
+
+#upvote-rep, #downvote-rep {
+   cursor: pointer;
+}

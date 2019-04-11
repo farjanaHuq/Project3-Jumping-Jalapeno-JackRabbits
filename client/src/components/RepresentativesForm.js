@@ -20,12 +20,12 @@ class USStatesForm extends Component {
       // get the rep's cid #
       const e = document.getElementById("selectRep");
       const option = e.options[e.selectedIndex];
-      const dataname = option.getAttribute("dataname");
+      // const dataname = option.getAttribute("dataname");
       const datacid = option.getAttribute("datacid");
-      console.log('const cid:', datacid)
+      // console.log('const cid:', datacid)
       this.setState({ cid: datacid });
-      console.log('dataname:', dataname);
-      console.log('datacid:', this.state.cid);
+      // console.log('dataname:', dataname);
+      // console.log('datacid:', this.state.cid);
       window.location = `/RepInfo?cid=${datacid}`;
    }
 

@@ -4,6 +4,7 @@ import LoginModal from '../components/LoginModal';
 import SignupModal from '../components/SignupModal';
 import axios from "axios";
 import RepGeneralInfo from "../components/RepGeneralInfo";
+import RepRating from "../components/RepRating";
 import SourceOfFunds from "../components/SourceOfFunds";
 import IndustryFunds from "../components/IndustryFunds";
 import Legislation from "../components/Legislation";
@@ -60,10 +61,22 @@ class RepInfo extends Component {
          .catch(err => {
             console.log(err);
          });
+      ;
+
+      // get the representative's comments and ratings
+      axios.get('/api/commentAndRating/representative/' + cid)
+         .then(resp => {
+            console.log("rep rating & comments:\n", resp.data);
+            this.setState({ repRatingAndComments: resp.data });
+
+         })
+         .catch(err => console.log(err));
+      ;
 
    }
 
    getCongressMembers = chamberLetter => {
+      // get which chamber the congressmember is from
       console.log('chamberLetter:', chamberLetter)
       if (chamberLetter === 'H') {
          var chamber = 'house';
@@ -71,19 +84,24 @@ class RepInfo extends Component {
          var chamber = 'senate';
       }
       console.log('chamber:', chamber)
+      // find all members of that chamber on propublica api to get their propublica ID#
       axios.get(`/api/propublica/all-members/${chamber}`)
          .then(resp => {
             console.log('congress members:', resp);
+            // if statement prevents infinite setstate/re-render loop
             if (!this.state.allCongressMembers) {
+               // set congressmember data to state
                this.setState({ allCongressMembers: resp.data });
                console.log('this.state.allCongressMembers:', this.state.allCongressMembers);
-               // splitCandName(this.state.repSummary.cand_name)
+               // find the index in propublica data w/ the congressmember's name
                const i = this.state.allCongressMembers.findIndex(
                   (elem => elem.first_name === this.splitCandName(this.state.repSummary.cand_name)[1]) &&
                   (elem => elem.last_name === this.splitCandName(this.state.repSummary.cand_name)[0])
                );
                console.log('i:', i);
+               // save their propublica id to a const
                const memberID = this.state.allCongressMembers[i].memberId;
+               // get the recent votes of the congressmember from propublica
                axios.get('api/propublica/specific-member/' + memberID)
                   .then(resp => {
                      console.log('votes by specific member data:', resp);
@@ -140,6 +158,7 @@ class RepInfo extends Component {
             {console.log('repSummary:', this.state.repSummary)}
             {console.log('repIndustries:', this.state.repIndustries)}
             {console.log('scrapeSummary:', this.state.scrapeSummary)}
+            {console.log('rep rating state:', this.state.repRatingAndComments ? this.state.repRatingAndComments.upVotesNum : this.state.repRatingAndComments)}
             <NavbarComponent
                page={'Home'}
                userData={this.state.userData}
@@ -151,13 +170,17 @@ class RepInfo extends Component {
             <Container>
 
                <Row>
-                  <Col className="generalInfoCol d-flex align-items-center flex-column">
+                  <Col md={{ size: 6, offset: 3 }} className="generalInfoCol d-flex align-items-center flex-column">
                      <RepGeneralInfo
                         repSummary={this.state.repSummary}
                         scrapeSummary={this.state.scrapeSummary}
                      />
                   </Col>
-
+                  <Col md="3">
+                     <RepRating
+                        repRatingAndComments={this.state.repRatingAndComments}
+                     />
+                  </Col>
                </Row>
 
                <Row>

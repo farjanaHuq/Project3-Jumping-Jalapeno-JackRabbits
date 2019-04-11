@@ -4,9 +4,8 @@ const axios = require('axios');
 const listOfIndustries = require('../listOfIndustries');
 
 var newList = [];
-compare = (arr1,arr2) => {
 
-   const matchingArr = []
+compare = (arr1,arr2) => {
    arr1.map(elem1 =>arr2.map(elem2 =>
      {
        if(elem1 !== elem2){
@@ -34,9 +33,6 @@ removeDuplicateElement = (arr) => {
   return newIndustry;
 }
 
-var updatedListOfIndustries = removeDuplicateElement(listOfIndustries);
-console.log("list of updated industries", updatedListOfIndustries);
-
 
 //console.log(process.env.REACT_APP_PRO_PUBLICA_API_KEY)
 const apiKey = process.env.REACT_APP_PRO_PUBLICA_API_KEY;
@@ -58,11 +54,14 @@ router.get('/all-bills/:congress/:type', (req, res) => {
             subjectsArr.push(elem.primary_subject);
          });
          // res.json(subjectsArr);
-         const newSubArr = removeDuplicateElement(subjectsArr);
-         res.json(newSubArr);
+         var newSubArr = removeDuplicateElement(subjectsArr);
+         //res.json(newSubArr);
          newList = compare(newSubArr, listOfIndustries);  
-         console.log("newList", newList);
+         //console.log("newList", newList);
          res.json(newList);
+         // var updatedIndustries = removeDuplicateElement(listOfIndustries);
+         // res.json(updatedIndustries);   
+         //console.log("list of updated industries", updatedIndustries);
       })
       .catch(err => {
          console.log(err);
@@ -70,6 +69,9 @@ router.get('/all-bills/:congress/:type', (req, res) => {
       
 });
 
+
+//var updatedIndustries = removeDuplicateElement(listOfIndustries);
+//console.log("list of updated industries", updatedIndustries);
 //============================================================ All Members ============================================================
 //https://api.propublica.org/congress/v1/{congress}/{chamber}/members.json
 

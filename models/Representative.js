@@ -8,14 +8,12 @@ var representativeSchema = new Schema({
    repName: {
       type: String
    },
-   upVotesNum: {
-      type: Number,
-      default: 0
-   },
-   downVotesNum: {
-      type: Number,
-      default: 0
-   },
+   upVotes: [
+      { type: String }
+   ],
+   downVotes: [
+      { type: String }
+   ],
    comments: [
       {
          type: Schema.Types.ObjectId,

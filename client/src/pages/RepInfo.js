@@ -159,7 +159,6 @@ class RepInfo extends Component {
             {/* {console.log('repSummary:', this.state.repSummary)} */}
             {/* {console.log('repIndustries:', this.state.repIndustries)} */}
             {/* {console.log('scrapeSummary:', this.state.scrapeSummary)} */}
-            {/* {console.log('rep rating state:', this.state.repRatingAndComments ? this.state.repRatingAndComments.upVotesNum : this.state.repRatingAndComments)} */}
             <NavbarComponent
                page={'Home'}
                userData={this.state.userData}

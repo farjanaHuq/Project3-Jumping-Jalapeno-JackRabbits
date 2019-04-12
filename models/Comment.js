@@ -14,10 +14,12 @@ const commentSchema = new Schema({
    message: {
       type: String
    },
-   rating: {
-      type: Number,
-      default: 0
-   },
+   upVotes: [
+      { type: String }
+   ],
+   downVotes: [
+      { type: String }
+   ],
    repCid: {
       type: String
    },

@@ -15,12 +15,14 @@ class RepRating extends Component {
    }
 
    calculateRatingPercent = () => {
-      var upVotes;
-      var downVotes;
-      if (this.props.repRatingAndComments) upVotes = this.props.repRatingAndComments.upVotesNum;
-      if (this.props.repRatingAndComments) downVotes = this.props.repRatingAndComments.downVotesNum;
-      const totalVotes = upVotes + downVotes;
-      return Math.round(((upVotes / totalVotes)) * 100) + '%';
+      if (this.props.repRatingAndComments) {
+         var upVotes;
+         var downVotes;
+         upVotes = this.props.repRatingAndComments.upVotes.length;
+         downVotes = this.props.repRatingAndComments.downVotes.length;
+         const totalVotes = upVotes + downVotes;
+         return Math.round(((upVotes / totalVotes)) * 100) + '%';
+      }
    }
 
    upVoteRep = () => {

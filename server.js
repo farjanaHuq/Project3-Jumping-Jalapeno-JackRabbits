@@ -8,6 +8,7 @@ const auth = jwt({
 const path = require("path");
 const mongoose = require('mongoose');
 const commentAndRatingRoutes = require("./routes/commentAndRatingRoutes");
+const secureCommentAndRatingRoutes = require("./routes/secureCommentAndRatingRoutes");
 const authRoutes = require("./routes/authRoutes");
 const openSecretsApiRoutes = require("./routes/openSecretsRoutes");
 const proPublicaApiRoutes = require("./routes/proPublicaRoutes");
@@ -30,9 +31,10 @@ app.use('/api/opensecrets', openSecretsApiRoutes);
 app.use('/api/propublica', proPublicaApiRoutes);
 
 // Auth middleware
-app.use(auth);
+// app.use(auth);
 // Protected routes
 app.use('/protectedapi', protectedApiRoutes);
+app.use('/api/secureCommentAndRatingRoutes', secureCommentAndRatingRoutes);
 
 // Send every other request to the React app
 // Define any API routes before this runs

@@ -6,14 +6,15 @@ const listOfIndustries = require('../listOfIndustries');
 var newList = [];
 
 compare = (arr1,arr2) => {
+   var arr3 = [];
    arr1.map(elem1 =>arr2.map(elem2 =>
      {
        if(elem1 !== elem2){
-         arr2.push(elem1);
+         arr3.push(elem1);
        }
      }))
      const newArr = [];
-     arr2.forEach(function(item) {
+     arr3.forEach(function(item) {
          if(newArr.indexOf(item) < 0)  {
              newArr.push(item);
          }  
@@ -51,27 +52,26 @@ router.get('/all-bills/:congress/:type', (req, res) => {
       .then(resp => {    
          var subjectsArr = [];
          resp.data.results[0].bills.forEach(elem => {
-            subjectsArr.push(elem.primary_subject);
+            subjectsArr.push(elem.primary_subject);  
          });
-         // res.json(subjectsArr);
+         //res.json(subjectsArr);
          var newSubArr = removeDuplicateElement(subjectsArr);
-         //res.json(newSubArr);
+         res.json(newSubArr);
          newList = compare(newSubArr, listOfIndustries);  
          //console.log("newList", newList);
          res.json(newList);
-         // var updatedIndustries = removeDuplicateElement(listOfIndustries);
-         // res.json(updatedIndustries);   
-         //console.log("list of updated industries", updatedIndustries);
+         newList.forEach(elem => listOfIndustries.push(elem));
+         console.log("===============================================");
+         //console.log("list of updated industries", listOfIndustries);    
+         //res.json(listOfIndustries);  
       })
       .catch(err => {
          console.log(err);
       });
-      
+     
 });
 
 
-//var updatedIndustries = removeDuplicateElement(listOfIndustries);
-//console.log("list of updated industries", updatedIndustries);
 //============================================================ All Members ============================================================
 //https://api.propublica.org/congress/v1/{congress}/{chamber}/members.json
 

@@ -71,7 +71,7 @@ class RepInfo extends Component {
 
          })
          // .catch(err => console.log(err));
-      ;
+         ;
 
    }
 
@@ -151,6 +151,54 @@ class RepInfo extends Component {
       ;
    }
 
+   // ============================================================================================================== //
+   // ============================================ rep rating functions ============================================ //
+   // ============================================================================================================== //
+   calculateRatingPercent = () => {
+      if (this.state.repRatingAndComments) {
+         const upVotes = this.state.repRatingAndComments.upVotes.length;
+         const downVotes = this.state.repRatingAndComments.downVotes.length;
+         const totalVotes = upVotes + downVotes;
+         const approvalRating = Math.round(((upVotes / totalVotes)) * 100);
+         if (approvalRating) {
+            return approvalRating + '%';
+         } else {
+            return '0%';
+         }
+      }
+   }
+
+   upVoteRep = () => {
+      this.rateRep('upvote');
+   }
+
+   downVoteRep = () => {
+      this.rateRep('downvote');
+   }
+
+   rateRep = voteType => {
+      const repCid = this.state.repRatingAndComments.repCid;
+      const userID = this.state.userData.userID;
+      axios.put(`/api/secureCommentAndRatingRoutes/raterepresentative/${repCid}/${voteType}/${userID}`)
+         .then(resp => {
+            console.log('rate rep resp:', resp);
+            // get the representative's comments and ratings
+            axios.get('/api/commentAndRating/representative/' + repCid)
+               .then(resp => {
+                  this.setState({ repRatingAndComments: resp.data });
+               })
+               .catch(err => console.log(err));
+            ;
+         })
+         .catch(err => (console.log('up vote rep err:', err)));
+   }
+
+   logRepRatingState = () => {
+      if (this.state.userData && this.state.repRatingAndComments) {
+         console.log('rep rating state:', this.state);
+      }
+   }
+
    render() {
       return (
          <div>
@@ -178,7 +226,14 @@ class RepInfo extends Component {
                   </Col>
                   <Col md="3" className="d-flex flex-column justify-content-center">
                      <RepRating
+                        userData={this.state.userData}
                         repRatingAndComments={this.state.repRatingAndComments}
+                        calculateRatingPercent={this.calculateRatingPercent}
+                        upVoteRep={this.upVoteRep}
+                        downVoteRep={this.downVoteRep}
+                        rateRep={this.rateRep}
+                        logRepRatingState={this.logRepRatingState}
+                        handleRepRatingIconColors={this.handleRepRatingIconColors}
                      />
                   </Col>
                </Row>

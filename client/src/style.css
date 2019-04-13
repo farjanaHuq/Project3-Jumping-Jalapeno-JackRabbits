@@ -203,6 +203,7 @@ input, select {
    background: linear-gradient(to right, #004985, #64888000 100%, #293f5000);
    color: white;
    padding: 5px;
+   width: 100%;
    /* text-align: center; */
 }
 
@@ -233,3 +234,24 @@ input, select {
 #upvote-rep, #downvote-rep {
    cursor: pointer;
 }
+
+
+/* =========================================== Comments =========================================== */
+
+#comment-component-div {
+   margin-top: 35px;
+}
+
+#add-comment-form {
+   width: 100%;
+   margin-bottom: 10px;
+}
+
+#add-comment {
+   width: 100%;
+}
+
+#add-comment-btn-span button:not(:last-child) {
+   margin-right: 10px;
+}
+

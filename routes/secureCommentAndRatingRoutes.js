@@ -4,6 +4,7 @@ const db = require('../models');
 
 // post a comment
 router.post('/comment/', (req, res) => {
+   console.log('backend req.body.repCid:', req.body.repCid)
    db.Comment.create({
       userID: req.body.userID,
       repCid: req.body.repCid,

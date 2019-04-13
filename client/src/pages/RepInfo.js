@@ -8,6 +8,7 @@ import RepRating from "../components/RepRating";
 import SourceOfFunds from "../components/SourceOfFunds";
 import IndustryFunds from "../components/IndustryFunds";
 import Legislation from "../components/Legislation";
+import Comments from "../components/Comments";
 import { Container, Row, Col } from 'reactstrap';
 
 class RepInfo extends Component {
@@ -17,7 +18,14 @@ class RepInfo extends Component {
          userData: null,
          repSummary: {},
          repIndustries: {},
-         scrapeSummary: {}
+         scrapeSummary: {},
+         repRatingAndComments: {
+            comments: [],
+            downVotes: [],
+            repCid: '',
+            upVotes: [],
+            _id: ''
+         }
       };
    }
 
@@ -33,12 +41,12 @@ class RepInfo extends Component {
       axios.get('/api/opensecrets/repsummary/' + cid)
          .then(resp => {
             const repSummary = resp.data.response.summary["@attributes"];
-            // console.log('repsummary:', repSummary);
-            this.setState({ repSummary: repSummary });
+            console.log('open secrets summary resp:', resp.data);
+            console.log('cand name:', resp.data.response.summary["@attributes"].cand_name)
+            this.getRepRatingAndComments(cid, resp.data.response.summary["@attributes"].cand_name);
+            return this.setState({ repSummary: repSummary });
          })
-         .catch(err => {
-            // console.log(err);
-         });
+         .catch(err => console.log(err));
 
       // get rep industries
       axios.get('/api/opensecrets/repindustries/' + cid)
@@ -63,16 +71,16 @@ class RepInfo extends Component {
          });
       ;
 
+   }
+
+   getRepRatingAndComments = (repCid, repName) => {
       // get the representative's comments and ratings
-      axios.get('/api/commentAndRating/representative/' + cid)
+      axios.get(`/api/commentAndRating/representative/${repCid}/${repName}`)
          .then(resp => {
-            // console.log("rep rating & comments:\n", resp.data);
             this.setState({ repRatingAndComments: resp.data });
-
          })
-         // .catch(err => console.log(err));
-         ;
-
+         .catch(err => console.log(err));
+      ;
    }
 
    getCongressMembers = chamberLetter => {
@@ -142,12 +150,8 @@ class RepInfo extends Component {
 
    getIndustryData = industry => {
       axios.get('api/propublica/recent-Bills/' + industry)
-         .then(resp => {
-            // console.log('bills of specific industry:', resp);
-         })
-         .catch(err => {
-            // console.log(err);
-         });
+         .then(resp => { })
+         .catch(err => console.log(err));
       ;
    }
 
@@ -182,13 +186,7 @@ class RepInfo extends Component {
       axios.put(`/api/secureCommentAndRatingRoutes/raterepresentative/${repCid}/${voteType}/${userID}`)
          .then(resp => {
             console.log('rate rep resp:', resp);
-            // get the representative's comments and ratings
-            axios.get('/api/commentAndRating/representative/' + repCid)
-               .then(resp => {
-                  this.setState({ repRatingAndComments: resp.data });
-               })
-               .catch(err => console.log(err));
-            ;
+            this.getRepRatingAndComments(repCid);
          })
          .catch(err => (console.log('up vote rep err:', err)));
    }
@@ -202,7 +200,7 @@ class RepInfo extends Component {
    render() {
       return (
          <div>
-            {this.getCongressMembers(this.state.repSummary.chamber)}
+            {/* {this.getCongressMembers(this.state.repSummary.chamber)} */}
             {/* {console.log('this.state.repSummary.chamber:', this.state.repSummary.chamber)} */}
             {/* {console.log('repSummary:', this.state.repSummary)} */}
             {/* {console.log('repIndustries:', this.state.repIndustries)} */}
@@ -239,7 +237,6 @@ class RepInfo extends Component {
                </Row>
 
                <Row>
-
                   <Col md="6">
                      <IndustryFunds
                         repIndustries={this.state.repIndustries}
@@ -255,7 +252,16 @@ class RepInfo extends Component {
                         specificMemberVotes={this.state.specificMemberVotes}
                      />
                   </Col>
+               </Row>
 
+               <Row>
+                  <Col>
+                     <Comments
+                        userData={this.state.userData}
+                        repRatingAndComments={this.state.repRatingAndComments}
+                        getRepRatingAndComments={this.getRepRatingAndComments}
+                     />
+                  </Col>
                </Row>
 
             </Container>

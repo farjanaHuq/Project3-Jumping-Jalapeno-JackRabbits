@@ -15,12 +15,19 @@ class RepInfo extends Component {
    constructor(props) {
       super(props);
       this.state = {
-         userData: null,
+         userData: {
+            userID: ''
+         },
          repSummary: {},
          repIndustries: {},
          scrapeSummary: {},
          repRatingAndComments: {
-            comments: [],
+            comments: [
+               {
+                  upVotes: [],
+                  downVotes: []
+               }
+            ],
             downVotes: [],
             repCid: '',
             upVotes: [],
@@ -191,6 +198,29 @@ class RepInfo extends Component {
          .catch(err => (console.log('up vote rep err:', err)));
    }
 
+   upVoteComment = (event) => {
+      this.rateComment(event, 'upvote');
+   }
+
+   downVoteComment = (event) => {
+      this.rateComment(event, 'downvote');
+   }
+
+   rateComment = (event) => {
+      const commentID = event.target.getAttribute('id').split('-')[1];
+      console.log(commentID);
+      const userID = this.state.userData.userID;
+      const voteType = event.target.getAttribute('id').split('-')[0];
+      console.log('userID:', userID);
+      console.log('votetype:', voteType);
+      axios.put(`/api/secureCommentAndRatingRoutes/ratecomment/${commentID}/${voteType}/${userID}`)
+         .then(resp => {
+            console.log('rate comment resp:', resp);
+            this.getRepRatingAndComments(this.state.repRatingAndComments.repCid);
+         })
+         .catch(err => (console.log('up vote rep err:', err)));
+   }
+
    logRepRatingState = () => {
       if (this.state.userData && this.state.repRatingAndComments) {
          console.log('rep rating state:', this.state);
@@ -216,7 +246,8 @@ class RepInfo extends Component {
             <Container>
 
                <Row>
-                  <Col md={{ size: 6, offset: 3 }} className="generalInfoCol d-flex align-items-center flex-column">
+                  <Col md={{ size: 6, offset: 3 }}
+                     className="generalInfoCol d-flex align-items-center flex-column">
                      <RepGeneralInfo
                         repSummary={this.state.repSummary}
                         scrapeSummary={this.state.scrapeSummary}
@@ -260,6 +291,9 @@ class RepInfo extends Component {
                         userData={this.state.userData}
                         repRatingAndComments={this.state.repRatingAndComments}
                         getRepRatingAndComments={this.getRepRatingAndComments}
+                        upVoteComment={this.upVoteComment}
+                        downVoteComment={this.downVoteComment}
+                        rateComment={this.rateComment}
                      />
                   </Col>
                </Row>

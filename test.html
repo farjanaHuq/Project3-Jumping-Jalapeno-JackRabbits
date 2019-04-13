@@ -28,8 +28,30 @@
          // console.log(queryURL);
          // Create CODE HERE to log the resulting object
          console.log(response);
-         
+
       });
+
+
+      const object = {
+         userID: this.props.userData.userID,
+         repCid: this.props.repRatingAndComments.repCid,
+         message: document.getElementById('add-comment').value,
+         userEmail: this.props.userData.userEmail,
+         userDisplayName: this.props.userData.displayName
+      }
+
+      const asdf = {
+         repRatingAndComments: {
+            comments: [],
+            downVotes: [],
+            repCid: '',
+            upVotes: [],
+            _id: ''
+         }
+      }
+
+
+
    </script>
 </body>
 

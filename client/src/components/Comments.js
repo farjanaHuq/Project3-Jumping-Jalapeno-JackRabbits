@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import '../style.css';
 import { Row, Col } from 'reactstrap';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from "axios";
+import Moment from 'react-moment';
 
 class Comments extends Component {
   constructor(props) {
@@ -47,38 +47,100 @@ class Comments extends Component {
 
   calculateCommentRating = (elem) => {
     if (this.props.repRatingAndComments) {
-      console.log('comment elem:', elem);
+      // console.log('comment elem:', elem);
       const upVotes = elem.upVotes.length;
       const downVotes = elem.downVotes.length;
       const netRating = upVotes - downVotes;
+      if (netRating > 0) return '+' + netRating;
       return netRating;
     }
   }
 
-  sortCommentsByDate = () => {
-    const commentsSortedByDateArr = this.props.repRatingAndComments.comments;
-    const commentsSortedByDateString = JSON.stringify(commentsSortedByDateArr);
-    const commentsSortedByDateStringArr = JSON.parse(commentsSortedByDateString);
-    return commentsSortedByDateStringArr.sort(function (a, b) {
-      return new Date(b.date) - new Date(a.date);
-    });
-  }
 
   sortCommentsByRating = () => {
+    // get comments arr from state
     const commentsSortedByRatingArr = this.props.repRatingAndComments.comments;
+    // stringify and parse it so original array isn't affected
     const commentsSortedByRatingString = JSON.stringify(commentsSortedByRatingArr);
     const commentsSortedByRatingStringArr = JSON.parse(commentsSortedByRatingString);
+    // apply a net rating property to each element
     commentsSortedByRatingStringArr.forEach(elem => {
       elem.netRating = elem.upVotes.length - elem.downVotes.length;
     });
+    // sort the new array by rating
     return commentsSortedByRatingStringArr.sort(function (a, b) {
       return b.netRating - a.netRating;
     });
   }
 
-    // return this.props.repRatingAndComments.comments.sort(function (o1, o2) {
-    //   return sort_o1_before_o2 ? -1 : sort_o1_after_o2 ? 1 : 0;
-    // });
+  getTopFiveComments = () => {
+    // grab the array of comments sorted by rating a new array of just the first 5
+    const topFiveCommentsArr = [];
+    for (let i = 0; i < 5; i++) {
+      const elem = this.sortCommentsByRating()[i];
+      if (elem) topFiveCommentsArr.push(elem);
+    }
+    return topFiveCommentsArr;
+  }
+
+  sortCommentsByDate = () => {
+    // grab the array of comments sorted by rating and splice out the first 5 comments
+    const nonTopRatedComments = this.sortCommentsByRating();
+    const nonTopRatedCommentsString = JSON.stringify(nonTopRatedComments);
+    const nonTopRatedCommentsStringArr = JSON.parse(nonTopRatedCommentsString);
+    nonTopRatedCommentsStringArr.splice(0, 5);
+    // sort the remaining comments by date and return that array
+    return nonTopRatedCommentsStringArr.sort(function (a, b) {
+      return new Date(b.date) - new Date(a.date);
+    });
+  }
+
+  renderThumbImage = (elem, direction) => {
+    return (
+      <img
+        src={direction === 'up' ? 'https://i.imgur.com/5iXiKuh.png' : "https://i.imgur.com/APtQG6S.png"}
+        alt={`thumbs-${direction}`}
+        style={{
+          height: '20px',
+          width: '20px',
+          filter: elem[`${direction}Votes`].includes(this.props.userData.userID) ? '' : 'brightness(0) invert(1)'
+        }}
+        className={`${direction}vote-comment`}
+        id={`${direction}vote-${elem._id}`}
+        onClick={this.props[`${direction}VoteComment`]}
+      />
+    )
+  }
+
+  renderComments = (elem, cardClass, i) => {
+    return (
+      <div className={`card ${cardClass}`} key={`comment-${i}`}>
+        <div className="card-header d-flex flex-row justify-content-between">
+          <span>{elem.userDisplayName}</span>
+          <span>
+            {this.renderThumbImage(elem, 'up')}
+            &nbsp;&nbsp;
+                    <span
+              style={{
+                color: this.calculateCommentRating(elem) > 0 ? 'rgb(0, 190, 0)' :
+                  this.calculateCommentRating(elem) === 0 ? 'white' : 'red'
+              }}
+            >
+              {this.calculateCommentRating(elem)}
+            </span>
+            &nbsp;&nbsp;
+            {this.renderThumbImage(elem, 'down')}
+          </span>
+        </div>
+        <div className="card-body">
+          <p>{elem.message}</p>
+          <span className="comment-date-text">
+            Posted <Moment format="LT, MM/DD/YYYY">{elem.date}</Moment>
+          </span>
+        </div>
+      </div>
+    )
+  }
 
   render() {
     return (
@@ -104,50 +166,18 @@ class Comments extends Component {
 
         <Row>
           <Col md="6">
-            <h3>Top Rated</h3>
+            <h3 id="top-rated-comments-div">Top Rated</h3>
+            {console.log('top 5 comments arr:\n', this.getTopFiveComments())}
+            {this.getTopFiveComments().map((elem, i) => (
+              this.renderComments(elem, 'top-rated-comments-card')
+            ))}
           </Col>
           <Col md="6">
-            <h3>Most Recent</h3>
-            {console.log(this.props.repRatingAndComments.comments)}
-            {console.log(this.sortCommentsByDate())}
-            {console.log(this.sortCommentsByRating())}
-            {/* {console.log(this.props.repRatingAndComments.comments.sort(function (a, b) {
-              return new Date(b.date) - new Date(a.date);
-            }))} */}
+            <h3 id="most-recent-comments-div">Most Recent</h3>
+            {console.log('unsorted comments arr:\n', this.props.repRatingAndComments.comments)}
+            {console.log('non top 5 sorted by date:\n', this.sortCommentsByDate())}
             {this.sortCommentsByDate().map((elem, i) => (
-              <div className="card" key={`comment-${i}`}>
-                {/* {console.log(elem)} */}
-                <div className="card-header d-flex flex-row justify-content-between">
-                  <span>{elem.userDisplayName}</span>
-                  <span>
-                    <img
-                      src="https://i.imgur.com/5iXiKuh.png"
-                      style={{
-                        height: '20px',
-                        width: '20px',
-                        filter: elem.upVotes.includes(this.props.userData.userID) ? '' : 'brightness(0) invert(1)'
-                      }}
-                      id={`upvote-${elem._id}`}
-                      onClick={this.props.upVoteComment}
-                    />
-
-                    &nbsp;&nbsp;{this.calculateCommentRating(elem)}&nbsp;&nbsp;
-                              <img
-                      src="https://i.imgur.com/APtQG6S.png"
-                      style={{
-                        height: '20px',
-                        width: '20px',
-                        filter: elem.downVotes.includes(this.props.userData.userID) ? '' : 'brightness(0) invert(1)'
-                      }}
-                      id={`downvote-${elem._id}`}
-                      onClick={this.props.downVoteComment}
-                    />
-                  </span>
-                </div>
-                <div className="card-body">
-                  {elem.message}
-                </div>
-              </div>
+              this.renderComments(elem, 'most-recent-comments-card')
             ))}
           </Col>
         </Row>

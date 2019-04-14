@@ -228,7 +228,7 @@ input, select {
 }
 
 .rep-rating-div .card {
-   border: 1px solid rgb(54, 54, 54) !important;
+   border: 1px solid rgb(32, 32, 32) !important;
 }
 
 #upvote-rep, #downvote-rep {
@@ -255,3 +255,36 @@ input, select {
    margin-right: 10px;
 }
 
+.most-recent-comments-card:not(:last-child), .top-rated-comments-card:not(:last-child) {
+   margin-bottom: 20px;
+}
+
+#comment-component-div textarea {
+   background-color: rgb(24, 26, 27) !important;
+   border-color: rgb(54, 63, 72) !important;
+   color: white !important;
+}
+
+#comment-component-div .card {
+   border: 1px solid rgb(32, 32, 32) !important;
+}
+
+#comment-component-div .card-header {
+   background-color: #000e1a;
+}
+
+#comment-component-div .card-body {
+   background-color: #001627;
+}
+
+.upvote-comment, .downvote-comment {
+   cursor: pointer;
+}
+
+.comment-date-text {
+   display: block;
+   width: 100%;
+   text-align: right;
+   font-size: 14px;
+   color: rgb(165, 165, 165);
+}

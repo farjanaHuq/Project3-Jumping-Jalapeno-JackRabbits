@@ -25,7 +25,8 @@ class RepInfo extends Component {
             comments: [
                {
                   upVotes: [],
-                  downVotes: []
+                  downVotes: [],
+                  userDisplayName: ''
                }
             ],
             downVotes: [],

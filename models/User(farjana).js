@@ -27,6 +27,15 @@ const userSchema = new Schema({
    emailValidated: {
       type: Boolean,
       default: false
+   },
+   active: {
+      type: Boolean,
+      required: true,
+      default: false
+   },
+   temporaryToken: {
+      type: String,
+      required: true
    }
 
 });

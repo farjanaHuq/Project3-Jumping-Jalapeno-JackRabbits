@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import '../style.css';
 import { Row, Col } from 'reactstrap';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from "axios";
 
 class Comments extends Component {

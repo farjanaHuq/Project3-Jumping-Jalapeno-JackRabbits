@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../models');
+const db = require('../models/User(farjana)');
 const crypto = require('crypto');
 const helpers = require('./helpers/authHelpers');
 const jwt = require('jsonwebtoken');

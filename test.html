@@ -50,12 +50,21 @@
       //    }
       // }
 
-      var fruits = [1,2,3,4,5]
-      var fruits2 = fruits.splice(1,1)
+      var fruits = [1, 2, 3, 4, 5]
+      var fruits2 = fruits.splice(1, 1)
       console.log(fruits)
       console.log(fruits2)
 
-
+      {
+         Array.from(specificMemberVotes).map((elem, i) => (
+            <tr key={`legislation-row-${i}`}>
+               <td>{elem.bill.number}</td>
+               <td>{elem.bill.description}</td>
+               <td>{elem.bill.date}</td>
+               <td>{elem.bill.position}</td>
+            </tr>
+         ))
+      }
 
    </script>
 </body>

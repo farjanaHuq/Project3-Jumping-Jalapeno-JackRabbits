@@ -25,7 +25,7 @@ class Comments extends Component {
 
   addComment = event => {
     event.preventDefault();
-    console.log(this.props.repRatingAndComments);
+    // console.log(this.props.repRatingAndComments);
     axios.post('/api/secureCommentAndRatingRoutes/comment', {
       userID: this.props.userData.userID,
       repCid: this.props.repRatingAndComments.repCid,
@@ -36,7 +36,7 @@ class Comments extends Component {
       .then(resp => {
         document.getElementById('add-comment').value = '';
         this.hideAddCommentBtns();
-        console.log(this.props.repRatingAndComments);
+        // console.log(this.props.repRatingAndComments);
         this.props.getRepRatingAndComments(
           this.props.repRatingAndComments.repCid, this.props.repRatingAndComments.repName);
         return console.log('post comment resp:', resp);
@@ -114,7 +114,7 @@ class Comments extends Component {
 
   renderComments = (elem, cardClass, i) => {
     return (
-      <div className={`card ${cardClass}`} key={`comment-${i}`}>
+      <div className={`card ${cardClass}`} key={`comment-${elem._id}`}>
         <div className="card-header d-flex flex-row justify-content-between">
           <span>{elem.userDisplayName}</span>
           <span>
@@ -167,15 +167,15 @@ class Comments extends Component {
         <Row>
           <Col md="6">
             <h3 id="top-rated-comments-div">Top Rated</h3>
-            {console.log('top 5 comments arr:\n', this.getTopFiveComments())}
+            {/* {console.log('top 5 comments arr:\n', this.getTopFiveComments())} */}
             {this.getTopFiveComments().map((elem, i) => (
               this.renderComments(elem, 'top-rated-comments-card')
             ))}
           </Col>
           <Col md="6">
             <h3 id="most-recent-comments-div">Most Recent</h3>
-            {console.log('unsorted comments arr:\n', this.props.repRatingAndComments.comments)}
-            {console.log('non top 5 sorted by date:\n', this.sortCommentsByDate())}
+            {/* {console.log('unsorted comments arr:\n', this.props.repRatingAndComments.comments)}
+            {console.log('non top 5 sorted by date:\n', this.sortCommentsByDate())} */}
             {this.sortCommentsByDate().map((elem, i) => (
               this.renderComments(elem, 'most-recent-comments-card')
             ))}

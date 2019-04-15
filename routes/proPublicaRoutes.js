@@ -140,7 +140,7 @@ router.get('/specific-member/:memberId', (req, res) => {
 //   -H "X-API-Key: PROPUBLICA_API_KEY"
 
 //get recent Bills by a specific subject
-router.get('/recent-Bills/:subject', (req, res) => {
+router.get('/recent-bills/:subject', (req, res) => {
    const subject = req.params.subject;
    axios.get(
       `https://api.propublica.org/congress/v1/bills/subjects/${subject}.json`,

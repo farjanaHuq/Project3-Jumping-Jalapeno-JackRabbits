@@ -17,7 +17,7 @@ class RepRating extends Component {
       if (this.props.repRatingAndComments && this.props.userData) {
          return (
             <span id="rep-rating">
-            {console.log(this.props.repRatingAndComments.upVotes)}
+            {/* {console.log(this.props.repRatingAndComments.upVotes)} */}
                <FontAwesomeIcon icon="thumbs-up" id="upvote-rep" onClick={this.props.upVoteRep}
                   style={{ color: this.props.repRatingAndComments.upVotes.includes(this.props.userData.userID) ? 'rgb(0, 107, 207)' : 'white' }}
                />

@@ -20,7 +20,7 @@ class IndustryFunds extends Component {
 
    selectIndustry = (event) => {
       event.preventDefault();
-      this.props.getIndustryData(event.target.textContent);
+      // this.props.getIndustryData(event.target.textContent);
       console.log(event.target.textContent);
    }
 
@@ -44,18 +44,13 @@ class IndustryFunds extends Component {
                   {Array.from(this.props.repIndustries).map((elem, i) => (
                      <tr key={`industry-row-${i}`}>
                         <td>
-                           <a href="" onClick={this.selectIndustry} className="" color="primary">{elem['@attributes'].industry_name}</a>
-                           {/* {elem['@attributes'].industry_name} */}
+                           <a href="" onClick={this.selectIndustry} className="" color="primary">
+                              {elem['@attributes'].industry_name}
+                           </a>
                         </td>
-                        <td>
-                           {`$${this.addCommas(elem['@attributes'].total)}`}
-                        </td>
-                        <td>
-                           {`$${this.addCommas(elem['@attributes'].indivs)}`}
-                        </td>
-                        <td>
-                           {`$${this.addCommas(elem['@attributes'].pacs)}`}
-                        </td>
+                        <td>{`$${this.addCommas(elem['@attributes'].total)}`}</td>
+                        <td>{`$${this.addCommas(elem['@attributes'].indivs)}`}</td>
+                        <td>{`$${this.addCommas(elem['@attributes'].pacs)}`}</td>
                      </tr>
                   ))}
                </tbody>

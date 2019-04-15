@@ -19,7 +19,7 @@ class RepInfo extends Component {
             userID: ''
          },
          repSummary: {},
-         repIndustries: {},
+         repIndustries: [],
          scrapeSummary: {},
          repRatingAndComments: {
             comments: [
@@ -33,7 +33,17 @@ class RepInfo extends Component {
             repCid: '',
             upVotes: [],
             _id: ''
-         }
+         },
+         specificMemberVotes: {
+            data: {
+               results: [
+                  {
+                     votes: []
+                  }
+               ]
+            }
+         },
+         topTenIndustries: []
       };
    }
 
@@ -63,9 +73,7 @@ class RepInfo extends Component {
             // console.log('repindustries:', repIndustries);
             this.setState({ repIndustries: repIndustries });
          })
-         .catch(err => {
-            // console.log(err);
-         });
+         .catch(err => console.log(err));
 
       // scrape summary data
       axios.get('/api/opensecrets/scrapesummary/' + cid)
@@ -74,22 +82,28 @@ class RepInfo extends Component {
             // console.log('scrapesummary data:', scrapeSummary);
             this.setState({ scrapeSummary: scrapeSummary });
          })
-         .catch(err => {
-            // console.log(err);
-         });
-      ;
-
-   }
-
-   getRepRatingAndComments = (repCid, repName) => {
-      // get the representative's comments and ratings
-      axios.get(`/api/commentAndRating/representative/${repCid}/${repName}`)
-         .then(resp => {
-            this.setState({ repRatingAndComments: resp.data });
-         })
          .catch(err => console.log(err));
       ;
+
    }
+
+   handleLoginData = () => {
+      // grab the token from local storage and set the user's data to state
+      const token = localStorage.getItem('token');
+      // console.log('token:', token);
+      if (token) var tokenData = JSON.parse(window.atob(token.split('.')[1]));
+      console.log('user data:', tokenData);
+      this.setState({
+         userData: tokenData
+      });
+   }
+
+   handleLogout = () => {
+      localStorage.removeItem('token');
+      this.setState({ userData: null });
+   }
+
+   // =============================================== legislation =============================================== //
 
    getCongressMembers = chamberLetter => {
       // get which chamber the congressmember is from
@@ -125,47 +139,48 @@ class RepInfo extends Component {
                      this.setState({ specificMemberVotes: resp });
                   })
                   .catch(err => {
-                     // console.log(err);
+                     console.log(err);
                   });
                ;
             }
          })
          .catch(err => {
-            // console.log(err);
+            console.log(err);
          });
       ;
-   }
-
-   handleLoginData = () => {
-      // grab the token from local storage and set the user's data to state
-      const token = localStorage.getItem('token');
-      // console.log('token:', token);
-      if (token) var tokenData = JSON.parse(window.atob(token.split('.')[1]));
-      console.log('user data:', tokenData);
-      this.setState({
-         userData: tokenData
-      });
-   }
-
-   handleLogout = () => {
-      localStorage.removeItem('token');
-      this.setState({ userData: null });
    }
 
    splitCandName = candName => {
       return candName.split(', ');
    }
 
-   getIndustryData = industry => {
-      axios.get('api/propublica/recent-Bills/' + industry)
-         .then(resp => { })
+   // getIndustryData = industry => {
+   //    axios.get('api/propublica/recent-Bills/' + industry)
+   //       .then(resp => { })
+   //       .catch(err => console.log(err));
+   //    ;
+   // }
+
+   getTopTenIndustries = () => {
+      const topTenIndustries = [];
+      this.state.repIndustries.forEach(elem => {
+         topTenIndustries.push(elem["@attributes"].industry_name);
+      });
+      return topTenIndustries;
+   }
+
+   // ======================================= rep rating and comments ========================================= //
+
+   getRepRatingAndComments = (repCid, repName) => {
+      // get the representative's comments and ratings
+      axios.get(`/api/commentAndRating/representative/${repCid}/${repName}`)
+         .then(resp => {
+            this.setState({ repRatingAndComments: resp.data });
+         })
          .catch(err => console.log(err));
       ;
    }
 
-   // ============================================================================================================== //
-   // ============================================ rep rating functions ============================================ //
-   // ============================================================================================================== //
    calculateRatingPercent = () => {
       if (this.state.repRatingAndComments) {
          const upVotes = this.state.repRatingAndComments.upVotes.length;
@@ -224,18 +239,20 @@ class RepInfo extends Component {
 
    logRepRatingState = () => {
       if (this.state.userData && this.state.repRatingAndComments) {
-         console.log('rep rating state:', this.state);
+         console.log('rep info state:', this.state);
       }
    }
 
+
+   // ================================================= render ================================================= //
+
    render() {
+      this.getCongressMembers(this.state.repSummary.chamber);
+      console.log('rep industry data:', this.state.repIndustries);
+      console.log('top ten industries:', this.getTopTenIndustries());
+
       return (
          <div>
-            {/* {this.getCongressMembers(this.state.repSummary.chamber)} */}
-            {/* {console.log('this.state.repSummary.chamber:', this.state.repSummary.chamber)} */}
-            {/* {console.log('repSummary:', this.state.repSummary)} */}
-            {/* {console.log('repIndustries:', this.state.repIndustries)} */}
-            {/* {console.log('scrapeSummary:', this.state.scrapeSummary)} */}
             <NavbarComponent
                page={'Home'}
                userData={this.state.userData}
@@ -272,18 +289,21 @@ class RepInfo extends Component {
                   <Col md="6">
                      <IndustryFunds
                         repIndustries={this.state.repIndustries}
-                        getIndustryData={this.getIndustryData}
-                     />
-                     <SourceOfFunds
-                        scrapeSummary={this.state.scrapeSummary}
+                     // getIndustryData={this.getIndustryData}
                      />
                   </Col>
 
                   <Col md="6">
-                     <Legislation
-                        specificMemberVotes={this.state.specificMemberVotes}
+                     <SourceOfFunds
+                        scrapeSummary={this.state.scrapeSummary}
                      />
                   </Col>
+               </Row>
+
+               <Row>
+                  <Legislation
+                     specificMemberVotes={this.state.specificMemberVotes}
+                  />
                </Row>
 
                <Row>

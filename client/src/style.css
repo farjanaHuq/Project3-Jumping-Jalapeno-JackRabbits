@@ -118,10 +118,11 @@ input, select {
    color: rgb(0, 97, 189);
 }
 
-/* source of funds */
+/* =========================================== Source of Funds =========================================== */
 
 .sourceOfFundsDiv {
    margin-top: 35px;
+   overflow: hidden;
 }
 
 .contributionsTable td:first-child {
@@ -191,10 +192,11 @@ input, select {
    background-color: rgb(0, 153, 255);
 }
 
-/* industry funds */
+/* =========================================== Industry Funds =========================================== */
 
 .industryFundsDiv {
    margin-top: 35px;
+   overflow-x: auto;
 }
 
 .div-header {
@@ -287,4 +289,32 @@ input, select {
    text-align: right;
    font-size: 14px;
    color: rgb(165, 165, 165);
+}
+
+
+/* ========================================== Legislation ========================================== */
+
+#legislationDiv {
+   margin-top: 35px;
+}
+
+.legislation-row:not(:last-child) {
+   border-bottom: 1px solid rgb(87, 87, 87);
+}
+
+#legislationTable td:not(:last-child), #legislationTable th:not(:last-child) {
+   padding-right: 17px;
+}
+
+#legislationTable td {
+   padding-top: 10px;
+   padding-bottom: 10px;
+}
+
+.legislation-date-td {
+   min-width: 100px;
+}
+
+.legislation-question-td {
+   min-width: 100px;
 }

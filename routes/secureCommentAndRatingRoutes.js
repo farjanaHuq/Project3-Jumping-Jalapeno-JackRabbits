@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../models');
+const jwt = require('express-jwt');
 const auth = jwt({
    secret: process.env.REACT_APP_JWT_SECRET,
    userProperty: 'payload'

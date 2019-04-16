@@ -1,71 +1,53 @@
-var model = require("../models/User(farjana)");
-var express = require("express");
-var router = express.Router();
-var sgMail = require('@sendgrid/mail');
+const express = require('express');
+const router = express.Router();
+const db = require('../models');
+var nodemailer = require('nodemailer');
+var sgTransport = require('nodemailer-sendgrid-transport');
 
+var options = {
+   auth: {
+     api_user: 'farjanaHuq13',
+     api_key: 'mySendgrid2019'
+   }
+ }
+ var client = nodemailer.createTransport(sgTransport(options));
 
-router.post('/sendemail/', function (req, res) {
-  console.log('send email post route hit');
+router.post('/:emailToken', function(req,res){
 
-  // using SendGrid's v3 Node.js Library
-  // https://github.com/sendgrid/sendgrid-nodejs
+    // db.User.findOne({ emailToken: req.params.emailToken })
+    // .then(resp => {
+        // console.log("User created resp",resp);  
+        //var emailToken = req.params.emailToken;
+        var email = {
+            from: 'jumpingJalapinoRabbit@gmail.com',
+            to: 'huq.farjana03@gmail.com',
+            subject: 'Email Activation',
+            text: 'Click the link to activate your email',
+            // <p>To confirm your registration, please click the following link:</p>
+            // <a href="http://localhost:3000/activate/${emailToken}">http://localhost:3000/activate</a>,
+            html: <strong><b>Hello </b></strong>
+            //` <p>To confirm your registration, please click the following link:</p>
+            // <a href="http://localhost:3000/activate/${emailToken}">http://localhost:3000/activate</a>`
+          };
+          
+          client.sendMail(email, function(err, info){
+              if (err ){
+                console.log(err);
+              }
+              else {
+                console.log('Message sent: ' + info.response);
+              }
+          });
+    // })
+    // .catch(err => res.status(400).json({ msg: err.toString() }));
 
-  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-  console.log('sendgrid api key set');
-
-  // check for environment to send proper links in email
-  if (process.env.NODE_ENV === "test") {
-    const msg = {
-      to: req.body.userEmail,
-      from: 'noreply@bullshit-meter.com',
-      subject: 'BullShit Meter registration confirmation',
-      text: 'confirm email',
-      html: `
-      <p>To confirm your registration, please click the following link:</p>
-      <a href="http://localhost:3000/visitConfirmation.html?k=${req.body.emailConfirmKey}&c=1">http://localhost:3000/visitConfirmation.html?k=${req.body.emailConfirmKey}&c=1</a>
-      <p>To decline or cancel your appointment at any time, you may click the following link:</p>
-      <a href="http://localhost:3000/visitConfirmation.html?k=${req.body.emailConfirmKey}&c=0">http://localhost:3000/visitConfirmation.html?k=${req.body.emailConfirmKey}&c=0</a>
-    `,
-    };
-    sgMail.send(msg);
-  } else {
-    const msg = {
-      to: req.body.userEmail,
-      from: 'noreply@bullshit-meter.com',
-      subject: 'BullShit Meter registration confirmation',
-      text: 'confirm email',
-      html: `
-      <p>To confirm your registration, please click the following link:</p>
-      <a href="http://localhost:3000/visitConfirmation.html?k=${req.body.emailConfirmKey}&c=1">http://localhost:3000/visitConfirmation.html?k=${req.body.emailConfirmKey}&c=1</a>
-      <p>To decline or cancel your appointment at any time, you may click the following link:</p>
-      <a href="http://localhost:3000/visitConfirmation.html?k=${req.body.emailConfirmKey}&c=0">http://localhost:3000/visitConfirmation.html?k=${req.body.emailConfirmKey}&c=0</a>
-    `,
-    };
-    sgMail.send(msg);
-  }
-  res.end();
 });
 
+
+
+
+
+
+
+
 module.exports = router;
-
-// //authorisation
-// router.get("/protect", function (req, res) {
-//   if (!req.tokenData) {
-//     // restricting route to only autheticated users
-//     res.status(403).send('Unauthorized');
-//   }
-//   // populate filter
-//   // use on get visits, delete visits, and update visits
-//   // where.userID = req.tokenData.userID;
-
-//   // // populate user foreign key
-//   // visit.userID = req.tokenData.userID;
-
-//   console.log("api/protected.request.tokenData", req.tokenData);
-//   res.json({
-//     message: "PROTECTED",
-//     tokenData: req.tokenData
-//   });
-// });
-
-

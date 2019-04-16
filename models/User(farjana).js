@@ -33,7 +33,7 @@ const userSchema = new Schema({
       required: true,
       default: false
    },
-   temporaryToken: {
+   emailToken: {
       type: String,
       required: true
    }

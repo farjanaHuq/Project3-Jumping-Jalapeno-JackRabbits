@@ -16,7 +16,7 @@ router.post('/register', (req, res) => {
       email: req.body.email,
       salt: helpers.getSalt()
    }
-   user.temporaryToken= jwt.sign({
+   user.emailToken = jwt.sign({
       displayName: user.displayName,
       email: user.email
    }, process.env.REACT_APP_JWT_SECRET, {expiresIn: '24h'});
@@ -24,7 +24,7 @@ router.post('/register', (req, res) => {
    user.hash = helpers.getHash(user.salt, req.body.password);
 
    db.User.create(user)
-      .then(resp => res.status(201).json({ msg: 'User Created' }))
+      .then(resp => res.status(201).json({ msg: 'Account registered, please check your email to activate account.' }))
       .catch(err => res.status(400).json({ msg: err.toString() }));
 });
 
@@ -45,7 +45,7 @@ router.post('/login', (req, res) => {
                displayName: resp.displayName,
                email: resp.email,
                date: resp.date,
-               temporaryToken: resp.temporaryToken,
+               temporaryToken: resp.emailToken,
                token: jwt.sign({
                   exp: parseInt(expiry.getTime() / 1000),
                   userID: resp._id,

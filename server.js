@@ -14,6 +14,7 @@ const authRoutes = require("./routes/authRoutes(farjana)");
 const openSecretsApiRoutes = require("./routes/openSecretsRoutes");
 const proPublicaApiRoutes = require("./routes/proPublicaRoutes");
 const protectedApiRoutes = require("./routes/protectedApiRoutes");
+const emailRoutes = require("./routes/apiRoutesEmail");
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -30,7 +31,7 @@ app.use('/api/commentAndRating', commentAndRatingRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/opensecrets', openSecretsApiRoutes);
 app.use('/api/propublica', proPublicaApiRoutes);
-
+app.use('/api/sendEmail', emailRoutes);
 // Auth middleware
  //app.use(auth);
 // Protected routes

@@ -44,7 +44,7 @@ class IndustryFunds extends Component {
                   {Array.from(this.props.repIndustries).map((elem, i) => (
                      <tr key={`industry-row-${i}`}>
                         <td>
-                           <a href="" onClick={this.selectIndustry} className="" color="primary">
+                           <a href="" onClick={this.props.selectIndustry} className="" color="primary">
                               {elem['@attributes'].industry_name}
                            </a>
                         </td>

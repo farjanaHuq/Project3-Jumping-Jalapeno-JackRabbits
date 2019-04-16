@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 // import { Button } from 'reactstrap';
 import '../style.css';
-import axios from "axios";
 
 class Legislation extends Component {
    constructor(props) {
@@ -12,18 +11,6 @@ class Legislation extends Component {
 
    componentDidMount() {
 
-   }
-
-   getBillsBySubject = subject => {
-      axios.get('/api/propublica/recent-bills/' + subject)
-         .then(resp => {
-            const scrapeSummary = resp.data;
-            // console.log('scrapesummary data:', scrapeSummary);
-            this.setState({ scrapeSummary: scrapeSummary });
-         })
-         .catch(err => console.log(err));
-      ;
-      // /recent-Bills/: subject
    }
 
    render() {

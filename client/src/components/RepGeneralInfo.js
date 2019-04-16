@@ -15,7 +15,7 @@ class RepGeneralInfo extends Component {
    renderChamber = () => {
       if (this.props.repSummary.chamber === 'H') {
          return <h4>Representative ({this.props.repSummary.party} - {this.props.repSummary.state})</h4>
-      } else {
+      } else if (this.props.repSummary.chamber === 'S') {
          return <h4>Senator ({this.props.repSummary.party} - {this.props.repSummary.state})</h4>
       }
    }

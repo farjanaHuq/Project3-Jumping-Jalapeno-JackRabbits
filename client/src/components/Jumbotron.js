@@ -7,8 +7,7 @@ class Jumbotron extends Component {
       return (
          <div className="jumbotron jumbotron-fluid">
             <div className="container">
-               <h1>Jumping Jalapeno Jackrabbits</h1>
-               <span>Project 3</span>
+               <h1>Follow the Money Trail</h1>
             </div>
          </div>
       );

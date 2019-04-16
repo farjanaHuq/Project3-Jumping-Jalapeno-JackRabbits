@@ -49,6 +49,13 @@ class NavbarComponent extends Component {
                <Link to={"/Representatives"} className="nav-link disabled">Representatives</Link>
             </Nav>
          )
+      } else if (this.props.page === "RepInfo") {
+         return (
+            <Nav className="mr-auto">
+               <Link to={"/Home"} className="nav-link active">Home</Link>
+               <Link to={"/Representatives"} className="nav-link active">Representatives</Link>
+            </Nav>
+         )
       }
    };
    renderLoginLinks = () => {
@@ -74,25 +81,25 @@ class NavbarComponent extends Component {
    render() {
       return (
          <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-            {/* {console.log(this.props.userData)} */}
-            <Navbar.Brand>React-Bootstrap</Navbar.Brand>
-            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-            <Navbar.Collapse id="responsive-navbar-nav">
-               {this.renderNavLinks()}
-               {this.renderLoginLinks()}
-            </Navbar.Collapse>
-            <SignupModal
-               show={this.state.signupModalShow}
-               handleShow={this.handleSignupShow}
-               handleClose={this.handleSignupClose}
-            />
-            <LoginModal
-               show={this.state.loginModalShow}
-               handleShow={this.handleLoginShow}
-               handleClose={this.handleLoginClose}
-               handleLogin={this.handleLoginSubmit}
-               handleLoginData={this.props.handleLoginData}
-            />
+               {/* {console.log(this.props.userData)} */}
+               {/* <Navbar.Brand>React-Bootstrap</Navbar.Brand> */}
+               <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+               <Navbar.Collapse id="responsive-navbar-nav">
+                  {this.renderNavLinks()}
+                  {this.renderLoginLinks()}
+               </Navbar.Collapse>
+               <SignupModal
+                  show={this.state.signupModalShow}
+                  handleShow={this.handleSignupShow}
+                  handleClose={this.handleSignupClose}
+               />
+               <LoginModal
+                  show={this.state.loginModalShow}
+                  handleShow={this.handleLoginShow}
+                  handleClose={this.handleLoginClose}
+                  handleLogin={this.handleLoginSubmit}
+                  handleLoginData={this.props.handleLoginData}
+               />
          </Navbar>
       )
    }

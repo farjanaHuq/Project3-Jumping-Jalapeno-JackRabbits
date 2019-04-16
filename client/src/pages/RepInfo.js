@@ -252,7 +252,12 @@ class RepInfo extends Component {
    rateRep = voteType => {
       const repCid = this.state.repRatingAndComments.repCid;
       const userID = this.state.userData.userID;
-      axios.put(`/api/secureCommentAndRatingRoutes/raterepresentative/${repCid}/${voteType}/${userID}`)
+      const tokenStr = localStorage.getItem("token");
+      axios.put(`/api/secureCommentAndRatingRoutes/raterepresentative/${repCid}/${voteType}/${userID}`,
+         {},
+         {
+            headers: { "Authorization": `Bearer ${tokenStr}` }
+         })
          .then(resp => {
             console.log('rate rep resp:', resp);
             this.getRepRatingAndComments(repCid);
@@ -269,13 +274,19 @@ class RepInfo extends Component {
    }
 
    rateComment = (event) => {
+      const tokenStr = localStorage.getItem("token");
       const commentID = event.target.getAttribute('id').split('-')[1];
       console.log(commentID);
       const userID = this.state.userData.userID;
       const voteType = event.target.getAttribute('id').split('-')[0];
       console.log('userID:', userID);
       console.log('votetype:', voteType);
-      axios.put(`/api/secureCommentAndRatingRoutes/ratecomment/${commentID}/${voteType}/${userID}`)
+      axios.put(`/api/secureCommentAndRatingRoutes/ratecomment/${commentID}/${voteType}/${userID}`,
+         {},
+         {
+            headers: { "Authorization": `Bearer ${tokenStr}` }
+         }
+      )
          .then(resp => {
             console.log('rate comment resp:', resp);
             this.getRepRatingAndComments(this.state.repRatingAndComments.repCid);
@@ -300,7 +311,7 @@ class RepInfo extends Component {
       return (
          <div>
             <NavbarComponent
-               page={'Home'}
+               page={'RepInfo'}
                userData={this.state.userData}
                handleLoginData={this.handleLoginData}
                handleLogout={this.handleLogout}
@@ -348,9 +359,11 @@ class RepInfo extends Component {
                </Row>
 
                <Row>
-                  <Legislation
-                     specificMemberVotes={this.state.specificMemberVotes}
-                  />
+                  <Col>
+                     <Legislation
+                        specificMemberVotes={this.state.specificMemberVotes}
+                     />
+                  </Col>
                </Row>
 
                <Row>

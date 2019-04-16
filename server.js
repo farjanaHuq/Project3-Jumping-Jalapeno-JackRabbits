@@ -31,7 +31,7 @@ app.use('/api/opensecrets', openSecretsApiRoutes);
 app.use('/api/propublica', proPublicaApiRoutes);
 
 // Auth middleware
-// app.use(auth);
+app.use(auth);
 // Protected routes
 app.use('/protectedapi', protectedApiRoutes);
 app.use('/api/secureCommentAndRatingRoutes', secureCommentAndRatingRoutes);

@@ -25,14 +25,19 @@ class Comments extends Component {
 
   addComment = event => {
     event.preventDefault();
+    const tokenStr = localStorage.getItem("token");
     // console.log(this.props.repRatingAndComments);
-    axios.post('/api/secureCommentAndRatingRoutes/comment', {
-      userID: this.props.userData.userID,
-      repCid: this.props.repRatingAndComments.repCid,
-      message: document.getElementById('add-comment').value,
-      userEmail: this.props.userData.userEmail,
-      userDisplayName: this.props.userData.displayName
-    })
+    axios.post('/api/secureCommentAndRatingRoutes/comment',
+      {
+        userID: this.props.userData.userID,
+        repCid: this.props.repRatingAndComments.repCid,
+        message: document.getElementById('add-comment').value,
+        userEmail: this.props.userData.userEmail,
+        userDisplayName: this.props.userData.displayName
+      },
+      {
+        headers: { "Authorization": `Bearer ${tokenStr}` }
+      })
       .then(resp => {
         document.getElementById('add-comment').value = '';
         this.hideAddCommentBtns();
@@ -96,6 +101,7 @@ class Comments extends Component {
   }
 
   renderThumbImage = (elem, direction) => {
+    const userID = this.props.userData ? this.props.userData.userID : ''
     return (
       <img
         src={direction === 'up' ? 'https://i.imgur.com/5iXiKuh.png' : "https://i.imgur.com/APtQG6S.png"}
@@ -103,7 +109,7 @@ class Comments extends Component {
         style={{
           height: '20px',
           width: '20px',
-          filter: elem[`${direction}Votes`].includes(this.props.userData.userID) ? '' : 'brightness(0) invert(1)'
+          filter: elem[`${direction}Votes`].includes(userID) ? '' : 'brightness(0) invert(1)'
         }}
         className={`${direction}vote-comment`}
         id={`${direction}vote-${elem._id}`}
@@ -143,42 +149,49 @@ class Comments extends Component {
   }
 
   render() {
+    console.log(this.props)
     return (
       <div id="comment-component-div">
         <Row>
-          <h2 className="div-header">Comments</h2>
-          <Form className="d-flex flex-column" id="add-comment-form" onSubmit={this.addComment}>
-            <FormGroup>
-              <Label for="add-comment">Add Comment</Label>
-              <Input type="textarea" rows="4" name="add-comment" id="add-comment" onClick={this.showAddCommentBtns} />
-            </FormGroup>
-            <span className="d-flex flex-row justify-content-end" id="add-comment-btn-span"
-              style={{
-                visibility: (this.state.addCommentBtnsVisibility) ? 'visible' : 'hidden',
-                height: (this.state.addCommentBtnsVisibility) ? 'auto' : 0
-              }}
-            >
-              <Button onClick={this.hideAddCommentBtns}>Cancel</Button>
-              <Button>Submit</Button>
-            </span>
-          </Form>
+          <Col>
+            <h2 className="div-header">Comments</h2>
+            <Form className="d-flex flex-column" id="add-comment-form" onSubmit={this.addComment}>
+              <FormGroup>
+                <Label for="add-comment">Add Comment</Label>
+                <Input type="textarea" rows="4" name="add-comment" id="add-comment" onClick={this.showAddCommentBtns} />
+              </FormGroup>
+              <span className="d-flex flex-row justify-content-end" id="add-comment-btn-span"
+                style={{
+                  visibility: (this.state.addCommentBtnsVisibility) ? 'visible' : 'hidden',
+                  height: (this.state.addCommentBtnsVisibility) ? 'auto' : 0
+                }}
+              >
+                <Button onClick={this.hideAddCommentBtns}>Cancel</Button>
+                <Button>Submit</Button>
+              </span>
+            </Form>
+          </Col>
         </Row>
 
         <Row>
           <Col md="6">
-            <h3 id="top-rated-comments-div">Top Rated</h3>
-            {/* {console.log('top 5 comments arr:\n', this.getTopFiveComments())} */}
-            {this.getTopFiveComments().map((elem, i) => (
-              this.renderComments(elem, 'top-rated-comments-card')
-            ))}
+            <div id="top-rated-comments-div">
+              <h3>Top Rated</h3>
+              {/* {console.log('top 5 comments arr:\n', this.getTopFiveComments())} */}
+              {this.getTopFiveComments().map((elem, i) => (
+                this.renderComments(elem, 'top-rated-comments-card')
+              ))}
+            </div>
           </Col>
           <Col md="6">
-            <h3 id="most-recent-comments-div">Most Recent</h3>
-            {/* {console.log('unsorted comments arr:\n', this.props.repRatingAndComments.comments)}
-            {console.log('non top 5 sorted by date:\n', this.sortCommentsByDate())} */}
-            {this.sortCommentsByDate().map((elem, i) => (
-              this.renderComments(elem, 'most-recent-comments-card')
-            ))}
+            <div id="most-recent-comments-div">
+              <h3>Most Recent</h3>
+              {/* {console.log('unsorted comments arr:\n', this.props.repRatingAndComments.comments)}
+                {console.log('non top 5 sorted by date:\n', this.sortCommentsByDate())} */}
+              {this.sortCommentsByDate().map((elem, i) => (
+                this.renderComments(elem, 'most-recent-comments-card')
+              ))}
+            </div>
           </Col>
         </Row>
 

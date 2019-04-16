@@ -39,7 +39,7 @@ input, select {
 .jumbotron {
    text-align: center;
    color: white;
-   background: url('./images/books-banner.png');
+   background: url('https://i.imgur.com/b2pEKts.png');
    background-size: cover;
    background-position: center;
    background-repeat: no-repeat;
@@ -318,3 +318,11 @@ input, select {
 .legislation-question-td {
    min-width: 100px;
 }
+
+/* ========================================== Mobile screens ========================================== */
+
+@media only screen and (max-width: 768px) {
+   #most-recent-comments-div {
+      margin-top: 15px;
+   }
+ }

@@ -1,10 +1,7 @@
 require('dotenv').config();
 const express = require("express");
 const jwt = require('express-jwt');
-const auth = jwt({
-  secret: process.env.REACT_APP_JWT_SECRET,
-  userProperty: 'payload'
-});
+
 const path = require("path");
 const mongoose = require('mongoose');
 const commentAndRatingRoutes = require("./routes/commentAndRatingRoutes");
@@ -30,8 +27,6 @@ app.use('/api/auth', authRoutes);
 app.use('/api/opensecrets', openSecretsApiRoutes);
 app.use('/api/propublica', proPublicaApiRoutes);
 
-// Auth middleware
-app.use(auth);
 
 // Protected routes
 app.use('/protectedapi', protectedApiRoutes);

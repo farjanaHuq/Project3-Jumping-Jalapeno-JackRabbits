@@ -1,7 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../models');
-
+const auth = jwt({
+   secret: process.env.REACT_APP_JWT_SECRET,
+   userProperty: 'payload'
+ });
+ router.use(auth)
 // post a comment
 router.post('/comment/', (req, res) => {
    console.log('backend req.body.repCid:', req.body.repCid)

@@ -16,7 +16,13 @@ router.post('/register', (req, res) => {
       email: req.body.email,
       salt: helpers.getSalt()
    }
+   user.temporaryToken= jwt.sign({
+      displayName: user.displayName,
+      email: user.email
+   }, process.env.REACT_APP_JWT_SECRET, {expiresIn: '24h'});
+
    user.hash = helpers.getHash(user.salt, req.body.password);
+
    db.User.create(user)
       .then(resp => res.status(201).json({ msg: 'User Created' }))
       .catch(err => res.status(400).json({ msg: err.toString() }));
@@ -33,12 +39,13 @@ router.post('/login', (req, res) => {
          if (helpers.checkIfValidPass(resp, req.body.password)) {
             var expiry = new Date();
             expiry.setDate(expiry.getDate() + 7);
-
+            console.log('temporary token',resp.temporaryToken);
             res.json({
                userID: resp._id,
                displayName: resp.displayName,
                email: resp.email,
                date: resp.date,
+               temporaryToken: resp.temporaryToken,
                token: jwt.sign({
                   exp: parseInt(expiry.getTime() / 1000),
                   userID: resp._id,

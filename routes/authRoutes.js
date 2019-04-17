@@ -22,7 +22,7 @@ router.post('/register', (req, res) => {
    user.hash = helpers.getHash(user.salt, req.body.password);
 
    // sendgrid
-   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+   sgMail.setApiKey(process.env.REACT_APP_SENDGRID_API_KEY);
    // check for environment to send proper links in email
    var urlInEmail = 'http://localhost:3000/';
    // if (!process.env.NODE_ENV) urlInEmail = 'http://localhost:3000/';

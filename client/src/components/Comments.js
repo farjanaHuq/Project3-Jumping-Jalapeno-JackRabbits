@@ -46,7 +46,10 @@ class Comments extends Component {
           this.props.repRatingAndComments.repCid, this.props.repRatingAndComments.repName);
         return console.log('post comment resp:', resp);
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log(err);
+        alert('Must be logged in to post a comment.');
+      });
     ;
   }
 

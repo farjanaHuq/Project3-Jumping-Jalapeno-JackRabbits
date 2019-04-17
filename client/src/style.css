@@ -319,6 +319,14 @@ input, select {
    min-width: 100px;
 }
 
+
+/* ====================================== Email Verification Page ====================================== */
+
+#verify-email-div {
+   text-align: center;
+   margin-top: 50px;
+}
+
 /* ========================================== Mobile screens ========================================== */
 
 @media only screen and (max-width: 768px) {

@@ -20,7 +20,7 @@ class NavbarComponent extends Component {
    }
 
    handleLoginState = () => {
-      if (this.propsUserData) {
+      if (this.props.userData) {
          this.setState({ loggedIn: true });
       } else {
          this.setState({ loggedIn: false });
@@ -59,7 +59,8 @@ class NavbarComponent extends Component {
       }
    };
    renderLoginLinks = () => {
-      if (!this.props.userData) {
+      console.log('user data:', this.props.userData)
+      if (!this.props.userData || !this.props.userData.userID) {
          return (
             <Nav>
                <Navbar.Text onClick={this.handleLoginShow} className="nav-link active"><FontAwesomeIcon icon="sign-in-alt" /> Log In</Navbar.Text>

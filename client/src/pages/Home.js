@@ -9,7 +9,7 @@ class Home extends Component {
    constructor(props) {
       super(props);
       this.state = {
-         userData: null
+         userData: { date: '', displayName: '', email: '', userID: '' }
       };
    }
 
@@ -43,7 +43,7 @@ class Home extends Component {
 
    handleLogout = () => {
       localStorage.removeItem('token');
-      this.setState({ userData: null });
+      this.setState({ userData: { date: '', displayName: '', email: '', userID: '' } });
    }
 
    render() {

@@ -34,10 +34,16 @@ class LoginModal extends Component {
          password: password
       })
          .then(res => {
-            // console.log('login res.data:', res.data);
-            localStorage.setItem('token', res.data.token);
-            this.props.handleLoginData();
-            this.props.handleClose();
+            console.log('login res.data:', res.data);
+            if (res.data === 'Incorrect password.') {
+               alert('Incorrect password.');
+            } else if (res.data === 'Email has not been validated.') {
+               alert('Email has not been validated.');
+            } else {
+               localStorage.setItem('token', res.data.token);
+               this.props.handleLoginData();
+               this.props.handleClose();
+            }
          })
          .catch(err => {
             console.log(err);

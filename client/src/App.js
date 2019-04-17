@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "./pages/Home";
 import Representatives from "./pages/Representatives";
 import RepInfo from "./pages/RepInfo";
+import VerifyEmail from "./pages/VerifyEmail";
 // bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css';
 // moment.js
@@ -36,6 +37,10 @@ class App extends Component {
           <Route
             exact path='/RepInfo'
             component={RepInfo}
+          />
+          <Route
+            exact path='/VerifyEmail'
+            component={VerifyEmail}
           />
         </div>
       </Router>

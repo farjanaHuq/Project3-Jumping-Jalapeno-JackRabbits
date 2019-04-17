@@ -1,24 +1,58 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../models');
-const crypto = require('crypto');
+// const crypto = require('crypto');
 const helpers = require('./helpers/authHelpers');
 const jwt = require('jsonwebtoken');
+var sgMail = require('@sendgrid/mail');
 
 
 // register
 router.post('/register', (req, res) => {
+   // check if user entered in all of the data
    if (!req.body.displayName || !req.body.password || !req.body.email) {
       return res.status(400).json({ msg: new Error('Please put all data on body.') });
    }
+   // create a user object to store in the db and encrypt the password
    const user = {
       displayName: req.body.displayName,
       email: req.body.email,
       salt: helpers.getSalt()
    }
    user.hash = helpers.getHash(user.salt, req.body.password);
+
+   // sendgrid
+   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+   // check for environment to send proper links in email
+   var urlInEmail;
+   if (process.env.NODE_ENV === "test") urlInEmail = 'http://localhost:3000/';
+   else urlInEmail = 'https://desolate-cliffs-99613.herokuapp.com/';
+   const msg = {
+      to: req.body.userEmail,
+      from: 'noreply@followthemoneytrail.org',
+      subject: 'Verify Email Address',
+      text: 'Verify Email Address',
+      html: `
+            <p>An account has just been created with this email address at followthemoneytrail.org.
+            <p>To activate your new account, please click the following link:</p>
+            <a href="${urlInEmail}VerifyEmail?k=${req.body.validationKey}">${urlInEmail}VerifyEmail?k=${req.body.validationKey}</a>
+         `,
+   };
+   sgMail.send(msg);
+
    db.User.create(user)
-      .then(resp => res.status(201).json({ msg: 'User Created' }))
+      .then(userResp => {
+         db.EmailValidationKey.create({
+            userID: userResp._id,
+            validationKey: req.body.validationKey
+         })
+            .then(validationResp => {
+               res.json({
+                  userResp: userResp,
+                  validationResp: validationResp
+               })
+            })
+      })
       .catch(err => res.status(400).json({ msg: err.toString() }));
 });
 
@@ -30,7 +64,12 @@ router.post('/login', (req, res) => {
    }
    db.User.findOne({ email: req.body.email })
       .then(resp => {
-         if (helpers.checkIfValidPass(resp, req.body.password)) {
+         console.log('login resp:', resp);
+         if (!helpers.checkIfValidPass(resp, req.body.password)) {
+            res.json('Incorrect password.');
+         } else if (!resp.emailValidated) {
+            res.json('Email has not been validated.');
+         } else {
             var expiry = new Date();
             expiry.setDate(expiry.getDate() + 7);
 
@@ -47,8 +86,6 @@ router.post('/login', (req, res) => {
                   date: resp.date,
                }, process.env.REACT_APP_JWT_SECRET)
             });
-         } else {
-            throw new Error('Incorrect password.');
          }
       })
       .catch(err => res.status(400).json({ msg: err.toString() }));

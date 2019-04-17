@@ -1,5 +1,6 @@
 module.exports = {
    User: require("./User"),
    Representative: require("./Representative"),
-   Comment: require("./Comment")
+   Comment: require("./Comment"),
+   EmailValidationKey: require("./EmailValidationKey")
 };

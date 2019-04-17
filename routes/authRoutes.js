@@ -24,11 +24,11 @@ router.post('/register', (req, res) => {
    // sendgrid
    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
    // check for environment to send proper links in email
-   var urlInEmail;
-   if (process.env.NODE_ENV === "test") urlInEmail = 'http://localhost:3000/';
-   else urlInEmail = 'https://desolate-cliffs-99613.herokuapp.com/';
+   var urlInEmail = 'http://localhost:3000/';
+   // if (!process.env.NODE_ENV) urlInEmail = 'http://localhost:3000/';
+   // else urlInEmail = 'https://desolate-cliffs-99613.herokuapp.com/';
    const msg = {
-      to: req.body.userEmail,
+      to: req.body.email,
       from: 'noreply@followthemoneytrail.org',
       subject: 'Verify Email Address',
       text: 'Verify Email Address',
@@ -90,5 +90,25 @@ router.post('/login', (req, res) => {
       })
       .catch(err => res.status(400).json({ msg: err.toString() }));
 });
+
+router.put('/verifyEmail/:key', (req, res) => {
+   // find the index in the emailvalidationkeys collection with this key
+   db.EmailValidationKey.findOne({ validationKey: req.params.key })
+      // get the response
+      .then(validationKeyResp => {
+         if (validationKeyResp) {
+            // delete the collection
+            db.EmailValidationKey.deleteOne({ validationKey: req.params.key })
+               .then(() => res.json('Validation key index deleted.'))
+               .catch(err => console.log(err));
+            // in the user collection: where the id matches the response's id, set the validation value to true
+            db.User.updateOne({ _id: validationKeyResp.userID }, { $set: { emailValidated: true } })
+               .then(() => res.json('Email validated.'))
+               .catch(err => console.log(err));
+         } else {
+            console.log('Email address already validated.');
+         }
+      });
+})
 
 module.exports = router;

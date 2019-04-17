@@ -16,9 +16,7 @@ class RepInfo extends Component {
    constructor(props) {
       super(props);
       this.state = {
-         userData: {
-            userID: ''
-         },
+         userData: { date: '', displayName: '', email: '', userID: '' },
          repSummary: {},
          repIndustries: [],
          scrapeSummary: {},
@@ -94,16 +92,16 @@ class RepInfo extends Component {
       // grab the token from local storage and set the user's data to state
       const token = localStorage.getItem('token');
       // console.log('token:', token);
-      if (token) var tokenData = JSON.parse(window.atob(token.split('.')[1]));
-      console.log('user data:', tokenData);
-      this.setState({
-         userData: tokenData
-      });
+      if (token) {
+         var tokenData = JSON.parse(window.atob(token.split('.')[1]));
+         console.log('user data:', tokenData);
+         this.setState({ userData: tokenData });
+      }
    }
 
    handleLogout = () => {
       localStorage.removeItem('token');
-      this.setState({ userData: null });
+      this.setState({ userData: { date: '', displayName: '', email: '', userID: '' } });
    }
 
    // =============================================== legislation =============================================== //
@@ -262,7 +260,10 @@ class RepInfo extends Component {
             console.log('rate rep resp:', resp);
             this.getRepRatingAndComments(repCid);
          })
-         .catch(err => (console.log('up vote rep err:', err)));
+         .catch(err => {
+            console.log('up vote rep err:', err);
+            alert('Must be logged in to rate.');
+         });
    }
 
    upVoteComment = (event) => {
@@ -291,7 +292,10 @@ class RepInfo extends Component {
             console.log('rate comment resp:', resp);
             this.getRepRatingAndComments(this.state.repRatingAndComments.repCid);
          })
-         .catch(err => (console.log('up vote rep err:', err)));
+         .catch(err => {
+            console.log('up vote rep err:', err);
+            alert('Must be logged into rate comments.');
+         });
    }
 
    logRepRatingState = () => {

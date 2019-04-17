@@ -19,13 +19,13 @@ router.post('/:emailToken', function(req,res){
         // console.log("User created resp",resp);  
         //var emailToken = req.params.emailToken;
         var email = {
-            from: 'jumpingJalapinoRabbit@gmail.com',
+            from: 'jumpingJalapinoRabbit@gmail.com', 
             to: 'huq.farjana03@gmail.com',
             subject: 'Email Activation',
             text: 'Click the link to activate your email',
             // <p>To confirm your registration, please click the following link:</p>
             // <a href="http://localhost:3000/activate/${emailToken}">http://localhost:3000/activate</a>,
-            html: <strong><b>Hello </b></strong>
+            html: '<strong><b>Hello </b></strong>'
             //` <p>To confirm your registration, please click the following link:</p>
             // <a href="http://localhost:3000/activate/${emailToken}">http://localhost:3000/activate</a>`
           };

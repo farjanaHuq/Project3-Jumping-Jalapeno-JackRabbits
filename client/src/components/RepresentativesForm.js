@@ -17,16 +17,34 @@ class USStatesForm extends Component {
 
    handleRepSubmit = event => {
       event.preventDefault();
-      // get the rep's cid #
-      const e = document.getElementById("selectRep");
-      const option = e.options[e.selectedIndex];
-      // const dataname = option.getAttribute("dataname");
-      const datacid = option.getAttribute("datacid");
-      // console.log('const cid:', datacid)
-      this.setState({ cid: datacid });
-      // console.log('dataname:', dataname);
-      // console.log('datacid:', this.state.cid);
-      window.location = `/RepInfo?cid=${datacid}`;
+      if (this.props.repsLoaded) {
+         // get the rep's cid #
+         const e = document.getElementById("selectRep");
+         const option = e.options[e.selectedIndex];
+         // const dataname = option.getAttribute("dataname");
+         const datacid = option.getAttribute("datacid");
+         // console.log('const cid:', datacid)
+         this.setState({ cid: datacid });
+         // console.log('dataname:', dataname);
+         // console.log('datacid:', this.state.cid);
+         window.location = `/RepInfo?cid=${datacid}`;
+      }
+   }
+
+   renderReps = () => {
+      if (this.props.repsLoaded) {
+         return this.props.representatives.map((elem, i) => (
+            <option
+               key={i}
+               dataname={elem["@attributes"].firstlast}
+               datacid={elem["@attributes"].cid}
+            >
+               {elem["@attributes"].firstlast} ({elem["@attributes"].party}), {elem["@attributes"].office}
+            </option>
+         ));
+      } else {
+         return <option>Loading Representatives...</option>;
+      }
    }
 
 
@@ -37,15 +55,7 @@ class USStatesForm extends Component {
                <FormGroup>
                   <Label for="exampleSelect">Select Representative</Label>
                   <Input type="select" name="select" id="selectRep">
-                     {this.props.representatives.map((elem, i) => (
-                        <option
-                           key={i}
-                           dataname={elem["@attributes"].firstlast}
-                           datacid={elem["@attributes"].cid}
-                        >
-                           {elem["@attributes"].firstlast} ({elem["@attributes"].party}), {elem["@attributes"].office}
-                        </option>
-                     ))}
+                     {this.renderReps()}
                   </Input>
                </FormGroup>
                <Button>Submit</Button>

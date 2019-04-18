@@ -10,8 +10,6 @@ class USStatesForm extends Component {
       };
    }
 
-
-
    render() {
       return (
          <div className="container">

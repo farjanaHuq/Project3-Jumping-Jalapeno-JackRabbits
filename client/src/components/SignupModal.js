@@ -11,8 +11,30 @@ class SignupModal extends Component {
       super(props, context);
 
       this.state = {
+          emailValid: '',
+         
       };
    }
+   
+   handleInputChange = event => {
+      event.preventDefault();
+       console.log('hello');
+      const getEmail= document.getElementById('emailField').value;
+      const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      const validateEmailFormat = regex.test(getEmail);
+      if (!validateEmailFormat) {     
+         this.setState(
+            {
+               emailValid : 'is-invalid form-control '
+            });
+          
+      }else{
+         this.setState(
+            {
+               emailValid : 'is-valid form-control'
+            });   
+      }
+    };
 
    handleSubmit = event => {
       event.preventDefault();
@@ -46,6 +68,11 @@ class SignupModal extends Component {
       const validateEmailFormat = regex.test(signupData.email);
       if (!validateEmailFormat) {
          document.getElementById('emailValidation-error-message').textContent = "Invalid Email";
+         // this.setState(
+         //    {
+         //       emailValid : 'is-invalid form-control '
+         //    });
+         //    console.log(this.state.emailValid);
 
          // confirm passwords match
       } else if (signupData.password !== document.getElementById('confirmPasswordField').value) {
@@ -74,9 +101,15 @@ class SignupModal extends Component {
                </Modal.Header>
                <Form>
                   <Modal.Body>
-                     <Form.Group>
+                     <Form.Group >
                         <Form.Label>Email address</Form.Label>
-                        <Form.Control id="emailField" type="email" placeholder="Enter email" />
+                        <Form.Control className = {this.state.emailValid}
+                        // className ={this.state.emailValid ? 'is-valid form-control' : 'is-invalid form-control'}        
+                                     id="emailField" 
+                                     type="email" 
+                                     placeholder="Enter email" 
+                                     onChange = {this.handleInputChange}
+                                     />
                         <Form.Text className="text-danger error-message" id="emailValidation-error-message"> </Form.Text>
                      </Form.Group>
                      <Form.Group>

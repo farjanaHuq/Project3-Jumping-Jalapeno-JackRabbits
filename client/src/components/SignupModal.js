@@ -11,29 +11,32 @@ class SignupModal extends Component {
       super(props, context);
 
       this.state = {
-          emailValid: '',
+          emailValidation: '',
+          confirmPasswordValidation: ''
          
       };
    }
    
    handleInputChange = event => {
       event.preventDefault();
-       console.log('hello');
+
       const getEmail= document.getElementById('emailField').value;
+      const password = document.getElementById('passwordField').value;
+  
       const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       const validateEmailFormat = regex.test(getEmail);
+
       if (!validateEmailFormat) {     
-         this.setState(
-            {
-               emailValid : 'is-invalid form-control '
-            });
-          
+         this.setState({ emailValidation : 'is-invalid form-control'});        
       }else{
-         this.setState(
-            {
-               emailValid : 'is-valid form-control'
-            });   
+         this.setState({emailValidation : 'is-valid form-control'});   
       }
+
+      if(password  !== document.getElementById('confirmPasswordField').value){
+         this.setState({confirmPasswordValidation: 'is-invalid form-control'});   
+      }else{
+         this.setState({confirmPasswordValidation : 'is-valid form-control'}); 
+         }
     };
 
    handleSubmit = event => {
@@ -68,11 +71,6 @@ class SignupModal extends Component {
       const validateEmailFormat = regex.test(signupData.email);
       if (!validateEmailFormat) {
          document.getElementById('emailValidation-error-message').textContent = "Invalid Email";
-         // this.setState(
-         //    {
-         //       emailValid : 'is-invalid form-control '
-         //    });
-         //    console.log(this.state.emailValid);
 
          // confirm passwords match
       } else if (signupData.password !== document.getElementById('confirmPasswordField').value) {
@@ -103,8 +101,7 @@ class SignupModal extends Component {
                   <Modal.Body>
                      <Form.Group >
                         <Form.Label>Email address</Form.Label>
-                        <Form.Control className = {this.state.emailValid}
-                        // className ={this.state.emailValid ? 'is-valid form-control' : 'is-invalid form-control'}        
+                        <Form.Control className = {this.state.emailValidation}      
                                      id="emailField" 
                                      type="email" 
                                      placeholder="Enter email" 
@@ -118,11 +115,20 @@ class SignupModal extends Component {
                      </Form.Group>
                      <Form.Group>
                         <Form.Label>Password</Form.Label>
-                        <Form.Control id="passwordField" type="password" placeholder="Password" />
+                        <Form.Control id="passwordField" 
+                                      type="password" 
+                                      placeholder="Password" 
+                                      onChange = {this.handleInputChange}
+                                      />
                      </Form.Group>
                      <Form.Group>
                         <Form.Label>ConfirmPassword</Form.Label>
-                        <Form.Control id="confirmPasswordField" type="password" placeholder="confirmPassword" />
+                        <Form.Control className = {this.state.confirmPasswordValidation}   
+                                      id="confirmPasswordField" 
+                                      type="password" 
+                                      placeholder="confirmPassword" 
+                                      onChange = {this.handleInputChange}
+                                      />
                         <Form.Text className="text-danger error-message" id="password-error-message"> </Form.Text>
                      </Form.Group>
                   </Modal.Body>

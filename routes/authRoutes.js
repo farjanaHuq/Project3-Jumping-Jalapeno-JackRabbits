@@ -18,15 +18,15 @@ router.post('/register', (req, res) => {
       displayName: req.body.displayName,
       email: req.body.email,
       salt: helpers.getSalt()
-   }
+   };
    user.hash = helpers.getHash(user.salt, req.body.password);
 
    // sendgrid
    sgMail.setApiKey(process.env.REACT_APP_SENDGRID_API_KEY);
    // check for environment to send proper links in email
-   var urlInEmail = 'http://localhost:3000/';
-   // if (!process.env.NODE_ENV) urlInEmail = 'http://localhost:3000/';
-   // else urlInEmail = 'https://desolate-cliffs-99613.herokuapp.com/';
+   var urlInEmail;;
+   if (process.env.NODE_ENV !== 'production') urlInEmail = 'http://localhost:3000/';
+   else urlInEmail = 'https://desolate-cliffs-99613.herokuapp.com/';
    const msg = {
       to: req.body.email,
       from: 'noreply@followthemoneytrail.org',
@@ -35,7 +35,9 @@ router.post('/register', (req, res) => {
       html: `
             <p>An account has just been created with this email address at followthemoneytrail.org.
             <p>To activate your new account, please click the following link:</p>
-            <a href="${urlInEmail}VerifyEmail?k=${req.body.validationKey}">${urlInEmail}VerifyEmail?k=${req.body.validationKey}</a>
+            <a href="${urlInEmail}VerifyEmail?k=${req.body.validationKey}">
+               ${urlInEmail}VerifyEmail?k=${req.body.validationKey}
+            </a>
          `,
    };
    sgMail.send(msg);
@@ -109,6 +111,6 @@ router.put('/verifyEmail/:key', (req, res) => {
             console.log('Email address already validated.');
          }
       });
-})
+});
 
 module.exports = router;

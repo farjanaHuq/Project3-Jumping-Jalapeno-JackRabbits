@@ -11,7 +11,8 @@ class Representatives extends Component {
       super(props);
       this.state = {
          userData: { date: '', displayName: '', email: '', userID: '' },
-         representatives: []
+         representatives: [],
+         repsLoaded: false
       };
    }
 
@@ -27,9 +28,14 @@ class Representatives extends Component {
    }
 
    repsByStateRequest = selectedState => {
+      this.setState({ repsLoaded: false });
       axios.get('/api/opensecrets/repsbystate/' + selectedState)
          .then(resp => {
-            this.setState({ representatives: resp.data.response.legislator });
+            console.log('legislators:', resp.data.response.legislator);
+            this.setState({
+               representatives: resp.data.response.legislator,
+               repsLoaded: true
+            });
             // console.log('reps by state:', this.state.representatives);
          })
          .catch(err => {
@@ -65,12 +71,15 @@ class Representatives extends Component {
                handleLoginData={this.handleLoginData}
                handleLogout={this.handleLogout}
             />
-            <USStatesForm
-               handleStateSubmit={this.handleStateSubmit}
-            />
-            <RepresentativesForm
-               representatives={this.state.representatives}
-            />
+            <div className="container">
+               <USStatesForm
+                  handleStateSubmit={this.handleStateSubmit}
+               />
+               <RepresentativesForm
+                  repsLoaded={this.state.repsLoaded}
+                  representatives={this.state.representatives}
+               />
+            </div>
             <LoginModal />
             <SignupModal />
          </div>

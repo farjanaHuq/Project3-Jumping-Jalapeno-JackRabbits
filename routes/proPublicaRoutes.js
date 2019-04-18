@@ -160,7 +160,6 @@ router.get('/recent-bills/:subject', (req, res) => {
 
 //========================================================================================================================
 //  curl "https://api.propublica.org/congress/v1/house/votes"
-//  -H "X-API-Key: rz3d2w066XoXNxVN6iY2un8kGGzjMzp5hlvtn3py"
 //https://api.propublica.org/congress/v1/{congress}/{chamber}/votes/{vote-type}/recent.json
 
 //get votes info of congress senate members
@@ -195,7 +194,6 @@ router.get('/chamber-house/:votesByType', (req, res) => {
 
    for (var congressHouse = 102; congressHouse <= 115; congressHouse++) {     // congress 80-115 for Senate
       axios.get(
-
          `https://api.propublica.org/congress/v1/${congressHouse}/${chamber}/votes/${votesByType}`,
          {
             headers: {

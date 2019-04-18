@@ -76,8 +76,6 @@ input, select {
    margin-right: 15px;
 }
 
-
-
 .nav-link {
    cursor: pointer;
 }
@@ -97,6 +95,12 @@ input, select {
 
 .navbar-toggler {
    margin-left: auto;
+}
+
+/* search reps page */
+
+#USStateForm {
+   margin-top: 35px;
 }
 
 /* rep info page */

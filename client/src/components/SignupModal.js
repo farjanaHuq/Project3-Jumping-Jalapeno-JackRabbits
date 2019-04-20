@@ -29,22 +29,26 @@ class SignupModal extends Component {
       // console.log("text", txt);
 
       if (!validateEmailFormat) {
-         this.setState({ emailValidation: 'is-invalid form-control' });
-         document.getElementById('emailValidation-error-message').textContent = "Invalid Email"; 
+         setTimeout(function(){  
+            this.setState({ emailValidation: 'is-invalid form-control' });
+            document.getElementById('emailValidation-error-message').textContent = "Invalid Email";  
+         }, 1000); 
+      
          // setTimeout(function(){  
          //    document.getElementById('emailValidation-error-message').textContent = "Invalid Email";  
          // }, 100); 
                  
       } else {
             this.setState({ emailValidation: 'is-valid form-control' });
-            document.getElementById('emailValidation-error-message').textContent = ""; 
+            document.getElementById('emailValidation-error-message').textContent = ''; 
       }
-      if ((password === document.getElementById('confirmPasswordField').value) && (password !== '')) {
+      if (password === document.getElementById('confirmPasswordField').value) {
          this.setState({ confirmPasswordValidation: 'is-valid form-control' });
-         document.getElementById('password-error-message').textContent = "Password does not match";
+         document.getElementById('password-error-message').textContent = '';
+         
       } else {
          this.setState({ confirmPasswordValidation: 'is-invalid form-control' });
-         document.getElementById('password-error-message').textContent = " ";
+         document.getElementById('password-error-message').textContent = "Password does not match";
          
       }
    };

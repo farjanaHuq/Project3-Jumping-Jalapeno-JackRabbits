@@ -25,17 +25,27 @@ class SignupModal extends Component {
 
       const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       const validateEmailFormat = regex.test(getEmail);
+      // var txt = document.getSelection().textContent();
+      // console.log("text", txt);
 
       if (!validateEmailFormat) {
          this.setState({ emailValidation: 'is-invalid form-control' });
+         document.getElementById('emailValidation-error-message').textContent = "Invalid Email"; 
+         // setTimeout(function(){  
+         //    document.getElementById('emailValidation-error-message').textContent = "Invalid Email";  
+         // }, 100); 
+                 
       } else {
-         this.setState({ emailValidation: 'is-valid form-control' });
+            this.setState({ emailValidation: 'is-valid form-control' });
+            document.getElementById('emailValidation-error-message').textContent = ""; 
       }
-
       if ((password === document.getElementById('confirmPasswordField').value) && (password !== '')) {
          this.setState({ confirmPasswordValidation: 'is-valid form-control' });
+         document.getElementById('password-error-message').textContent = "Password does not match";
       } else {
          this.setState({ confirmPasswordValidation: 'is-invalid form-control' });
+         document.getElementById('password-error-message').textContent = " ";
+         
       }
    };
 
@@ -69,25 +79,43 @@ class SignupModal extends Component {
       // confirm valid email format
       const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       const validateEmailFormat = regex.test(signupData.email);
-      if (!validateEmailFormat) {
-         document.getElementById('emailValidation-error-message').textContent = "Invalid Email";
+      // if (!validateEmailFormat) {
+      //    document.getElementById('emailValidation-error-message').textContent = "Invalid Email";
 
-         // confirm passwords match
-      } else if (signupData.password !== document.getElementById('confirmPasswordField').value) {
-         document.getElementById('password-error-message').textContent = "Password does not match";
+      //    // confirm passwords match
+      // } else if (signupData.password !== document.getElementById('confirmPasswordField').value) {
+      //    document.getElementById('password-error-message').textContent = "Password does not match";
 
-      } else {
-         // post it to api
-         axios.post('/api/auth/register', signupData)
+      // } 
+      // else {
+      //    // post it to api
+      //    axios.post('/api/auth/register', signupData)
+      //     .then(res => {
+      //          console.log('register res.data:', res.data);
+      //          this.props.handleClose();
+      //          alert('Account created. Please follow the link sent to your email address to activate your new account.');
+      //      })
+      //     .catch(err => console.log(err));
+      // }
+
+         axios.get('api/auth/checkEmailInDB/'+ signupData.email)
             .then(res => {
-               console.log('register res.data:', res.data);
-               this.props.handleClose();
-               alert('Account created. Please follow the link sent to your email address to activate your new account.');
+                console.log(res);
+                if(res.data = 'Email exit'){
+                  document.getElementById('emailValidation-error-message').textContent = "Email already exist in the database";
+                }
+                else{
+                    // post it to api
+                  axios.post('/api/auth/register', signupData)
+                   .then(res => {
+                        console.log('register res.data:', res.data);
+                        this.props.handleClose();
+                        alert('Account created. Please follow the link sent to your email address to activate your new account.');
+                    })
+                   .catch(err => console.log(err));
+                }
             })
             .catch(err => console.log(err));
-      }
-
-
    }
 
    render() {

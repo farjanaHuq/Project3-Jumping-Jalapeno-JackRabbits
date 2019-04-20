@@ -306,11 +306,11 @@ input, select {
    border-bottom: 1px solid rgb(87, 87, 87);
 }
 
-#legislationTable td:not(:last-child), #legislationTable th:not(:last-child) {
+.legislationTable td:not(:last-child), .legislationTable th:not(:last-child) {
    padding-right: 17px;
 }
 
-#legislationTable td {
+.legislationTable td {
    padding-top: 10px;
    padding-bottom: 10px;
 }
@@ -321,6 +321,10 @@ input, select {
 
 .legislation-question-td {
    min-width: 100px;
+}
+
+.nav-tabs-div {
+   
 }
 
 

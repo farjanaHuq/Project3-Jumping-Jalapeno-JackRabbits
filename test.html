@@ -50,37 +50,38 @@
       //    }
       // }
 
-      var fruits = [1, 2, 3, 4, 5]
-      var fruits2 = fruits.splice(1, 1)
-      console.log(fruits)
-      console.log(fruits2)
+      // var fruits = [1, 2, 3, 4, 5]
+      // var fruits2 = fruits.splice(1, 1)
+      // console.log(fruits)
+      // console.log(fruits2)
 
-      {
-         Array.from(specificMemberVotes).map((elem, i) => (
-            <tr key={`legislation-row-${i}`}>
-               <td>{elem.bill.number}</td>
-               <td>{elem.bill.description}</td>
-               <td>{elem.bill.date}</td>
-               <td>{elem.bill.position}</td>
-            </tr>
-         ))
-      }
+      // {
+      //    Array.from(specificMemberVotes).map((elem, i) => (
+      //       <tr key={`legislation-row-${i}`}>
+      //          <td>{elem.bill.number}</td>
+      //          <td>{elem.bill.description}</td>
+      //          <td>{elem.bill.date}</td>
+      //          <td>{elem.bill.position}</td>
+      //       </tr>
+      //    ))
+      // }
 
-      const consolidatedBillsBySubject = [];
-      recentBillsBySubject.forEach(elem => {
-         if (elem[200] === 'OK') {
-            elem.results.forEach(resultsElem => {
-               consolidatedBillsBySubject.push(resultsElem);
-            })
-         }
-      });
+      // const consolidatedBillsBySubject = [];
+      // recentBillsBySubject.forEach(elem => {
+      //    if (elem[200] === 'OK') {
+      //       elem.results.forEach(resultsElem => {
+      //          consolidatedBillsBySubject.push(resultsElem);
+      //       })
+      //    }
+      // });
 
-      const recentRepVotesBySubject = [];
-      this.state.specificMemberVotes.forEach(elem => {
-         const i = this.state.recentBillsBySubject.findIndex(item => item.bill_id == elem.bill.bill_id);
-         if (i !== -1) recentRepVotesBySubject.push(elem);
-      });
-      console.log('recentRepVotesBySubject:', recentRepVotesBySubject);
+      // const recentRepVotesBySubject = [];
+      // this.state.specificMemberVotes.forEach(elem => {
+      //    const i = this.state.recentBillsBySubject.findIndex(item => item.bill_id == elem.bill.bill_id);
+      //    if (i !== -1) recentRepVotesBySubject.push(elem);
+      // });
+      // console.log('recentRepVotesBySubject:', recentRepVotesBySubject);
+      console.log(Boolean([]));
    </script>
 </body>
 

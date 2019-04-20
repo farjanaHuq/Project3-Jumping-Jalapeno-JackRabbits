@@ -33,15 +33,7 @@ class RepInfo extends Component {
             upVotes: [],
             _id: ''
          },
-         specificMemberVotes: {
-            data: {
-               results: [
-                  {
-                     votes: []
-                  }
-               ]
-            }
-         },
+         specificMemberVotes: [],
          topTenIndustries: [],
          combinedIndustries: combinedIndustries,
          recentBillsBySubject: []
@@ -134,14 +126,24 @@ class RepInfo extends Component {
                // save their propublica id to a const
                const memberID = this.state.allCongressMembers[i].memberId;
                // get the recent votes of the congressmember from propublica
-               axios.get('api/propublica/specific-member/' + memberID)
-                  .then(resp => {
-                     // console.log('votes by specific member data:', resp);
-                     this.setState({ specificMemberVotes: resp });
-                  })
-                  .catch(err => {
-                     console.log(err);
-                  });
+
+
+               // // get votes from web api
+               // axios.get('api/propublica/specific-member/' + memberID)
+               //    .then(resp => {
+               //       // console.log('votes by specific member data:', resp);
+               //       this.setState({ specificMemberVotes: resp });
+               //    })
+               //    .catch(err => {
+               //       console.log(err);
+               //    });
+               // ;
+
+
+               // get votes from database
+               axios.get('/api/propublica/specific-member/' + memberID)
+                  .then(resp => this.setState({ specificMemberVotes: resp.data }))
+                  .catch(err => console.log(err));
                ;
             }
          })

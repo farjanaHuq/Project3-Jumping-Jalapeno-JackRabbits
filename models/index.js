@@ -2,5 +2,6 @@ module.exports = {
    User: require("./User"),
    Representative: require("./Representative"),
    Comment: require("./Comment"),
-   EmailValidationKey: require("./EmailValidationKey")
+   EmailValidationKey: require("./EmailValidationKey"),
+   VotePosition: require("./VotePosition")
 };

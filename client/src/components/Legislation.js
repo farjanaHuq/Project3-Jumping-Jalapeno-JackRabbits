@@ -14,8 +14,7 @@ class Legislation extends Component {
    }
 
    render() {
-      const specificMemberVotes = this.props.specificMemberVotes.data.results[0].votes;
-      console.log('specificMemberVotes:', specificMemberVotes);
+      console.log('specificMemberVotes:', this.props.specificMemberVotes);
 
       return (
          <div id="legislationDiv">
@@ -33,9 +32,9 @@ class Legislation extends Component {
                   </tr>
                </thead>
                <tbody>
-                  {specificMemberVotes.map((elem, i) => (
+                  {this.props.specificMemberVotes.map((elem, i) => (
                      <tr className="legislation-row" key={`legislation-row-${i}`}>
-                        <td>{elem.bill.number}</td>
+                        <td>{elem.billNumber}</td>
                         <td>{elem.description}</td>
                         <td className="legislation-date-td">{elem.date}</td>
                         <td className="legislation-question-td">{elem.question}</td>

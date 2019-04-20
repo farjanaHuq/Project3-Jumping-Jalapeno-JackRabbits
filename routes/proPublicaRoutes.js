@@ -2,35 +2,35 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 const listOfIndustries = require('../listOfIndustries');
+const db = require('../models');
 
 var newList = [];
 
-compare = (arr1,arr2) => {
-   arr1.map(elem1 =>arr2.map(elem2 =>
-     {
-       if(elem1 !== elem2){
+compare = (arr1, arr2) => {
+   arr1.map(elem1 => arr2.map(elem2 => {
+      if (elem1 !== elem2) {
          arr2.push(elem1);
-       }
-     }))
-     const newArr = [];
-     arr2.forEach(function(item) {
-         if(newArr.indexOf(item) < 0)  {
-             newArr.push(item);
-         }  
-     })
-    return  newArr;
- }
- 
+      }
+   }))
+   const newArr = [];
+   arr2.forEach(function (item) {
+      if (newArr.indexOf(item) < 0) {
+         newArr.push(item);
+      }
+   })
+   return newArr;
+}
+
 
 removeDuplicateElement = (arr) => {
    var newIndustry = [];
-   arr.forEach(function(item) {
-      if(newIndustry.indexOf(item) < 0 && item !== '')  {
-          newIndustry.push(item);
-      }   
-  })
-  //console.log("New Industry", newIndustry);
-  return newIndustry;
+   arr.forEach(function (item) {
+      if (newIndustry.indexOf(item) < 0 && item !== '') {
+         newIndustry.push(item);
+      }
+   })
+   //console.log("New Industry", newIndustry);
+   return newIndustry;
 }
 
 
@@ -48,7 +48,7 @@ router.get('/all-bills/:congress/:type', (req, res) => {
             'X-API-Key': `${apiKey}`
          }
       })
-      .then(resp => {    
+      .then(resp => {
          var subjectsArr = [];
          resp.data.results[0].bills.forEach(elem => {
             subjectsArr.push(elem.primary_subject);
@@ -56,7 +56,7 @@ router.get('/all-bills/:congress/:type', (req, res) => {
          // res.json(subjectsArr);
          var newSubArr = removeDuplicateElement(subjectsArr);
          //res.json(newSubArr);
-         newList = compare(newSubArr, listOfIndustries);  
+         newList = compare(newSubArr, listOfIndustries);
          //console.log("newList", newList);
          res.json(newList);
          // var updatedIndustries = removeDuplicateElement(listOfIndustries);
@@ -66,7 +66,7 @@ router.get('/all-bills/:congress/:type', (req, res) => {
       .catch(err => {
          console.log(err);
       });
-      
+
 });
 
 
@@ -113,8 +113,8 @@ router.get('/all-members/:chamber', (req, res) => {
          console.log(err);
       });
 });
-//==========================================================Specific Member==============================================================
-//https://api.propublica.org/congress/v1/members/{member-id}.json
+
+
 
 //get a specific member
 router.get('/specific-member/:memberId', (req, res) => {
@@ -129,15 +129,65 @@ router.get('/specific-member/:memberId', (req, res) => {
       })
       .then(resp => {
          console.log('specific members votes:', resp.data);
-         res.json(resp.data);
+         // res.json(resp.data.results[0].votes);
+         // set a vote counter to res.json after the final vote has been checked
+         var voteCounter = 0;
+         const congressMemberID = resp.data.results[0].member_id;
+         resp.data.results[0].votes.forEach(elem => {
+            // check if the vote is already in the database. if not, insert it
+            db.VotePosition.updateOne(
+               // query
+               {
+                  memberID: elem.member_id,
+                  billID: elem.bill.bill_id,
+                  question: elem.question,
+                  date: elem.date,
+                  time: elem.time
+               },
+               // update
+               {
+                  memberID: elem.member_id,
+                  billID: elem.bill.bill_id,
+                  billNumber: elem.bill.number,
+                  description: elem.description,
+                  date: elem.date,
+                  time: elem.time,
+                  question: elem.question,
+                  position: elem.position,
+                  result: elem.result,
+                  totalYes: elem.total.yes,
+                  totalNo: elem.total.no,
+                  totalPresent: elem.total.present,
+                  totalNotVoting: elem.total.not_voting,
+                  latestAction: elem.bill.latest_action,
+                  title: elem.bill.title
+               },
+               // parameters
+               {
+                  upsert: true
+               }
+            )
+               .then(() => {
+                  voteCounter++;
+                  // after checking/adding all 20 most recent votes...
+                  if (voteCounter === 20) {
+                     // get all of the votes that are in the database
+                     db.VotePosition.find({ memberID: congressMemberID })
+                        .then(resp => res.json(resp))
+                        .catch(err => console.log(err));
+                     ;
+                  }
+               })
+               .catch(err => console.log(err));
+            ;
+
+         });
       })
-      .catch(err => {
-         console.log(err);
-      });
+      .catch(err => console.log(err));
+   ;
 });
-//========================================================================================================================
-// curl "https://api.propublica.org/congress/v1/bills/subjects/meat.json"
-//   -H "X-API-Key: PROPUBLICA_API_KEY"
+
+
 
 //get recent Bills by a specific subject
 router.get('/recent-bills/:subject', (req, res) => {
@@ -158,9 +208,6 @@ router.get('/recent-bills/:subject', (req, res) => {
       });
 });
 
-//========================================================================================================================
-//  curl "https://api.propublica.org/congress/v1/house/votes"
-//https://api.propublica.org/congress/v1/{congress}/{chamber}/votes/{vote-type}/recent.json
 
 //get votes info of congress senate members
 router.get('/chamber-senate/:votesByType', (req, res) => {

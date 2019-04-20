@@ -11,33 +11,33 @@ class SignupModal extends Component {
       super(props, context);
 
       this.state = {
-          emailValidation: '',
-          confirmPasswordValidation: ''
-         
+         emailValidation: '',
+         confirmPasswordValidation: ''
+
       };
    }
-   
+
    handleInputChange = event => {
       event.preventDefault();
 
-      const getEmail= document.getElementById('emailField').value;
+      const getEmail = document.getElementById('emailField').value;
       const password = document.getElementById('passwordField').value;
-  
+
       const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       const validateEmailFormat = regex.test(getEmail);
 
-      if (!validateEmailFormat) {     
-         this.setState({ emailValidation : 'is-invalid form-control'});        
-      }else{
-         this.setState({emailValidation : 'is-valid form-control'});   
+      if (!validateEmailFormat) {
+         this.setState({ emailValidation: 'is-invalid form-control' });
+      } else {
+         this.setState({ emailValidation: 'is-valid form-control' });
       }
 
-      if(password  !== document.getElementById('confirmPasswordField').value){
-         this.setState({confirmPasswordValidation: 'is-invalid form-control'});   
-      }else{
-         this.setState({confirmPasswordValidation : 'is-valid form-control'}); 
-         }
-    };
+      if ((password === document.getElementById('confirmPasswordField').value) && (password !== '')) {
+         this.setState({ confirmPasswordValidation: 'is-valid form-control' });
+      } else {
+         this.setState({ confirmPasswordValidation: 'is-invalid form-control' });
+      }
+   };
 
    handleSubmit = event => {
       event.preventDefault();
@@ -101,13 +101,13 @@ class SignupModal extends Component {
                   <Modal.Body>
                      <Form.Group >
                         <Form.Label>Email address</Form.Label>
-                        <Form.Control className = {this.state.emailValidation}      
-                                     id="emailField" 
-                                     type="email" 
-                                     placeholder="Enter email" 
-                                     onChange = {this.handleInputChange}
-                                     />
-                        <Form.Text className="text-danger error-message" id="emailValidation-error-message"> </Form.Text>
+                        <Form.Control className={this.state.emailValidation}
+                           id="emailField"
+                           type="email"
+                           placeholder="Enter email"
+                           onChange={this.handleInputChange}
+                        />
+                        <Form.Text className="text-danger error-message" id="emailValidation-error-message"></Form.Text>
                      </Form.Group>
                      <Form.Group>
                         <Form.Label>Display Name</Form.Label>
@@ -115,21 +115,21 @@ class SignupModal extends Component {
                      </Form.Group>
                      <Form.Group>
                         <Form.Label>Password</Form.Label>
-                        <Form.Control id="passwordField" 
-                                      type="password" 
-                                      placeholder="Password" 
-                                      onChange = {this.handleInputChange}
-                                      />
+                        <Form.Control id="passwordField"
+                           type="password"
+                           placeholder="Password"
+                           onChange={this.handleInputChange}
+                        />
                      </Form.Group>
                      <Form.Group>
                         <Form.Label>ConfirmPassword</Form.Label>
-                        <Form.Control className = {this.state.confirmPasswordValidation}   
-                                      id="confirmPasswordField" 
-                                      type="password" 
-                                      placeholder="confirmPassword" 
-                                      onChange = {this.handleInputChange}
-                                      />
-                        <Form.Text className="text-danger error-message" id="password-error-message"> </Form.Text>
+                        <Form.Control className={this.state.confirmPasswordValidation}
+                           id="confirmPasswordField"
+                           type="password"
+                           placeholder="Confirm Password"
+                           onChange={this.handleInputChange}
+                        />
+                        <Form.Text className="text-danger error-message" id="password-error-message"></Form.Text>
                      </Form.Group>
                   </Modal.Body>
                   <Modal.Footer>

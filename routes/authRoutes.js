@@ -113,4 +113,15 @@ router.put('/verifyEmail/:key', (req, res) => {
       });
 });
 
+router.get('/checkEmailInDB/:email', (req, res) => {
+   db.User.findOne({ email: req.params.email })
+   .then(resp => {
+       //res.json(resp);
+       if(resp.email){
+          res.json("Email exit");
+       }
+   })
+   .catch(err => res.status(400).json({ msg: err.toString() }));
+})
+
 module.exports = router;

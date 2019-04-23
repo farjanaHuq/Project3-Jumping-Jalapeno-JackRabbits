@@ -169,6 +169,14 @@ input, select {
    padding: 15px 30px 15px 0px;
 }
 
+.industriesTable td:first-child {
+   padding-left: 5px
+}
+
+.industriesTable td:last-child {
+   padding-left: 5px
+}
+
 /* funds graph */
 
 .fundsGraph {
@@ -201,6 +209,14 @@ input, select {
 .industryFundsDiv {
    margin-top: 35px;
    overflow-x: auto;
+}
+
+.industry-funds-tr td:first-child {
+   margin-left: 5px;
+}
+
+.industry-funds-tr td:last-child {
+   margin-right: 5px;
 }
 
 .div-header {
@@ -302,6 +318,10 @@ input, select {
    margin-top: 35px;
 }
 
+.legislation-row:first-child {
+   border-top: 1px solid rgb(87, 87, 87);
+}
+
 .legislation-row:not(:last-child) {
    border-bottom: 1px solid rgb(87, 87, 87);
 }
@@ -313,6 +333,14 @@ input, select {
 .legislationTable td {
    padding-top: 10px;
    padding-bottom: 10px;
+}
+
+.legislationTable td:first-child {
+   padding-left: 5px
+}
+
+.legislationTable td:last-child {
+   padding-left: 5px
 }
 
 .legislation-date-td {
@@ -333,6 +361,7 @@ input, select {
 #verify-email-div {
    text-align: center;
    margin-top: 50px;
+   color: rgba(0, 174, 255, 0);
 }
 
 /* ========================================== Mobile screens ========================================== */
@@ -341,4 +370,4 @@ input, select {
    #most-recent-comments-div {
       margin-top: 15px;
    }
- }
+}

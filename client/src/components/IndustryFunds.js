@@ -7,6 +7,7 @@ class IndustryFunds extends Component {
    constructor(props) {
       super(props);
       this.state = {
+         selectedIndustry: ''
       };
    }
 
@@ -18,10 +19,21 @@ class IndustryFunds extends Component {
       return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
    }
 
-   selectIndustry = (event) => {
+   // selectIndustry = (event) => {
+   //    event.preventDefault();
+   //    // this.props.getIndustryData(event.target.textContent);
+   //    console.log(event.target.textContent);
+   // }
+
+   selectIndustry = event => {
       event.preventDefault();
-      // this.props.getIndustryData(event.target.textContent);
-      console.log(event.target.textContent);
+      console.log(event.target);
+      console.log('rep industries:', this.props.repIndustries);
+      const i = Number(event.target.attributes.industryindex.value);
+      const selectedIndustryObj = this.props.repIndustries[i]['@attributes'];
+      selectedIndustryObj.index = i;
+      console.log('selectedIndustryObj:', selectedIndustryObj);
+      this.setState({ selectedIndustry: selectedIndustryObj });
    }
 
    render() {
@@ -42,15 +54,24 @@ class IndustryFunds extends Component {
                </thead>
                <tbody>
                   {Array.from(this.props.repIndustries).map((elem, i) => (
-                     <tr key={`industry-row-${i}`}>
-                        <td>
-                           <a href="" onClick={this.props.selectIndustry} className="" color="primary">
+                     <tr
+                        key={`industry-row-${i}`}
+                        className="industry-funds-tr"
+                        industryindex={i}
+                        onClick={this.selectIndustry}
+                        style={{
+                           border: (this.state.selectedIndustry.index === i)
+                              ? '2px solid rgb(0, 174, 255)' : ''
+                        }}
+                     >
+                        <td industryindex={i}>
+                           <span industryindex={i} color="primary">
                               {elem['@attributes'].industry_name}
-                           </a>
+                           </span>
                         </td>
-                        <td>{`$${this.addCommas(elem['@attributes'].total)}`}</td>
-                        <td>{`$${this.addCommas(elem['@attributes'].indivs)}`}</td>
-                        <td>{`$${this.addCommas(elem['@attributes'].pacs)}`}</td>
+                        <td industryindex={i}>{`$${this.addCommas(elem['@attributes'].total)}`}</td>
+                        <td industryindex={i}>{`$${this.addCommas(elem['@attributes'].indivs)}`}</td>
+                        <td industryindex={i}>{`$${this.addCommas(elem['@attributes'].pacs)}`}</td>
                      </tr>
                   ))}
                </tbody>

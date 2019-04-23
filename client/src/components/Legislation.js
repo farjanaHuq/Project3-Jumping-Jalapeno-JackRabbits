@@ -9,7 +9,8 @@ class Legislation extends Component {
       super(props);
       this.toggle = this.toggle.bind(this);
       this.state = {
-         activeTab: '1'
+         activeTab: '1',
+         selectedVote: ''
       };
    }
 
@@ -25,7 +26,23 @@ class Legislation extends Component {
       }
    }
 
-   renderNavTabs = (numberOfPages) => {
+   selectVote = (event, singlePagesArr, pageIndex, i) => {
+      event.preventDefault();
+      console.log('single pages arr:', singlePagesArr[pageIndex][i]);
+      const selectedVote = singlePagesArr[pageIndex][i];
+      selectedVote.index = i;
+      console.log(selectedVote);
+      this.setState({ selectedVote: selectedVote });
+
+      // console.log('rep industries:', this.props.r);
+      // const i = Number(event.target.attributes.industryindex.value);
+      // const selectedIndustryObj = this.props.repIndustries[i]['@attributes'];
+      // selectedIndustryObj.index = i;
+      // console.log('selectedIndustryObj:', selectedIndustryObj);
+      // this.setState({ selectedIndustry: selectedIndustryObj });
+   }
+
+   renderNavTabs = numberOfPages => {
       // create an array of numbers just to be able to map over in the JSX
       const pagesNumArr = [];
       for (let i = 1; i < numberOfPages + 1; i++) {
@@ -51,8 +68,8 @@ class Legislation extends Component {
    renderTabContent = singlePagesArr => {
       return (
          <TabContent activeTab={this.state.activeTab} >
-            {singlePagesArr.map((elem, i) => (
-               <TabPane tabId={(i + 1).toString()} key={`tab-content-${i + 1}`}>
+            {singlePagesArr.map((elem, pageIndex) => (
+               <TabPane tabId={(pageIndex + 1).toString()} key={`tab-content-${pageIndex + 1}`}>
                   <table className="legislationTable">
                      <thead>
                         <tr>
@@ -65,8 +82,16 @@ class Legislation extends Component {
                         </tr>
                      </thead>
                      <tbody>
-                        {singlePagesArr[i].map((elem, i) => (
-                           <tr className="legislation-row" key={`legislation-row-${i}`}>
+                        {singlePagesArr[pageIndex].map((elem, i) => (
+                           <tr
+                              className="legislation-row"
+                              key={`legislation-row-${i}`}
+                              onClick={(event) => this.selectVote(event, singlePagesArr, pageIndex, i)}
+                              style={{
+                                 border: (this.state.selectedVote.index === i)
+                                    ? '2px solid rgb(0, 174, 255)' : ''
+                              }}
+                           >
                               <td>{elem.billNumber}</td>
                               <td>{elem.description}</td>
                               <td className="legislation-date-td">{elem.date}</td>

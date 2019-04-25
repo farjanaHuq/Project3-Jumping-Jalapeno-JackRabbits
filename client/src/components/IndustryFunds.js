@@ -7,7 +7,6 @@ class IndustryFunds extends Component {
    constructor(props) {
       super(props);
       this.state = {
-         selectedIndustry: ''
       };
    }
 
@@ -24,17 +23,6 @@ class IndustryFunds extends Component {
    //    // this.props.getIndustryData(event.target.textContent);
    //    console.log(event.target.textContent);
    // }
-
-   selectIndustry = event => {
-      event.preventDefault();
-      console.log(event.target);
-      console.log('rep industries:', this.props.repIndustries);
-      const i = Number(event.target.attributes.industryindex.value);
-      const selectedIndustryObj = this.props.repIndustries[i]['@attributes'];
-      selectedIndustryObj.index = i;
-      console.log('selectedIndustryObj:', selectedIndustryObj);
-      this.setState({ selectedIndustry: selectedIndustryObj });
-   }
 
    render() {
       return (
@@ -58,9 +46,9 @@ class IndustryFunds extends Component {
                         key={`industry-row-${i}`}
                         className="industry-funds-tr"
                         industryindex={i}
-                        onClick={this.selectIndustry}
+                        onClick={this.props.selectIndustry}
                         style={{
-                           border: (this.state.selectedIndustry.index === i)
+                           border: (this.props.selectedIndustry.index === i)
                               ? '2px solid rgb(0, 174, 255)' : ''
                         }}
                      >

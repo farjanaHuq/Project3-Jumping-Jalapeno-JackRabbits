@@ -4,9 +4,9 @@ const db = require('../models');
 
 // get a rep's rating and comments
 router.get('/representative/:repCid/:repName', (req, res) => {
-   console.log('get rep info route hit');
-   console.log('repCid:', req.params.repCid);
-   console.log('repName:', req.params.repName);
+   // console.log('get rep info route hit');
+   // console.log('repCid:', req.params.repCid);
+   // console.log('repName:', req.params.repName);
    // search the database to see if an index for this representative has already been created
    db.Representative.findOne(
       { repCid: req.params.repCid })

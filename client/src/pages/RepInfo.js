@@ -15,6 +15,7 @@ import { Container, Row, Col } from 'reactstrap';
 class RepInfo extends Component {
    constructor(props) {
       super(props);
+      this.toggle = this.toggle.bind(this);
       this.state = {
          userData: { date: '', displayName: '', email: '', userID: '' },
          repSummary: {},
@@ -36,7 +37,10 @@ class RepInfo extends Component {
          specificMemberVotes: [],
          topTenIndustries: [],
          combinedIndustries: combinedIndustries,
-         recentBillsBySubject: []
+         recentBillsBySubject: [],
+         selectedIndustry: '',
+         selectedVote: '',
+         activeTab: '1'
       };
    }
 
@@ -52,8 +56,8 @@ class RepInfo extends Component {
       axios.get('/api/opensecrets/repsummary/' + cid)
          .then(resp => {
             const repSummary = resp.data.response.summary["@attributes"];
-            console.log('open secrets summary resp:', resp.data);
-            console.log('cand name:', resp.data.response.summary["@attributes"].cand_name)
+            // console.log('open secrets summary resp:', resp.data);
+            // console.log('cand name:', resp.data.response.summary["@attributes"].cand_name);
             this.getRepRatingAndComments(cid, resp.data.response.summary["@attributes"].cand_name);
             return this.setState({ repSummary: repSummary });
          })
@@ -165,55 +169,55 @@ class RepInfo extends Component {
       return topTenIndustries;
    }
 
-   selectIndustry = (event) => {
-      event.preventDefault();
-      // save the clicked opensecrets industry and its corresponding propublica subjects to constants
-      const opensecretsIndustry = event.target.textContent;
-      const propublicaSubjects = this.state.combinedIndustries[event.target.textContent];
-      console.log('opensecretsIndustry:', opensecretsIndustry);
-      console.log('propublicaSubjects:', propublicaSubjects);
-      const recentBillsBySubject = [];
-      // make a counter to tell when the final API request has been finished
-      var requestCounter = 0;
-      // loop through the propublica subjects, do an API request on each, and push them to an array
-      propublicaSubjects.forEach(elem => {
-         axios.get('/api/propublica/recent-bills/' + elem)
-            .then(resp => {
-               recentBillsBySubject.push(resp.data);
-               requestCounter++;
-               // if the last request has been finished
-               if (requestCounter === propublicaSubjects.length) {
-                  // grab all the bills from each relevant subject and push them into one array
-                  const consolidatedBillsBySubject = [];
-                  recentBillsBySubject.forEach(elem => {
-                     if (elem[200] === 'OK') {
-                        elem.results.forEach(resultsElem => {
-                           consolidatedBillsBySubject.push(resultsElem);
-                        })
-                     }
-                  });
-                  this.setState({ recentBillsBySubject: consolidatedBillsBySubject });
-                  console.log('consolidated bills by subject:', this.state.recentBillsBySubject);
-                  // push the bills in both the recent bills by subjects array and recent votes by member array to a new array
-                  const recentRepVotesBySubject = [];
-                  this.state.specificMemberVotes.data.results[0].votes.forEach(elem => {
-                     const i = this.state.recentBillsBySubject.findIndex(item => item.bill_id === elem.bill.bill_id);
-                     if (i !== -1) recentRepVotesBySubject.push(elem);
-                  });
-                  console.log('recentRepVotesBySubject:', recentRepVotesBySubject);
-                  // const arr1 = [{name: 'jim'}, {name: 'bo'}];
-                  // const arr2 = [{name: 'scrimbo'}, {name: 'bo'}];
-                  // const recentRepVotesBySubject = [];
-                  // arr1.forEach(elem => {
-                  //    const i = arr2.findIndex(item => item.name === elem.name);
-                  //    if (i !== -1) recentRepVotesBySubject.push(elem);
-                  // });
-                  // console.log('recentRepVotesBySubject:', recentRepVotesBySubject);
-               }
-            })
-            .catch(err => console.log(err));
-      });
-   }
+   // selectIndustry = (event) => {
+   //    event.preventDefault();
+   //    // save the clicked opensecrets industry and its corresponding propublica subjects to constants
+   //    const opensecretsIndustry = event.target.textContent;
+   //    const propublicaSubjects = this.state.combinedIndustries[event.target.textContent];
+   //    console.log('opensecretsIndustry:', opensecretsIndustry);
+   //    console.log('propublicaSubjects:', propublicaSubjects);
+   //    const recentBillsBySubject = [];
+   //    // make a counter to tell when the final API request has been finished
+   //    var requestCounter = 0;
+   //    // loop through the propublica subjects, do an API request on each, and push them to an array
+   //    propublicaSubjects.forEach(elem => {
+   //       axios.get('/api/propublica/recent-bills/' + elem)
+   //          .then(resp => {
+   //             recentBillsBySubject.push(resp.data);
+   //             requestCounter++;
+   //             // if the last request has been finished
+   //             if (requestCounter === propublicaSubjects.length) {
+   //                // grab all the bills from each relevant subject and push them into one array
+   //                const consolidatedBillsBySubject = [];
+   //                recentBillsBySubject.forEach(elem => {
+   //                   if (elem[200] === 'OK') {
+   //                      elem.results.forEach(resultsElem => {
+   //                         consolidatedBillsBySubject.push(resultsElem);
+   //                      })
+   //                   }
+   //                });
+   //                this.setState({ recentBillsBySubject: consolidatedBillsBySubject });
+   //                console.log('consolidated bills by subject:', this.state.recentBillsBySubject);
+   //                // push the bills in both the recent bills by subjects array and recent votes by member array to a new array
+   //                const recentRepVotesBySubject = [];
+   //                this.state.specificMemberVotes.data.results[0].votes.forEach(elem => {
+   //                   const i = this.state.recentBillsBySubject.findIndex(item => item.bill_id === elem.bill.bill_id);
+   //                   if (i !== -1) recentRepVotesBySubject.push(elem);
+   //                });
+   //                console.log('recentRepVotesBySubject:', recentRepVotesBySubject);
+   //                // const arr1 = [{name: 'jim'}, {name: 'bo'}];
+   //                // const arr2 = [{name: 'scrimbo'}, {name: 'bo'}];
+   //                // const recentRepVotesBySubject = [];
+   //                // arr1.forEach(elem => {
+   //                //    const i = arr2.findIndex(item => item.name === elem.name);
+   //                //    if (i !== -1) recentRepVotesBySubject.push(elem);
+   //                // });
+   //                // console.log('recentRepVotesBySubject:', recentRepVotesBySubject);
+   //             }
+   //          })
+   //          .catch(err => console.log(err));
+   //    });
+   // }
 
    // ======================================= rep rating and comments ========================================= //
 
@@ -302,8 +306,42 @@ class RepInfo extends Component {
 
    logRepRatingState = () => {
       if (this.state.userData && this.state.repRatingAndComments) {
-         console.log('rep info state:', this.state);
+         // console.log('rep info state:', this.state);
       }
+   }
+
+   // ======================================= create money trail ======================================= //
+
+   toggle(tab) {
+      if (this.state.activeTab !== tab) {
+         this.setState({
+            activeTab: tab
+         });
+      }
+   }
+
+   selectIndustry = event => {
+      event.preventDefault();
+      // console.log(event.target);
+      // console.log('rep industries:', this.state.repIndustries);
+      const i = Number(event.target.attributes.industryindex.value);
+      const selectedIndustryObj = this.state.repIndustries[i]['@attributes'];
+      selectedIndustryObj.index = i;
+      // console.log('selectedIndustryObj:', selectedIndustryObj);
+      this.setState({ selectedIndustry: selectedIndustryObj });
+   }
+
+   selectVote = (event, singlePagesArr, pageIndex, i) => {
+      event.preventDefault();
+      console.log('page index:', pageIndex);
+      const selectedVote = singlePagesArr[pageIndex][i];
+      selectedVote.index = i;
+      selectedVote.tab = Number(this.state.activeTab);
+      console.log('selected vote:', selectedVote);
+      this.setState({ selectedVote: selectedVote });
+      console.log('selected vote index:', this.state.selectedVote.index);
+      console.log('index:', i)
+      console.log('selected vote tab:', this.state.selectedVote.tab);
    }
 
 
@@ -353,7 +391,7 @@ class RepInfo extends Component {
                      <IndustryFunds
                         repIndustries={this.state.repIndustries}
                         selectIndustry={this.selectIndustry}
-                     // getIndustryData={this.getIndustryData}
+                        selectedIndustry={this.state.selectedIndustry}
                      />
                   </Col>
 
@@ -368,6 +406,10 @@ class RepInfo extends Component {
                   <Col>
                      <Legislation
                         specificMemberVotes={this.state.specificMemberVotes}
+                        activeTab={this.state.activeTab}
+                        toggle={this.toggle}
+                        selectedVote={this.state.selectedVote}
+                        selectVote={this.selectVote}
                      />
                   </Col>
                </Row>
@@ -381,6 +423,8 @@ class RepInfo extends Component {
                         upVoteComment={this.upVoteComment}
                         downVoteComment={this.downVoteComment}
                         rateComment={this.rateComment}
+                        selectedIndustry={this.state.selectedIndustry}
+                        selectedVote={this.state.selectedVote}
                      />
                   </Col>
                </Row>

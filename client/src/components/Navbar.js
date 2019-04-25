@@ -59,7 +59,7 @@ class NavbarComponent extends Component {
       }
    };
    renderLoginLinks = () => {
-      console.log('user data:', this.props.userData)
+      // console.log('user data:', this.props.userData)
       if (!this.props.userData || !this.props.userData.userID) {
          return (
             <Nav>

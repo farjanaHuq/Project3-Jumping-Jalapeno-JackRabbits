@@ -9,6 +9,7 @@ class Comments extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      addCommentBtnsVisibility: false
     };
   }
 
@@ -129,7 +130,7 @@ class Comments extends Component {
           <span>
             {this.renderThumbImage(elem, 'up')}
             &nbsp;&nbsp;
-                    <span
+            <span
               style={{
                 color: this.calculateCommentRating(elem) > 0 ? 'rgb(0, 190, 0)' :
                   this.calculateCommentRating(elem) === 0 ? 'white' : 'red'
@@ -152,7 +153,9 @@ class Comments extends Component {
   }
 
   render() {
-    console.log(this.props)
+    // console.log(this.props)
+    console.log('selected industry:', this.props.selectedIndustry)
+    console.log('selected vote:', this.props.selectedVote)
     return (
       <div id="comment-component-div">
         <Row>

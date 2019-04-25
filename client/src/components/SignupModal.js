@@ -20,6 +20,7 @@ class SignupModal extends Component {
    handleInputChange = event => {
       event.preventDefault();
 
+      //Expected a conditional expression and instead saw an assignment
       const getEmail = document.getElementById('emailField').value;
       const password = document.getElementById('passwordField').value;
       const confirmPassword = document.getElementById('confirmPasswordField').value;
@@ -27,36 +28,32 @@ class SignupModal extends Component {
       // confirm valid email format
       const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       const validateEmailFormat = regex.test(getEmail);
-       
-      // axios.get('api/auth/checkEmailInDB/' + getEmail)
-      // .then(res => {
-      //    console.log(res);
-        
-         if (!validateEmailFormat) {
-            this.setState({ emailValidation: 'is-invalid form-control' });
-            //document.getElementById('emailValidation-error-message').textContent = "Invalid Email";  
-            setTimeout(function () {
-               document.getElementById('emailValidation-error-message').textContent = "Invalid Email";
-            }, 1000);
-   
-         } else {
-            this.setState({ emailValidation: 'is-valid form-control' });
-            document.getElementById('emailValidation-error-message').textContent = '';
-         }
-         if ((password === confirmPassword) || (confirmPassword === '') || (password === '')) {
-            this.setState({ confirmPasswordValidation: 'is-valid form-control' });
-            document.getElementById('password-error-message').textContent = '';
-   
-         } else {
-            this.setState({ confirmPasswordValidation: 'is-invalid form-control' });
-            document.getElementById('password-error-message').textContent = "Password does not match";
-   
-         }
-         // if (res.data = 'Email exit') {
-         //    document.getElementById('emailValidation-error-message').textContent = "Email already exist in the database";
-         // }
-      // });
-     
+       console.log(validateEmailFormat);
+      
+       //Validating front end email
+      if(getEmail === null || validateEmailFormat ){
+         this.setState({ emailValidation: 'is-valid form-control' });
+         document.getElementById('emailValidation-error-message').textContent = '';
+      }
+      else if( !validateEmailFormat){
+         this.setState({ emailValidation: 'is-invalid form-control' });
+         setTimeout(function () {
+            document.getElementById('emailValidation-error-message').textContent = "Invalid Email";
+         }, 500);
+      }
+      else{
+         console.log("foo");
+      }
+    
+      if ((password === confirmPassword) || (confirmPassword === '') || (password === '')) {
+         this.setState({ confirmPasswordValidation: 'is-valid form-control' });
+         document.getElementById('password-error-message').textContent = '';
+
+      } else {
+         this.setState({ confirmPasswordValidation: 'is-invalid form-control' });
+         document.getElementById('password-error-message').textContent = "Password does not match";
+
+      }
    };
 
    handleSubmit = event => {
@@ -85,24 +82,19 @@ class SignupModal extends Component {
       }
       console.log('emailValidationKey:', emailValidationKey);
       signupData.validationKey = emailValidationKey;
-
-      axios.get('api/auth/checkEmailInDB/' + signupData.email)
+      // post it to api
+      axios.post('/api/auth/register', signupData)
          .then(res => {
-          console.log(res);
-           if (res.data = 'Email exit') {
-               document.getElementById('emailValidation-error-message').textContent = "Email already exist in the database";
+            console.log('register data:', res.data);
+            if (res.data = "Email already exist") {
+               document.getElementById('emailValidation-error-message').textContent = "Email already exist";
             }
-           else {
-               // post it to api
-               axios.post('/api/auth/register', signupData)
-               .then(res => {
-                  console.log('register res.data:', res.data);
-                  this.props.handleClose();
-                  alert('Account created. Please follow the link sent to your email address to activate your new account.');
-               })
-               .catch(err => console.log(err));
+            else {
+               this.props.handleClose();
+               alert('Account created. Please follow the link sent to your email address to activate your new account.');
             }
          })
+         .catch(err => console.log(err));
    }
 
    render() {

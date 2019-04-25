@@ -13,47 +13,59 @@ router.post('/register', (req, res) => {
    if (!req.body.displayName || !req.body.password || !req.body.email) {
       return res.status(400).json({ msg: new Error('Please put all data on body.') });
    }
-   // create a user object to store in the db and encrypt the password
-   const user = {
-      displayName: req.body.displayName,
-      email: req.body.email,
-      salt: helpers.getSalt()
-   };
-   user.hash = helpers.getHash(user.salt, req.body.password);
 
-   // sendgrid
-   sgMail.setApiKey(process.env.REACT_APP_SENDGRID_API_KEY);
-   // check for environment to send proper links in email
-   var urlInEmail;;
-   if (process.env.NODE_ENV !== 'production') urlInEmail = 'http://localhost:3000/';
-   else urlInEmail = 'https://desolate-cliffs-99613.herokuapp.com/';
-   const msg = {
-      to: req.body.email,
-      from: 'noreply@followthemoneytrail.org',
-      subject: 'Verify Email Address',
-      text: 'Verify Email Address',
-      html: `
-            <p>An account has just been created with this email address at followthemoneytrail.org.
-            <p>To activate your new account, please click the following link:</p>
-            <a href="${urlInEmail}VerifyEmail?k=${req.body.validationKey}">
-               ${urlInEmail}VerifyEmail?k=${req.body.validationKey}
-            </a>
-         `,
-   };
-   sgMail.send(msg);
+   db.User.findOne({ email: req.body.email })
+      .then(resp => {
+         //res.json(resp);
+         if (resp) {
+            res.json("Email already exist");
+         }
+         else {
+            // create a user object to store in the db and encrypt the password
+           
+            const user = {
+               displayName: req.body.displayName,
+               email: req.body.email,
+               salt: helpers.getSalt()
+            };
+            user.hash = helpers.getHash(user.salt, req.body.password);
 
-   db.User.create(user)
-      .then(userResp => {
-         db.EmailValidationKey.create({
-            userID: userResp._id,
-            validationKey: req.body.validationKey
-         })
-            .then(validationResp => {
-               res.json({
-                  userResp: userResp,
-                  validationResp: validationResp
+            // sendgrid
+            sgMail.setApiKey(process.env.REACT_APP_SENDGRID_API_KEY);
+
+            // check for environment to send proper links in email
+            var urlInEmail;;
+            if (process.env.NODE_ENV !== 'production') urlInEmail = 'http://localhost:3000/';
+            else urlInEmail = 'https://desolate-cliffs-99613.herokuapp.com/';
+            const msg = {
+               to: req.body.email,
+               from: 'noreply@followthemoneytrail.org',
+               subject: 'Verify Email Address',
+               text: 'Verify Email Address',
+               html: `
+                  <p>An account has just been created with this email address at followthemoneytrail.org.
+                  <p>To activate your new account, please click the following link:</p>
+                  <a href="${urlInEmail}VerifyEmail?k=${req.body.validationKey}">
+                     ${urlInEmail}VerifyEmail?k=${req.body.validationKey}
+                  </a>`,
+            };
+            sgMail.send(msg);
+
+            db.User.create(user)
+               .then(userResp => {
+                  db.EmailValidationKey.create({
+                     userID: userResp._id,
+                     validationKey: req.body.validationKey
+                  })
+                     .then(validationResp => {
+                        res.json({
+                           userResp: userResp,
+                           validationResp: validationResp
+                        })
+                     })
                })
-            })
+            ;
+         }
       })
       .catch(err => res.status(400).json({ msg: err.toString() }));
 });
@@ -113,15 +125,15 @@ router.put('/verifyEmail/:key', (req, res) => {
       });
 });
 
-router.get('/checkEmailInDB/:email', (req, res) => {
-   db.User.findOne({ email: req.params.email })
-   .then(resp => {
-       //res.json(resp);
-       if(resp.email){
-          res.json("Email exit");
-       }
-   })
-   .catch(err => res.status(400).json({ msg: err.toString() }));
-})
+// router.get('/checkEmailInDB/:email', (req, res) => {
+//    db.User.findOne({ email: req.params.email })
+//    .then(resp => {
+//        //res.json(resp);
+//        if(resp.email){
+//           res.json("Email exist");
+//        }
+//    })
+//    .catch(err => res.status(400).json({ msg: err.toString() }));
+// })
 
 module.exports = router;

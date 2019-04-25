@@ -30,21 +30,20 @@ class SignupModal extends Component {
       const validateEmailFormat = regex.test(getEmail);
        console.log(validateEmailFormat);
       
-       //Validating front end email
+       //Validating email from front end
       if(getEmail === null || validateEmailFormat ){
          this.setState({ emailValidation: 'is-valid form-control' });
          document.getElementById('emailValidation-error-message').textContent = '';
       }
-      else if( !validateEmailFormat){
+      else if(!validateEmailFormat){
          this.setState({ emailValidation: 'is-invalid form-control' });
-         setTimeout(function () {
-            document.getElementById('emailValidation-error-message').textContent = "Invalid Email";
-         }, 500);
+         document.getElementById('emailValidation-error-message').textContent = "Invalid Email";
       }
       else{
-         console.log("foo");
+         document.getElementById('emailValidation-error-message').textContent = " ";
       }
-    
+      
+       //Validating password from front end
       if ((password === confirmPassword) || (confirmPassword === '') || (password === '')) {
          this.setState({ confirmPasswordValidation: 'is-valid form-control' });
          document.getElementById('password-error-message').textContent = '';

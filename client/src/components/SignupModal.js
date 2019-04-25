@@ -85,7 +85,7 @@ class SignupModal extends Component {
       axios.post('/api/auth/register', signupData)
          .then(res => {
             console.log('register data:', res.data);
-            if (res.data = "Email already exist") {
+            if (res.data === "Email already exist") {
                document.getElementById('emailValidation-error-message').textContent = "Email already exist";
             }
             else {

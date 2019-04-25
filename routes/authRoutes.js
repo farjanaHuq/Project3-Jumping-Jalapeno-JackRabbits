@@ -17,12 +17,12 @@ router.post('/register', (req, res) => {
    db.User.findOne({ email: req.body.email })
       .then(resp => {
          //res.json(resp);
+         console.log("resp", resp);
          if (resp) {
             res.json("Email already exist");
          }
          else {
             // create a user object to store in the db and encrypt the password
-           
             const user = {
                displayName: req.body.displayName,
                email: req.body.email,

@@ -45,7 +45,10 @@ class VerifyEmail extends Component {
          <div id="verify-email-div">
             <p>{this.state.verificationMessage}</p>
             <Link to={"/Home"} className="nav-link active"
-               style={{ visibility: this.state.verificationMessage ? 'visible' : 'hidden' }}
+               style={{ 
+                  visibility: this.state.verificationMessage ? 'visible' : 'hidden',
+                  color: 'white'
+               }}
             >
                Home
             </Link>

@@ -7,10 +7,7 @@ import classnames from 'classnames';
 class Legislation extends Component {
    constructor(props) {
       super(props);
-      this.toggle = this.toggle.bind(this);
       this.state = {
-         activeTab: '1',
-         selectedVote: ''
       };
    }
 
@@ -18,29 +15,7 @@ class Legislation extends Component {
 
    }
 
-   toggle(tab) {
-      if (this.state.activeTab !== tab) {
-         this.setState({
-            activeTab: tab
-         });
-      }
-   }
 
-   selectVote = (event, singlePagesArr, pageIndex, i) => {
-      event.preventDefault();
-      console.log('single pages arr:', singlePagesArr[pageIndex][i]);
-      const selectedVote = singlePagesArr[pageIndex][i];
-      selectedVote.index = i;
-      console.log(selectedVote);
-      this.setState({ selectedVote: selectedVote });
-
-      // console.log('rep industries:', this.props.r);
-      // const i = Number(event.target.attributes.industryindex.value);
-      // const selectedIndustryObj = this.props.repIndustries[i]['@attributes'];
-      // selectedIndustryObj.index = i;
-      // console.log('selectedIndustryObj:', selectedIndustryObj);
-      // this.setState({ selectedIndustry: selectedIndustryObj });
-   }
 
    renderNavTabs = numberOfPages => {
       // create an array of numbers just to be able to map over in the JSX
@@ -54,8 +29,8 @@ class Legislation extends Component {
             {pagesNumArr.map((elem, i) => (
                <NavItem key={`nav-tab-${i}`}>
                   <NavLink
-                     className={classnames({ active: this.state.activeTab === (elem) })}
-                     onClick={() => { this.toggle(elem); }}
+                     className={classnames({ active: this.props.activeTab === (elem) })}
+                     onClick={() => { this.props.toggle(elem); }}
                   >
                      {'Page ' + elem}
                   </NavLink>
@@ -67,7 +42,7 @@ class Legislation extends Component {
 
    renderTabContent = singlePagesArr => {
       return (
-         <TabContent activeTab={this.state.activeTab} >
+         <TabContent activeTab={this.props.activeTab} >
             {singlePagesArr.map((elem, pageIndex) => (
                <TabPane tabId={(pageIndex + 1).toString()} key={`tab-content-${pageIndex + 1}`}>
                   <table className="legislationTable">
@@ -86,9 +61,10 @@ class Legislation extends Component {
                            <tr
                               className="legislation-row"
                               key={`legislation-row-${i}`}
-                              onClick={(event) => this.selectVote(event, singlePagesArr, pageIndex, i)}
+                              onClick={(event) => this.props.selectVote(event, singlePagesArr, pageIndex, i)}
                               style={{
-                                 border: (this.state.selectedVote.index === i)
+                                 border: ((this.props.selectedVote.index === i) &&
+                                    (this.props.selectedVote.tab === Number(this.props.activeTab)))
                                     ? '2px solid rgb(0, 174, 255)' : ''
                               }}
                            >
@@ -108,20 +84,20 @@ class Legislation extends Component {
    }
 
    render() {
-      console.log('specificMemberVotes:', this.props.specificMemberVotes);
+      // console.log('specificMemberVotes:', this.props.specificMemberVotes);
       // create temp member votes arr
       const tempMemberVotes = this.props.specificMemberVotes;
       const tempMemberVotesString = JSON.stringify(tempMemberVotes);
       const tempMemberVotesArr = JSON.parse(tempMemberVotesString);
       // get the number of pages
       const numberOfPages = Math.ceil(tempMemberVotesArr.length / 8);
-      console.log('number of pages:', numberOfPages);
+      // console.log('number of pages:', numberOfPages);
       // create a 2 dimensional array with each vote on its respective page array
       const singlePagesArr = [];
       for (let i = 0; i < numberOfPages; i++) {
          singlePagesArr.push(tempMemberVotesArr.splice(0, 8));
       }
-      console.log('single pages array:', singlePagesArr);
+      // console.log('single pages array:', singlePagesArr);
       if (singlePagesArr.length > 0) {
          return (
             <div id="legislationDiv">

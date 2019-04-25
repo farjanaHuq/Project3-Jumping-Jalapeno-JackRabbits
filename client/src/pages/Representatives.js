@@ -31,7 +31,7 @@ class Representatives extends Component {
       this.setState({ repsLoaded: false });
       axios.get('/api/opensecrets/repsbystate/' + selectedState)
          .then(resp => {
-            console.log('legislators:', resp.data.response.legislator);
+            // console.log('legislators:', resp.data.response.legislator);
             this.setState({
                representatives: resp.data.response.legislator,
                repsLoaded: true

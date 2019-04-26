@@ -327,8 +327,13 @@ class RepInfo extends Component {
       const i = Number(event.target.attributes.industryindex.value);
       const selectedIndustryObj = this.state.repIndustries[i]['@attributes'];
       selectedIndustryObj.index = i;
-      // console.log('selectedIndustryObj:', selectedIndustryObj);
-      this.setState({ selectedIndustry: selectedIndustryObj });
+      console.log('selectedIndustryObj:', selectedIndustryObj);
+      if ((!this.state.selectedIndustry) ||
+         (selectedIndustryObj.industry_name !== this.state.selectedIndustry.industry_name)) {
+         this.setState({ selectedIndustry: selectedIndustryObj });
+      } else {
+         this.setState({ selectedIndustry: '' });
+      }
    }
 
    selectVote = (event, singlePagesArr, pageIndex, i) => {
@@ -338,7 +343,14 @@ class RepInfo extends Component {
       selectedVote.index = i;
       selectedVote.tab = Number(this.state.activeTab);
       console.log('selected vote:', selectedVote);
-      this.setState({ selectedVote: selectedVote });
+      console.log('selected vote:', selectedVote);
+      console.log('selected vote state:', this.state.selectedVote);
+      if ((!this.state.selectedVote) ||
+         (selectedVote._id !== this.state.selectedVote._id)) {
+         this.setState({ selectedVote: selectedVote });
+      } else {
+         this.setState({ selectedVote: '' });
+      }
       console.log('selected vote index:', this.state.selectedVote.index);
       console.log('index:', i)
       console.log('selected vote tab:', this.state.selectedVote.tab);

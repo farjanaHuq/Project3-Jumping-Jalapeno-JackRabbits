@@ -11,8 +11,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'moment-timezone';
 // font awesome
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faThumbsUp, faThumbsDown, faUser, faSignInAlt, faSignOutAlt, faUserPlus } from '@fortawesome/free-solid-svg-icons';
-library.add(faThumbsUp, faThumbsDown, faUser, faSignInAlt, faSignOutAlt, faUserPlus);
+import { faThumbsUp, faThumbsDown, faUser, faSignInAlt, faSignOutAlt, faUserPlus, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+library.add(faThumbsUp, faThumbsDown, faUser, faSignInAlt, faSignOutAlt, faUserPlus, faArrowRight);
 
 class App extends Component {
 

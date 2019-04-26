@@ -4,6 +4,7 @@ import { Row, Col } from 'reactstrap';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import axios from "axios";
 import Moment from 'react-moment';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class Comments extends Component {
   constructor(props) {
@@ -164,9 +165,37 @@ class Comments extends Component {
             <Form className="d-flex flex-column" id="add-comment-form" onSubmit={this.addComment}>
               <FormGroup>
                 <Label for="add-comment">Add Comment</Label>
+                <h4
+                  className="money-trail-header"
+                  style={{
+                    visibility: (this.props.selectedIndustry || this.props.selectedVote) ? 'visible' : 'hidden',
+                    height: (this.props.selectedIndustry || this.props.selectedVote) ? 'auto' : 0
+                  }}
+                >
+                  Money Trail
+                </h4>
+                <div
+                  className="d-flex flex-row money-trail-div"
+                  style={{
+                    visibility: (this.props.selectedIndustry || this.props.selectedVote) ? 'visible' : 'hidden',
+                    height: (this.props.selectedIndustry || this.props.selectedVote) ? 'auto' : 0
+                  }}
+                >
+                  <div className="card selected-industry-card">
+                    <div className="card-header">Industry</div>
+                    <div className="card-body">{this.props.selectedIndustry.industry_name}</div>
+                  </div>
+                  <div className="money-trail-arrow-div">
+                      <FontAwesomeIcon icon="arrow-right" />
+                  </div>
+                  <div className="card selected-vote-card">
+                    <div className="card-header">Vote</div>
+                    <div className="card-body">{this.props.selectedVote.description}</div>
+                  </div>
+                </div>
                 <Input type="textarea" rows="4" name="add-comment" id="add-comment" onClick={this.showAddCommentBtns} />
               </FormGroup>
-              <span className="d-flex flex-row justify-content-end" id="add-comment-btn-span"
+              <div className="d-flex flex-row justify-content-end" id="add-comment-btn-span"
                 style={{
                   visibility: (this.state.addCommentBtnsVisibility) ? 'visible' : 'hidden',
                   height: (this.state.addCommentBtnsVisibility) ? 'auto' : 0
@@ -174,7 +203,7 @@ class Comments extends Component {
               >
                 <Button onClick={this.hideAddCommentBtns}>Cancel</Button>
                 <Button>Submit</Button>
-              </span>
+              </div>
             </Form>
           </Col>
         </Row>

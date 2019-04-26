@@ -18,12 +18,6 @@ class IndustryFunds extends Component {
       return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
    }
 
-   // selectIndustry = (event) => {
-   //    event.preventDefault();
-   //    // this.props.getIndustryData(event.target.textContent);
-   //    console.log(event.target.textContent);
-   // }
-
    render() {
       return (
          <div className="industryFundsDiv">

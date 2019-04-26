@@ -209,6 +209,11 @@ input, select {
 .industryFundsDiv {
    margin-top: 35px;
    overflow-x: auto;
+   width: 99%;
+}
+
+.industry-funds-tr {
+   cursor: pointer;
 }
 
 .industry-funds-tr td:first-child {
@@ -311,11 +316,45 @@ input, select {
    color: rgb(165, 165, 165);
 }
 
+/* ====================== Money trail ====================== */
+
+.money-trail-header {
+   text-align: center;
+   margin-bottom: 15px;
+}
+
+.money-trail-div {
+   margin-bottom: 20px;
+}
+
+.selected-industry-card {
+   margin-right: 10px;
+   width: 45%;
+}
+
+.money-trail-arrow-div {
+   margin-right: 10px;
+   width: 10%;
+   text-align: center;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+}
+
+.selected-vote-card {
+   width: 45%;
+}
+
 
 /* ========================================== Legislation ========================================== */
 
 #legislationDiv {
    margin-top: 35px;
+}
+
+.legislation-row {
+   cursor: pointer;
 }
 
 .legislation-row:first-child {
@@ -349,10 +388,6 @@ input, select {
 
 .legislation-question-td {
    min-width: 100px;
-}
-
-.nav-tabs-div {
-   
 }
 
 

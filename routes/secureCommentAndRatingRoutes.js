@@ -5,8 +5,12 @@ const jwt = require('express-jwt');
 const auth = jwt({
    secret: process.env.REACT_APP_JWT_SECRET,
    userProperty: 'payload'
- });
- router.use(auth)
+});
+router.use(auth);
+
+
+
+
 // post a comment
 router.post('/comment/', (req, res) => {
    console.log('backend req.body.repCid:', req.body.repCid)
@@ -15,7 +19,9 @@ router.post('/comment/', (req, res) => {
       repCid: req.body.repCid,
       message: req.body.message,
       userEmail: req.body.userEmail,
-      userDisplayName: req.body.userDisplayName
+      userDisplayName: req.body.userDisplayName,
+      moneyTrailIndustry: req.body.moneyTrailIndustry,
+      moneyTrailVote: req.body.moneyTrailVote
    })
       .then(function (data) {
          console.log('data id:', data._id);
@@ -28,6 +34,34 @@ router.post('/comment/', (req, res) => {
       .catch(err => res.json(err));
    ;
 });
+
+
+
+// edit the text of a comment
+router.put('/editcomment/:commentID', (req, res) => {
+   db.Comment.updateOne(
+      { _id: req.params.commentID },
+      { $set: { message: req.body.message } }
+   )
+      .then(() => res.send('Message edited.'))
+      .catch(err => console.log(err));
+   ;
+});
+
+
+
+
+// delete a comment
+router.delete('/comment/:commentID', (req, res) => {
+   db.Comment.deleteOne(
+      { _id: req.params.commentID }
+   )
+   .then(() => res.send('Comment deleted.'))
+   .catch(err => console.log(err));
+});
+
+
+
 
 // upvote/downvote a representative
 router.put('/raterepresentative/:repCid/:voteType/:userID', (req, res) => {
@@ -105,6 +139,9 @@ router.put('/raterepresentative/:repCid/:voteType/:userID', (req, res) => {
    };
 });
 
+
+
+
 // upvote/downvote a comment
 router.put("/ratecomment/:commentID/:voteType/:userID", (req, res) => {
    if (req.params.voteType === 'upvote') {
@@ -170,7 +207,7 @@ router.put("/ratecomment/:commentID/:voteType/:userID", (req, res) => {
                } else {
                   // else if it's not in the upvotes array, just add it to downvotes
                   db.Comment.updateOne(
-                     { _id: req.params.commentID  },
+                     { _id: req.params.commentID },
                      { $push: { downVotes: req.params.userID } }
                   ).then(res.send('Added userID to downvote array.'));
                }

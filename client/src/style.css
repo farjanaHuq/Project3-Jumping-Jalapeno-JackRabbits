@@ -70,7 +70,27 @@ input, select {
     -2px -1px 0 #000;
 }
 
+#mission-statement-div {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}
 
+#mission-statement-header {
+   text-align: center;
+}
+
+#rabbit-div {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+#rabbit-image {
+   width: 70%;
+   height: auto;
+   max-width: 487px;
+}
 
 .view-btn {
    margin-right: 15px;
@@ -316,6 +336,15 @@ input, select {
    color: rgb(165, 165, 165);
 }
 
+.edit-comment-btn, .confirm-edit-comment-btn, .cancel-edit-comment-btn{
+   margin-right: 10px;
+}
+
+#money-trail-directions {
+   padding-top: 7px;
+   margin-right: 10px;
+}
+
 /* ====================== Money trail ====================== */
 
 .money-trail-header {
@@ -344,6 +373,12 @@ input, select {
 
 .selected-vote-card {
    width: 45%;
+}
+
+.display-comment-money-trail-card-body {
+   background-color: rgb(0, 14, 26) !important;
+   max-height: 169px;
+   overflow-y: auto;
 }
 
 

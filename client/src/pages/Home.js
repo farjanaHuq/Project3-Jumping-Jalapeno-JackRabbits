@@ -58,6 +58,21 @@ class Home extends Component {
             <Jumbotron />
             <LoginModal />
             <SignupModal />
+            <div className="container">
+               <div id="mission-statement-div">
+                  <h1 id="mission-statement-header">Our Mission Statement:</h1>
+                  <ul>
+                     <li>Our mission is to take the circus out of political voting decisions.</li>
+                     <li>We encourage an informed and active participation in democracy.</li>
+                     <li>Our focus is inspiring and empowering our fellow voters to make their own political assessments.</li>
+                     <li>We value facts over empty information or misleading propaganda.</li>
+                     <li>Our goal is to create a visual platofrm for citizens to use as a tool for this voting decisions.</li>
+                  </ul>
+               </div>
+               <div id="rabbit-div">
+                  <img id="rabbit-image" src="https://i.ibb.co/nntb7ZN/patriotic-rabbit.png"></img>
+               </div>
+            </div>
          </div>
       );
    }

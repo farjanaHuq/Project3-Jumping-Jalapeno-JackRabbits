@@ -10,7 +10,9 @@ class Comments extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      addCommentBtnsVisibility: false
+      addCommentBtnsVisibility: false,
+      commentBeingEdited: '',
+      tempMessageSave: ''
     };
   }
 
@@ -35,7 +37,9 @@ class Comments extends Component {
         repCid: this.props.repRatingAndComments.repCid,
         message: document.getElementById('add-comment').value,
         userEmail: this.props.userData.userEmail,
-        userDisplayName: this.props.userData.displayName
+        userDisplayName: this.props.userData.displayName,
+        moneyTrailIndustry: this.props.selectedIndustry,
+        moneyTrailVote: this.props.selectedVote
       },
       {
         headers: { "Authorization": `Bearer ${tokenStr}` }
@@ -55,7 +59,79 @@ class Comments extends Component {
     ;
   }
 
-  calculateCommentRating = (elem) => {
+  editCommentText = (event, commentID, userID, commentMessage) => {
+    event.preventDefault();
+    if (userID === this.props.userData.userID) {
+      // set the commentbeingedited state to this comment id to apply dynamic styling
+      this.setState({
+        commentBeingEdited: commentID,
+        tempMessageSave: commentMessage
+      });
+      // make the comment message editable
+      document.getElementById(`comment-message-${commentID}`).contentEditable = "true";
+    }
+  }
+
+  confirmEditCommentText = (event, commentID, userID, commentMessage) => {
+    event.preventDefault();
+    const tokenStr = localStorage.getItem("token");
+    // make the comment message no longer editable
+    document.getElementById(`comment-message-${commentID}`).contentEditable = "false";
+    // clear the edit comment-related states
+    this.setState({
+      commentBeingEdited: '',
+      tempMessageSave: ''
+    });
+    if (userID === this.props.userData.userID) {
+      axios.put('/api/secureCommentAndRatingRoutes/editcomment/' + commentID,
+        { message: commentMessage },
+        { headers: { "Authorization": `Bearer ${tokenStr}` } }
+      )
+        .then(resp => {
+          this.props.getRepRatingAndComments(
+            this.props.repRatingAndComments.repCid, this.props.repRatingAndComments.repName);
+          return console.log('post comment resp:', resp);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      ;
+    }
+  }
+
+  cancelEditCommentText = (event, commentID) => {
+    event.preventDefault();
+    // make the comment message no longer editable
+    document.getElementById(`comment-message-${commentID}`).contentEditable = "false";
+    // restore the orignal message
+    document.getElementById(`comment-message-${commentID}`).textContent = this.state.tempMessageSave;
+    // clear the edit comment-related states
+    this.setState({
+      commentBeingEdited: '',
+      tempMessageSave: ''
+    });
+  }
+
+  deleteComment = (event, commentID, userID) => {
+    event.preventDefault();
+    const tokenStr = localStorage.getItem("token");
+    if (userID === this.props.userData.userID) {
+      axios.delete('/api/secureCommentAndRatingRoutes/comment/' + commentID,
+        { headers: { "Authorization": `Bearer ${tokenStr}` } }
+      )
+        .then(resp => {
+          this.props.getRepRatingAndComments(
+            this.props.repRatingAndComments.repCid, this.props.repRatingAndComments.repName);
+          return console.log('post comment resp:', resp);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      ;
+    }
+  }
+
+  calculateCommentRating = elem => {
     if (this.props.repRatingAndComments) {
       // console.log('comment elem:', elem);
       const upVotes = elem.upVotes.length;
@@ -65,7 +141,6 @@ class Comments extends Component {
       return netRating;
     }
   }
-
 
   sortCommentsByRating = () => {
     // get comments arr from state
@@ -123,9 +198,43 @@ class Comments extends Component {
     )
   }
 
+  renderCommentMoneyTrail = elem => {
+    if (elem.moneyTrailIndustry && elem.moneyTrailVote) {
+      return (
+        <div>
+          <h5 className="money-trail-header">Money Trail</h5>
+          <div className="d-flex flex-row money-trail-div">
+            {/* selected industry card */}
+            <div className="card selected-industry-card">
+              <div className="card-body display-comment-money-trail-card-body">
+                <b>Industry:</b>
+                <br />
+                {elem.moneyTrailIndustry.industry_name}
+              </div>
+            </div>
+            {/* arrow div */}
+            <div className="money-trail-arrow-div">
+              <FontAwesomeIcon icon="arrow-right" />
+            </div>
+            {/* selected vote card */}
+            <div className="card selected-vote-card">
+              <div className="card-body display-comment-money-trail-card-body">
+                <b>Vote:</b><br />
+                {elem.moneyTrailVote.position}
+                <hr />
+                {elem.moneyTrailVote.description}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+  }
+
   renderComments = (elem, cardClass, i) => {
     return (
       <div className={`card ${cardClass}`} key={`comment-${elem._id}`}>
+        {console.log('comment elem:', elem)}
         <div className="card-header d-flex flex-row justify-content-between">
           <span>{elem.userDisplayName}</span>
           <span>
@@ -144,17 +253,84 @@ class Comments extends Component {
           </span>
         </div>
         <div className="card-body">
-          <p>{elem.message}</p>
+          {/* comment message */}
+          <p
+            id={`comment-message-${elem._id}`}
+            style={{
+              border: (this.state.commentBeingEdited === elem._id) ? '2px solid rgb(0, 174, 255)' : ''
+            }}
+          >
+            {elem.message}
+          </p>
+          <div>
+            {this.renderCommentMoneyTrail(elem)}
+          </div>
           <span className="comment-date-text">
             Posted <Moment format="LT, MM/DD/YYYY">{elem.date}</Moment>
           </span>
+          <br />
+          {this.renderEditAndDeleteCommentBtns(elem)}
         </div>
       </div>
     )
   }
 
+  renderEditAndDeleteCommentBtns = elem => {
+    if (elem.userID === this.props.userData.userID) {
+      return (
+        <div className="d-flex flex-row justify-content-end">
+          <Button
+            className="edit-comment-btn"
+            onClick={(event) => this.editCommentText(event, elem._id, elem.userID, elem.message)}
+            style={{
+              visibility: (this.state.commentBeingEdited === elem._id) ? 'hidden' : 'visible',
+              width: (this.state.commentBeingEdited === elem._id) ? '0' : 'initial',
+              height: (this.state.commentBeingEdited === elem._id) ? '0' : 'initial',
+              padding: (this.state.commentBeingEdited === elem._id) ? '0' : '6px 12px',
+              marginRight: (this.state.commentBeingEdited === elem._id) ? '0' : '10px'
+            }}
+          >
+            Edit
+          </Button>
+          <Button
+            className="cancel-edit-comment-btn"
+            onClick={(event) => this.cancelEditCommentText(event, elem._id)}
+            style={{
+              visibility: (this.state.commentBeingEdited === elem._id) ? 'visible' : 'hidden',
+              width: (this.state.commentBeingEdited === elem._id) ? 'initial' : '0',
+              height: (this.state.commentBeingEdited === elem._id) ? 'initial' : '0',
+              padding: (this.state.commentBeingEdited === elem._id) ? '6px 12px' : '0',
+              marginRight: (this.state.commentBeingEdited === elem._id) ? '10px' : '0'
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            className="confirm-edit-comment-btn"
+            onClick={(event) => this.confirmEditCommentText(
+              event, elem._id, elem.userID, document.getElementById(`comment-message-${elem._id}`).textContent)}
+            style={{
+              visibility: (this.state.commentBeingEdited === elem._id) ? 'visible' : 'hidden',
+              width: (this.state.commentBeingEdited === elem._id) ? 'initial' : '0',
+              height: (this.state.commentBeingEdited === elem._id) ? 'initial' : '0',
+              padding: (this.state.commentBeingEdited === elem._id) ? '6px 12px' : '0',
+              marginRight: (this.state.commentBeingEdited === elem._id) ? '10px' : '0'
+            }}
+          >
+            Confirm
+          </Button>
+          <Button
+            onClick={(event) => this.deleteComment(event, elem._id, elem.userID)}
+          >
+            Delete
+          </Button>
+        </div>
+      );
+    }
+  }
+
   render() {
-    // console.log(this.props)
+    console.log('user data:', this.props.userData);
     console.log('selected industry:', this.props.selectedIndustry)
     console.log('selected vote:', this.props.selectedVote)
     return (
@@ -186,7 +362,7 @@ class Comments extends Component {
                     <div className="card-body">{this.props.selectedIndustry.industry_name}</div>
                   </div>
                   <div className="money-trail-arrow-div">
-                      <FontAwesomeIcon icon="arrow-right" />
+                    <FontAwesomeIcon icon="arrow-right" />
                   </div>
                   <div className="card selected-vote-card">
                     <div className="card-header">Vote</div>
@@ -201,6 +377,7 @@ class Comments extends Component {
                   height: (this.state.addCommentBtnsVisibility) ? 'auto' : 0
                 }}
               >
+                <span id="money-trail-directions">(Optional): Select an Industry and Vote above to make a money trail.</span>
                 <Button onClick={this.hideAddCommentBtns}>Cancel</Button>
                 <Button>Submit</Button>
               </div>

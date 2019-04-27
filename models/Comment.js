@@ -26,6 +26,12 @@ const commentSchema = new Schema({
    date: {
       type: Date,
       default: Date.now
+   },
+   moneyTrailIndustry: {
+      type: Object
+   },
+   moneyTrailVote: {
+      type: Object
    }
 });
 

@@ -26,7 +26,9 @@ class RepInfo extends Component {
                {
                   upVotes: [],
                   downVotes: [],
-                  userDisplayName: ''
+                  userDisplayName: '',
+                  moneyTrailIndustry: {},
+                  moneyTrailVote: {}
                }
             ],
             downVotes: [],

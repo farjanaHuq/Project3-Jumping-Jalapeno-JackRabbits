@@ -425,6 +425,16 @@ input, select {
    min-width: 100px;
 }
 
+.nav-tabs-div {
+   border-color: grey !important;
+}
+
+.nav-tabs .nav-link.active {
+   background-color: rgb(0, 24, 56) !important;
+   border-color: grey !important;
+   color: white !important;
+}
+
 
 /* ====================================== Email Verification Page ====================================== */
 

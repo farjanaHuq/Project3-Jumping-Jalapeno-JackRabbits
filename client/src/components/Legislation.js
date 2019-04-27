@@ -27,7 +27,7 @@ class Legislation extends Component {
       return (
          <Nav tabs className="nav-tabs-div d-flex flex-row">
             {pagesNumArr.map((elem, i) => (
-               <NavItem key={`nav-tab-${i}`}>
+               <NavItem key={`nav-tab-${i}`} className="nav-tab">
                   <NavLink
                      className={classnames({ active: this.props.activeTab === (elem) })}
                      onClick={() => { this.props.toggle(elem); }}

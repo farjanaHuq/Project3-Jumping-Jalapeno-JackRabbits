@@ -23,5 +23,8 @@
 * User can leave a comment and rate the representative.
 ![ResultImages](./screenshots/comment.png)
 
+* The app also allows the user to select an industry and vote, and add them to their comment.
+  User can also edit and delete their comments.
+![ResultImages](./screenshots/topRated.png)
 
 
